@@ -9,5 +9,6 @@ SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED
 iii)load different assets(font,color,sounds) and choose the ones we find better-These assets may include tokens,dice,ludo board
 iv)Create different screens for different inputs from the user(menu,gameplay...)
 v)Render and Update screens
+vi)Close the SDL when game is over
 --Implement game logic
 --Testing the code and make it better
