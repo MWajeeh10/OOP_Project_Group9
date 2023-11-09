@@ -1,0 +1,21 @@
+{
+    "label": "build",
+    "type": "shell",
+    "command": "g++",
+    "args": [
+      "-g",
+      "SourceFiles/*.cpp",
+      "-o",
+      "bin/ludo",
+      "-Ilib/HeaderFiles",   // Your existing include directory
+      "-Ilib/include/SDL",  // Include SDL headers
+      "-Llib/lib",       // Your existing library directory
+      "-lSDL2",          // Link SDL library
+      "-lSDL2_image"     // Link additional SDL modules if needed
+    ],
+    "group": {
+      "kind": "build",
+      "isDefault": true
+    }
+  }
+  
