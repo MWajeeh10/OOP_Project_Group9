@@ -1,5 +1,10 @@
 Basic Rules:
 1) each player is said to have 4 tokens whose crown access level is set to be 0 and locked state == false.
+(When a token completes one round and reaches the home area then the access level of the token is increased by 1)
 2) For each player's token to be on the field or on the actual playable board, the player must get a 6 on his dice.
     - after a player draws a 6 on his dice, he can then add the token to the board and have the turn again. 
     - the set token's locked state is then set to false.
+3)If a player's token ends up in the space of the board occupied by the opponents then the token is sent back to home.
+4)The game is won by the player whose all four tokens end up from the board to the home area.
+
+
