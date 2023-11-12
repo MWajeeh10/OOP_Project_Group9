@@ -99,7 +99,7 @@ SDL_Texture* Game::loadTexture( std::string path )
 	return newTexture;
 }
 
-//Function to handle events of sdl
+//Function to handle events of SDL
 void Game::run( )
 {
 	bool quit = false;
@@ -108,8 +108,7 @@ void Game::run( )
 	while( !quit )
 	{
 		//Handle events on queue
-		while( SDL_PollEvent( &e ) != 0 )
-		{
+		while( SDL_PollEvent( &e ) != 0 ){
 			//User requests quit
 			if( e.type == SDL_QUIT )
 			{
