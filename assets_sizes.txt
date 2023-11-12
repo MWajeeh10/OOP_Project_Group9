@@ -1,6 +1,8 @@
 //using cowsprite website the pixels for the assets were calculated
 
 //Board
+x=0
+y=0
 width=786
 height=736
 
