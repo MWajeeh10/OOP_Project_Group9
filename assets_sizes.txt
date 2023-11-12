@@ -5,16 +5,16 @@ width=786
 height=736
 
 //Dices
-(widthxheight)
+(x,y,width,height)
 Blue:
 
 *Static
--One-->148x148
--Two-->148x148
--Three-->148x149
--Four-->148x148
--Five-->148x149
--Six-->148x149
+-One-->33,30,148,148
+-Two-->33,232,148,148
+-Three-->33,434,148,149
+-Four-->33,636,148,148
+-Five-->33,838,148,149
+-Six-->33,1040,148,149
 
 *Movement
 -One-->180x158

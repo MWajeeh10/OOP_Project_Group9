@@ -17,7 +17,7 @@ int green_state=0;
 
 
 void drawObjects(SDL_Renderer* diceRenderer, SDL_Texture*assets){
-
+    
 }
 
 
