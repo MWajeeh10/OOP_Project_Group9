@@ -32,6 +32,7 @@ Game::~Game() {
 
 void Game::run() {
     showWelcomeScreen();
+	showPlayerSelectionScreen();
     // Run the rest of the game
     // ...
 }
@@ -59,6 +60,44 @@ void Game::showWelcomeScreen() {
     SDL_RenderCopy(renderer, texture, NULL, NULL);
     SDL_RenderPresent(renderer);
     SDL_Delay(4000);
+
+    // Destroy the texture
+    SDL_DestroyTexture(texture);
+}
+
+void Game::showPlayerSelectionScreen() {
+    // Load the image
+    SDL_Surface* image = IMG_Load("C:\\Users\\USER\\OneDrive\\Documents\\GitHub\\OOP_Project_Group9\\assets\\board.png");
+    if (!image) {
+        std::cout << "Unable to load image! SDL_image Error: " << IMG_GetError() << std::endl;
+        return;
+    }
+
+    // Create a texture from the image
+    SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, image);
+    if (!texture) {
+        std::cout << "Unable to create texture from image! SDL_Error: " << SDL_GetError() << std::endl;
+        return;
+    }
+
+    // Free the image surface
+    SDL_FreeSurface(image);
+
+    // Render the texture
+    SDL_RenderClear(renderer);
+    SDL_RenderCopy(renderer, texture, NULL, NULL);
+    SDL_RenderPresent(renderer);
+
+    // Wait for a quit event
+    bool running = true;
+    SDL_Event event;
+    while (running) {
+        while (SDL_PollEvent(&event)) {
+            if (event.type == SDL_QUIT) {
+                running = false;
+            }
+        }
+    }
 
     // Destroy the texture
     SDL_DestroyTexture(texture);

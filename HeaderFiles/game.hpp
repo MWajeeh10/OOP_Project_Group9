@@ -14,7 +14,7 @@ public:
     ~Game();
     void run();
     void showWelcomeScreen();
-
+    void showPlayerSelectionScreen();
 private:
     SDL_Window* window;
     SDL_Renderer* renderer;
