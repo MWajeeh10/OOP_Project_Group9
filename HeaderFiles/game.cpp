@@ -143,7 +143,7 @@ Game::Game()
     }
 
     // Create a window
-    window = SDL_CreateWindow("OOP Project Team 09", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 640, 600, SDL_WINDOW_SHOWN);
+    window = SDL_CreateWindow("OOP Project Team 09", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 640, 640, SDL_WINDOW_SHOWN);
     if (!window) {
         // If the window could not be created, print an error message
         std::cout << "Window could not be created! SDL_Error: " << SDL_GetError() << std::endl;
@@ -180,7 +180,7 @@ void Game::run() {
 // Method to show the welcome screen
 void Game::showWelcomeScreen() {
     // Load the image
-    SDL_Surface* image = IMG_Load("E:\\Users\\hp\\Documents\\GitHub\\OOP_Project_Group9\\assets\\screen1.png");
+    SDL_Surface* image = IMG_Load("C:\\Users\\USER\\OneDrive\\Documents\\GitHub\\OOP_Project_Group9\\assets\\screen1.png");
     if (!image) {
         // If the image could not be loaded, print an error message
         std::cout << "Unable to load image! SDL_image Error: " << IMG_GetError() << std::endl;
@@ -229,7 +229,7 @@ void Game::showWelcomeScreen() {
 // Method to show the player selection screen
 void Game::showPlayerSelectionScreen() {
     // Load the image
-    SDL_Surface* image = IMG_Load("E:\\Users\\hp\\Documents\\GitHub\\OOP_Project_Group9\\assets\\board.png");
+    SDL_Surface* image = IMG_Load("C:\\Users\\USER\\OneDrive\\Documents\\GitHub\\OOP_Project_Group9\\assets\\board.png");
     if (!image) {
         // If the image could not be loaded, print an error message
         std::cout << "Unable to load image! SDL_image Error: " << IMG_GetError() << std::endl;
@@ -266,3 +266,47 @@ void Game::showPlayerSelectionScreen() {
     // Destroy the texture
     SDL_DestroyTexture(texture);
 }
+
+
+// #include "game.hpp"
+// #include <iostream>
+
+// Game::Game() 
+//     : startGame(false), renderer(SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED)), welcomeScreen(renderer), playerSelectionScreen(renderer) {   // Initialize startGame to false
+//     // Initialize SDL
+//     if (SDL_Init(SDL_INIT_VIDEO) < 0) {
+//         // If SDL could not initialize, print an error message
+//         std::cout << "SDL could not initialize! SDL_Error: " << SDL_GetError() << std::endl;
+//         return;
+//     }
+
+//     // Create a window
+//     window = SDL_CreateWindow("OOP Project Team 09", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 640, 600, SDL_WINDOW_SHOWN);
+//     if (!window) {
+//         // If the window could not be created, print an error message
+//         std::cout << "Window could not be created! SDL_Error: " << SDL_GetError() << std::endl;
+//         return;
+//     }
+
+//     // Create a renderer
+//     renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+//     if (!renderer) {
+//         // If the renderer could not be created, print an error message
+//         std::cout << "Renderer could not be created! SDL_Error: " << SDL_GetError() << std::endl;
+//         return;
+//     }
+// }
+
+// void Game::run() {
+//     welcomeScreen.show();  
+//     if (startGame) {  // If the user clicked "Start" on the welcome screen...
+//         playerSelectionScreen.show();  // ...show the player selection screen
+//     }
+// }
+
+// Game::~Game() {
+//     // Clean up
+//     SDL_DestroyRenderer(renderer);  
+//     SDL_DestroyWindow(window);  
+//     SDL_Quit();  // Quit SDL
+// }
