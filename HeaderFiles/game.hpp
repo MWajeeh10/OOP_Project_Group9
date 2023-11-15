@@ -18,5 +18,6 @@ public:
 private:
     SDL_Window* window;
     SDL_Renderer* renderer;
+    bool startGame;  // Set to true when the user clicks "Start"
 };
 

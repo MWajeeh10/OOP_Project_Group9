@@ -1,0 +1,13 @@
+Tasks done till now:
+- implemented a welcoming screen
+- tested a delay function in between transitioning of screen
+- implemented transition from the welcoming screen to the next screen(player selection)
+- implemented implemented that transition to next screen will only be possible if mouse clicked within a certain region of the screen.
+
+
+What to do Next:
+- figure out a way to enhanced the quality and length of the image.
+- add condition that if clicked within the region of start then only can move to playerselection screen and if clicked
+  within the region of rules then display a rules screen.
+- add a rectangular box around both the start and rules and when either of the option is selected the box should blink
+  3 times before transitioning to the next respective screen(can be done by either a loop or a delay-loop combination)
