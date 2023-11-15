@@ -6,7 +6,7 @@ Tasks done till now:
 
 
 What to do Next:
-- figure out a way to enhanced the quality and length of the image.
+- figure out a way to enhanced the quality and length of the image. done
 - add condition that if clicked within the region of start then only can move to playerselection screen and if clicked
   within the region of rules then display a rules screen.
 - add a rectangular box around both the start and rules and when either of the option is selected the box should blink
