@@ -182,7 +182,6 @@ void Game::showWelcomeScreen() {
     // Load the image
     SDL_Surface* image = IMG_Load("E:\\Users\\hp\\Documents\\GitHub\\OOP_Project_Group9\\assets\\screen1.png");
     if (!image) {
-        // If the image could not be loaded, print an error message
         std::cout << "Unable to load image! SDL_image Error: " << IMG_GetError() << std::endl;
         return;
     }
@@ -190,7 +189,6 @@ void Game::showWelcomeScreen() {
     // Create a texture from the image
     SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, image);
     if (!texture) {
-        // If the texture could not be created, print an error message
         std::cout << "Unable to create texture from image! SDL_Error: " << SDL_GetError() << std::endl;
         return;
     }
@@ -198,26 +196,58 @@ void Game::showWelcomeScreen() {
     // Free the image surface
     SDL_FreeSurface(image);
 
-    // Render the texture
-    SDL_RenderClear(renderer);  // Clear the current rendering target with the drawing color
-    SDL_RenderCopy(renderer, texture, NULL, NULL);  // Copy a portion of the texture to the current rendering target
-    SDL_RenderPresent(renderer);  // Update the screen with any rendering performed since the previous call
+    // Rectangles for "Start" and "Rules" buttons
+    SDL_Rect startButtonRect = {197, 194, 277, 48}; // Top-left corner, width, height
+    SDL_Rect rulesButtonRect = {188, 348, 284, 47}; // Top-left corner, width, height
 
-    // Wait for a click on the "Start" button
+    // Number of blinks
+    const int blinkCount = 3;
+
+    // Blinking effect
+    for (int i = 0; i < blinkCount; ++i) {
+        // Render the texture
+        SDL_RenderClear(renderer);
+        SDL_RenderCopy(renderer, texture, NULL, NULL);
+
+        // Draw the rectangular box around the "Start" button during the blink
+        SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255); // Red color
+        SDL_RenderDrawRect(renderer, &startButtonRect);
+
+        // Draw the rectangular box around the "Rules" button during the blink
+        SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255); // Blue color
+        SDL_RenderDrawRect(renderer, &rulesButtonRect);
+
+        SDL_RenderPresent(renderer);
+
+        // Introduce a delay for the blinking effect
+        SDL_Delay(500); // Adjust the delay duration as needed
+    }
+
+    // Wait for a click on the "Start" or "Rules" button
     SDL_Event event;
-    while (SDL_WaitEvent(&event)) {  // Wait for an event
-        if (event.type == SDL_QUIT) {  // If the event is a quit event (like closing the window)...
-            break;  // ...break the loop
-        } else if (event.type == SDL_MOUSEBUTTONDOWN) {  // If the event is a mouse button down event...
+    while (SDL_WaitEvent(&event)) {
+        if (event.type == SDL_QUIT) {
+            break;
+        } else if (event.type == SDL_MOUSEBUTTONDOWN) {
             int x, y;
-            SDL_GetMouseState(&x, &y);  // Get the current state of the mouse
-            std::cout << "Mouse clicked at (" << x << ", " << y << ")\n";  // Print the mouse coordinates
-            
+            SDL_GetMouseState(&x, &y);
+            std::cout << "Mouse clicked at (" << x << ", " << y << ")\n";
+
             // Check if the click was within the "Start" button's area
-            // Will be replaced these values with the actual position and size of our "Start" button and screen resolution
-            if (x >= 186 && x <= 479 && y >= 198 && y <= 239) {
-                startGame = true;  // Set startGame to true
-                break;  // Break the loop
+            if (x >= startButtonRect.x && x <= startButtonRect.x + startButtonRect.w &&
+                y >= startButtonRect.y && y <= startButtonRect.y + startButtonRect.h) {
+                startGame = true;
+                std::cout << "Start button clicked!\n";
+                break;
+            }
+
+            // Check if the click was within the "Rules" button's area
+            if (x >= rulesButtonRect.x && x <= rulesButtonRect.x + rulesButtonRect.w &&
+                y >= rulesButtonRect.y && y <= rulesButtonRect.y + rulesButtonRect.h) {
+                // Handle transitioning to the "Rules" screen
+                // Add your logic here
+                std::cout << "Rules button clicked!\n";
+                break;
             }
         }
     }
@@ -225,6 +255,130 @@ void Game::showWelcomeScreen() {
     // Destroy the texture
     SDL_DestroyTexture(texture);
 }
+
+// void Game::showWelcomeScreen() {
+//     // Load the image
+//     SDL_Surface* image = IMG_Load("E:\\Users\\hp\\Documents\\GitHub\\OOP_Project_Group9\\assets\\screen1.png");
+//     if (!image) {
+//         std::cout << "Unable to load image! SDL_image Error: " << IMG_GetError() << std::endl;
+//         return;
+//     }
+
+//     // Create a texture from the image
+//     SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, image);
+//     if (!texture) {
+//         std::cout << "Unable to create texture from image! SDL_Error: " << SDL_GetError() << std::endl;
+//         return;
+//     }
+
+//     // Free the image surface
+//     SDL_FreeSurface(image);
+
+//     // Rectangles for "Start" and "Rules" buttons
+//     SDL_Rect startButtonRect = {181, 199, 482, 240}; // Replace with actual values
+//     SDL_Rect rulesButtonRect = {190, 350, 477, 390}; // Replace with actual values
+
+//     // Number of blinks
+//     const int blinkCount = 3;
+
+//     // Blinking effect
+//     for (int i = 0; i < blinkCount; ++i) {
+//         // Render the texture
+//         SDL_RenderClear(renderer);
+//         SDL_RenderCopy(renderer, texture, NULL, NULL);
+
+//         // Draw the rectangular box around the "Start" button during the blink
+//         SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255); // Red color
+//         SDL_RenderDrawRect(renderer, &startButtonRect);
+
+//         // Draw the rectangular box around the "Rules" button during the blink
+//         SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255); // Blue color
+//         SDL_RenderDrawRect(renderer, &rulesButtonRect);
+
+//         SDL_RenderPresent(renderer);
+
+//         // Introduce a delay for the blinking effect
+//         SDL_Delay(500); // Adjust the delay duration as needed
+//     }
+
+//     // Wait for a click on the "Start" or "Rules" button
+//     SDL_Event event;
+//     while (SDL_WaitEvent(&event)) {
+//         if (event.type == SDL_QUIT) {
+//             break;
+//         } else if (event.type == SDL_MOUSEBUTTONDOWN) {
+//             int x, y;
+//             SDL_GetMouseState(&x, &y);
+//             std::cout << "Mouse clicked at (" << x << ", " << y << ")\n";
+
+//             // Check if the click was within the "Start" button's area
+//             if (x >= startButtonRect.x && x <= startButtonRect.x + startButtonRect.w &&
+//                 y >= startButtonRect.y && y <= startButtonRect.y + startButtonRect.h) {
+//                 startGame = true;
+//                 break;
+//             }
+
+//             // Check if the click was within the "Rules" button's area
+//             if (x >= rulesButtonRect.x && x <= rulesButtonRect.x + rulesButtonRect.w &&
+//                 y >= rulesButtonRect.y && y <= rulesButtonRect.y + rulesButtonRect.h) {
+//                 // Handle transitioning to the "Rules" screen
+//                 // Add your logic here
+//                 break;
+//             }
+//         }
+//     }
+
+//     // Destroy the texture
+//     SDL_DestroyTexture(texture);
+// }
+
+// void Game::showWelcomeScreen() {
+//     // Load the image
+//     SDL_Surface* image = IMG_Load("E:\\Users\\hp\\Documents\\GitHub\\OOP_Project_Group9\\assets\\screen1.png");
+//     if (!image) {
+//         // If the image could not be loaded, print an error message
+//         std::cout << "Unable to load image! SDL_image Error: " << IMG_GetError() << std::endl;
+//         return;
+//     }
+
+//     // Create a texture from the image
+//     SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, image);
+//     if (!texture) {
+//         // If the texture could not be created, print an error message
+//         std::cout << "Unable to create texture from image! SDL_Error: " << SDL_GetError() << std::endl;
+//         return;
+//     }
+
+//     // Free the image surface
+//     SDL_FreeSurface(image);
+
+//     // Render the texture
+//     SDL_RenderClear(renderer);  // Clear the current rendering target with the drawing color
+//     SDL_RenderCopy(renderer, texture, NULL, NULL);  // Copy a portion of the texture to the current rendering target
+//     SDL_RenderPresent(renderer);  // Update the screen with any rendering performed since the previous call
+
+//     // Wait for a click on the "Start" button
+//     SDL_Event event;
+//     while (SDL_WaitEvent(&event)) {  // Wait for an event
+//         if (event.type == SDL_QUIT) {  // If the event is a quit event (like closing the window)...
+//             break;  // ...break the loop
+//         } else if (event.type == SDL_MOUSEBUTTONDOWN) {  // If the event is a mouse button down event...
+//             int x, y;
+//             SDL_GetMouseState(&x, &y);  // Get the current state of the mouse
+//             std::cout << "Mouse clicked at (" << x << ", " << y << ")\n";  // Print the mouse coordinates
+            
+//             // Check if the click was within the "Start" button's area
+//             // Will be replaced these values with the actual position and size of our "Start" button and screen resolution
+//             if (x >= 186 && x <= 479 && y >= 198 && y <= 239) {
+//                 startGame = true;  // Set startGame to true
+//                 break;  // Break the loop
+//             }
+//         }
+//     }
+
+//     // Destroy the texture
+//     SDL_DestroyTexture(texture);
+// }
 
 // Method to show the player selection screen
 void Game::showPlayerSelectionScreen() {
