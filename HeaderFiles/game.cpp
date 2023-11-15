@@ -39,13 +39,13 @@ void Game::run() {
     // showWelcomeScreen();
 	// showPlayerSelectionScreen();
     // Run the rest of the game
-    // ...
+    // Continue
 }
 
 
 void Game::showWelcomeScreen() {
     // Load the image
-    SDL_Surface* image = IMG_Load("C:\\Users\\USER\\OneDrive\\Documents\\GitHub\\OOP_Project_Group9\\assets\\screen1.png");
+    SDL_Surface* image = IMG_Load("E:\\Users\\hp\\Documents\\GitHub\\OOP_Project_Group9\\assets\\screen1.png");
     if (!image) {
         std::cout << "Unable to load image! SDL_image Error: " << IMG_GetError() << std::endl;
         return;
@@ -90,7 +90,7 @@ void Game::showWelcomeScreen() {
 
 void Game::showPlayerSelectionScreen() {
     // Load the image
-    SDL_Surface* image = IMG_Load("C:\\Users\\USER\\OneDrive\\Documents\\GitHub\\OOP_Project_Group9\\assets\\board.png");
+    SDL_Surface* image = IMG_Load("E:\\Users\\hp\\Documents\\GitHub\\OOP_Project_Group9\\assets\\board.png");
     if (!image) {
         std::cout << "Unable to load image! SDL_image Error: " << IMG_GetError() << std::endl;
         return;
