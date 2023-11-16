@@ -1,8 +1,3 @@
-// #include <SDL2/SDL.h>
-// #include <SDL2/SDL_image.h>
-
-// #ifndef GAME_HPP
-// #define GAME_HPP
 
 #include <SDL.h>
 #include <SDL_image.h>
@@ -18,6 +13,7 @@ public:
 private:
     SDL_Window* window;
     SDL_Renderer* renderer;
-    bool startGame;  // Set to true when the user clicks "Start"
+    bool startGame; 
 };
+
 
