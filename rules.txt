@@ -1,9 +1,31 @@
 Basic Rules:
-1) each player is said to have 4 tokens whose crown access level is set to be 0 and locked state == false.(When a token completes one round and reaches the home area then the access level of the token is increased by 1)
-2) For each player's token to be on the field or on the actual playable board, the player must get a 6 on his dice.
+
+1)Setup:
+   - There will be a square board with four colored boxes.
+   - Each player has four pieces(tokens) of a specific color.
+   - Start in matching bases; goal is to move all pieces to the center home.
+
+2)Gameplay:
+   - 2 to 4 players take turns rolling a die.
+   - Players move token based on the die roll.
+   - Roll a six to start a token or move a token already present on the board.
+
+3)Rules of Sixes:
+   - Roll a six to start a token or move a token in play.
+   -The player can take another turn after rolling the six.
+   - Three consecutive sixes result in losing the turn.
+
+4)Landing on Squares:
+   - Land on opponent's place results the token to send it back to its base home.
+   - Land on own piece to create a blocked space.
+
+5)Winning:
+   - Move all four tokens to the home base.
+   - First player to complete all journeys wins.
+   - Other players continue for runner-up positions.
+
+Note:
+-Each player is said to have 4 tokens whose crown access level is set to be 0 and locked state == false.(When a token completes one round and reaches the home area then the access level of the token is increased by 1)
+-For each player's token to be on the field or on the actual playable board, the player must get a 6 on his dice.
     - after a player draws a 6 on his dice, he can then add the token to the board and have the turn again. 
     - the set token's locked state is then set to false.
-3)If a player's token ends up in the space of the board occupied by the opponents then the token is sent back to home.
-4)The game is won by the player whose all four tokens end up from the board to the home area.
-
-
