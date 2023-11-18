@@ -1,7 +1,7 @@
-
 #include <SDL.h>
 #include <SDL_image.h>
-#include <vector>
+#include <SDL_mixer.h>
+#include <iostream>
 
 class Game {
 public:
@@ -15,5 +15,4 @@ private:
     SDL_Renderer* renderer;
     bool startGame; 
 };
-
 
