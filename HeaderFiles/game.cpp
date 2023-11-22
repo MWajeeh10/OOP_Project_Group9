@@ -522,10 +522,8 @@
 //     SDL_Renderer* renderer;
 //     std::vector<Player*> players;
 // };
-#include "game.hpp"
-#include <SDL_mixer.h>
-#include <iostream>
 
+/*
 Game::Game() 
     : startGame(false) {
     // Initialize SDL
@@ -747,134 +745,263 @@ void Game::showRulesScreen1() {
 
     SDL_DestroyTexture(rules1Texture);
 }
-
-
-// void Game::startGame(int numPlayers) {
-//     // Create the players
-//     std::string colors[] = {"red", "green", "blue", "yellow"};
-//     for (int i = 0; i < numPlayers; ++i) {
-//         players.push_back(new Player("Player " + std::to_string(i+1), colors[i]));
-//     }
-
-//     // Load the board image
-//     SDL_Surface* image = IMG_Load("C:\\Users\\USER\\OneDrive\\Documents\\GitHub\\OOP_Project_Group9\\assets\\board.png");
-//     if (!image) {
-//         std::cout << "Unable to load image! SDL_image Error: " << IMG_GetError() << std::endl;
-//         return;
-//     }
-
-//     // Create a texture from the image
-//     SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, image);
-//     if (!texture) {
-//         std::cout << "Unable to create texture from image! SDL_Error: " << SDL_GetError() << std::endl;
-//         return;
-//     }
-
-//     // Render the texture
-//     SDL_RenderClear(renderer);
-//     SDL_RenderCopy(renderer, texture, NULL, NULL);
-//     SDL_RenderPresent(renderer);
-
-//     // TODO: Place the tokens on the board
-//     void Game::placeTokens() {
-//     // TODO: Load the token images
-//     SDL_Surface* tokenImages[4];
-//     tokenImages[0] = IMG_Load("path_to_red_token_image");
-//     tokenImages[1] = IMG_Load("path_to_green_token_image");
-//     tokenImages[2] = IMG_Load("path_to_blue_token_image");
-//     tokenImages[3] = IMG_Load("path_to_yellow_token_image");
-
-//     // TODO: Create textures from the images
-//     SDL_Texture* tokenTextures[4];
-//     for (int i = 0; i < 4; ++i) {
-//         tokenTextures[i] = SDL_CreateTextureFromSurface(renderer, tokenImages[i]);
-//         SDL_FreeSurface(tokenImages[i]);
-//     }
-
-//     // TODO: Place the tokens on the board
-//     for (int i = 0; i < players.size(); ++i) {
-//         for (int j = 0; j < 4; ++j) {
-//             // Calculate the position of the token
-//             SDL_Rect dst;
-//             dst.x = /* TODO: Calculate the x position based on the player and token number */;
-//             dst.y = /* TODO: Calculate the y position based on the player and token number */;
-//             dst.w = /* TODO: Set the width of the token */;
-//             dst.h = /* TODO: Set the height of the token */;
-
-//             // Render the token
-//             SDL_RenderCopy(renderer, tokenTextures[i], NULL, &dst);
-//         }
-//     }
-
-//     // TODO: Present the renderer
-//     SDL_RenderPresent(renderer);
-
-//     // TODO: Destroy the textures
-//     for (int i = 0; i < 4; ++i) {
-//         SDL_DestroyTexture(tokenTextures[i]);
-//     }
-// }
-// }
-
-
-
-
-
-//------------------------------------------------------------------------------------------------------------------------------------//
-//------------------------------------------------------------------------------------------------------------------------------------//
-//------------------------------------------------------------------------------------------------------------------------------------//
-//------------------------------------------------------------------------------------------------------------------------------------//
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+*/
+
+
+#include "game.hpp"
+#include <SDL_mixer.h>
+#include <iostream>
+// #include "game.hpp"
+
+// Implementation of WelcomeScreen
+// WelcomeScreen class
+void WelcomeScreen::show(SDL_Renderer* renderer, ScreenType& nextScreen) {
+    Mix_Music* music = Mix_LoadMUS("C:\\Users\\USER\\OneDrive\\Documents\\GitHub\\OOP_Project_Group9\\assets\\audio2.mp3");
+    if (!music) {
+        std::cout << "Unable to load music! SDL_mixer Error: " << Mix_GetError() << std::endl;
+        return;
+    }
+
+    Mix_PlayMusic(music, -1);
+
+    SDL_Surface* image = IMG_Load("C:\\Users\\USER\\OneDrive\\Documents\\GitHub\\OOP_Project_Group9\\assets\\screen1.png");
+    SDL_Surface* imageClicked = IMG_Load("C:\\Users\\USER\\OneDrive\\Documents\\GitHub\\OOP_Project_Group9\\assets\\screen2.png");
+    SDL_Surface* rulesImage = IMG_Load("C:\\Users\\USER\\OneDrive\\Documents\\GitHub\\OOP_Project_Group9\\assets\\rulesblink.png");
+
+    if (!image || !imageClicked || !rulesImage) {
+        std::cout << "Unable to load image! SDL_image Error: " << IMG_GetError() << std::endl;
+        return;
+    }
+
+    SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, image);
+    SDL_Texture* textureClicked = SDL_CreateTextureFromSurface(renderer, imageClicked);
+    SDL_Texture* rulesTexture = SDL_CreateTextureFromSurface(renderer, rulesImage);
+
+    if (!texture || !textureClicked || !rulesTexture) {
+        std::cout << "Unable to create texture from image! SDL_Error: " << SDL_GetError() << std::endl;
+        return;
+    }
+
+    SDL_FreeSurface(image);
+    SDL_FreeSurface(imageClicked);
+    SDL_FreeSurface(rulesImage);
+
+    SDL_RenderClear(renderer);
+    SDL_RenderCopy(renderer, texture, NULL, NULL);
+    SDL_RenderPresent(renderer);
+
+    bool startGame = false;
+
+    SDL_Event event;
+    while (SDL_PollEvent(&event)) {
+        if (event.type == SDL_QUIT) {
+            break;
+        } else if (event.type == SDL_MOUSEBUTTONDOWN) {
+            int x, y;
+            SDL_GetMouseState(&x, &y);
+            std::cout << "Mouse clicked at (" << x << ", " << y << ")\n";
+            if (x >= 187 && x <= 478 && y >= 208 && y <= 253) {
+                // Create a blinking effect for the "Start" button
+                for (int i = 0; i < 3; ++i) {
+                    SDL_RenderClear(renderer);
+                    SDL_RenderCopy(renderer, textureClicked, NULL, NULL);
+                    SDL_RenderPresent(renderer);
+                    SDL_Delay(250);
+
+                    SDL_RenderClear(renderer);
+                    SDL_RenderCopy(renderer, texture, NULL, NULL);
+                    SDL_RenderPresent(renderer);
+                    SDL_Delay(250);
+                }
+                startGame = true;
+                break;
+            } else if (x >= 189 && x <= 476 && y >= 375 && y <= 417) {
+                // Create a blinking effect for the "Rules" button
+                for (int i = 0; i < 3; ++i) {
+                    SDL_RenderClear(renderer);
+                    SDL_RenderCopy(renderer, rulesTexture, NULL, NULL);
+                    SDL_RenderPresent(renderer);
+                    SDL_Delay(250);
+
+                    SDL_RenderClear(renderer);
+                    SDL_RenderCopy(renderer, texture, NULL, NULL);
+                    SDL_RenderPresent(renderer);
+                    SDL_Delay(250);
+                }
+
+                // Set the flag to transition to the rules screen
+                nextScreen = ScreenType::RULES;
+                break;  // Break out of the loop after showing the rules
+            }
+        }
+    }
+
+    SDL_DestroyTexture(texture);
+    SDL_DestroyTexture(textureClicked);
+    SDL_DestroyTexture(rulesTexture);
+
+    if (startGame) {
+        // Stop the music when transitioning to the player selection screen
+        Mix_HaltMusic();
+        nextScreen = ScreenType::PLAYER_SELECTION;
+    }
+
+    Mix_FreeMusic(music);
+}
+
+// PlayerSelectionScreen class
+void PlayerSelectionScreen::show(SDL_Renderer* renderer, ScreenType& nextScreen) {
+    SDL_Surface* image = IMG_Load("C:\\Users\\USER\\OneDrive\\Documents\\GitHub\\OOP_Project_Group9\\assets\\board.png");
+    if (!image) {
+        std::cout << "Unable to load image! SDL_image Error: " << IMG_GetError() << std::endl;
+        return;
+    }
+
+    SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, image);
+    if (!texture) {
+        std::cout << "Unable to create texture from image! SDL_Error: " << SDL_GetError() << std::endl;
+        return;
+    }
+
+    SDL_FreeSurface(image);
+
+    SDL_RenderClear(renderer);
+    SDL_RenderCopy(renderer, texture, NULL, NULL);
+    SDL_RenderPresent(renderer);
+
+    bool running = true;
+    SDL_Event event;
+    while (running) {
+        while (SDL_PollEvent(&event)) {
+            if (event.type == SDL_QUIT) {
+                running = false;
+                nextScreen = ScreenType::EXIT;  // Update nextScreen if the user quits
+            } else if (event.type == SDL_MOUSEBUTTONDOWN) {
+                int x, y;
+                SDL_GetMouseState(&x, &y);
+                std::cout << "Mouse clicked at (" << x << ", " << y << ")\n";
+                // Add logic for player selection if needed
+            }
+        }
+    }
+
+    SDL_DestroyTexture(texture);
+}
+
+// RulesScreen class
+void RulesScreen::show(SDL_Renderer* renderer, ScreenType& nextScreen) {
+    SDL_Surface* rules1 = IMG_Load("C:\\Users\\USER\\OneDrive\\Documents\\GitHub\\OOP_Project_Group9\\assets\\rules1.png");
+    if (!rules1) {
+        std::cout << "Unable to load image! SDL_image Error: " << IMG_GetError() << std::endl;
+        return;
+    }
+
+    SDL_Texture* rules1Texture = SDL_CreateTextureFromSurface(renderer, rules1);
+    if (!rules1Texture) {
+        std::cout << "Unable to create texture from image! SDL_Error: " << SDL_GetError() << std::endl;
+        return;
+    }
+
+    SDL_FreeSurface(rules1);
+
+    SDL_RenderClear(renderer);
+    SDL_RenderCopy(renderer, rules1Texture, NULL, NULL);
+    SDL_RenderPresent(renderer);
+
+    // Wait for a quit event or a mouse click
+    SDL_Event event;
+    while (SDL_PollEvent(&event)) {
+        if (event.type == SDL_QUIT) {
+            nextScreen = ScreenType::EXIT;  // Update nextScreen if the user quits
+            break;
+        } else if (event.type == SDL_MOUSEBUTTONDOWN) {
+            int x, y;
+            SDL_GetMouseState(&x, &y);
+            std::cout << "Mouse clicked at (" << x << ", " << y << ")\n";
+
+            // Check if the BACK button is clicked
+            if (x >= 430 && x <= 600 && y >= 597 && y <= 629) {
+                nextScreen = ScreenType::WELCOME;
+                return;  // Return to the previous screen (Welcome screen)
+            }
+        }
+    }
+
+    SDL_DestroyTexture(rules1Texture);
+}
+
+
+// Implementation of ScreenManager
+ScreenManager::ScreenManager()
+    : currentScreen(ScreenType::WELCOME) {
+    // Initialize SDL
+    if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) < 0) {
+        std::cout << "SDL could not initialize! SDL_Error: " << SDL_GetError() << std::endl;
+        // Handle initialization failure as needed
+    }
+
+    // Initialize SDL_mixer
+    if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0) {
+        std::cout << "SDL_mixer could not initialize! SDL_mixer Error: " << Mix_GetError() << std::endl;
+        // Handle initialization failure as needed
+    }
+
+    window = SDL_CreateWindow("Ludo Game", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 640, 640, SDL_WINDOW_SHOWN);
+    if (!window) {
+        std::cout << "Window could not be created! SDL_Error: " << SDL_GetError() << std::endl;
+        // Handle window creation failure as needed
+    }
+
+    renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+    if (!renderer) {
+        std::cout << "Renderer could not be created! SDL_Error: " << SDL_GetError() << std::endl;
+        // Handle renderer creation failure as needed
+    }
+}
+
+WelcomeScreen::~WelcomeScreen() {
+    // Add any cleanup code if needed
+}
+
+// PlayerSelectionScreen destructor
+PlayerSelectionScreen::~PlayerSelectionScreen() {
+    // Add any cleanup code if needed
+}
+
+// RulesScreen destructor
+RulesScreen::~RulesScreen() {
+    // Add any cleanup code if needed
+}
+
+ScreenManager::~ScreenManager() {
+    SDL_DestroyRenderer(renderer);
+    SDL_DestroyWindow(window);
+    Mix_Quit();
+    SDL_Quit();
+}
+
+void ScreenManager::run() {
+    while (currentScreen != ScreenType::EXIT) {
+        switch (currentScreen) {
+        case ScreenType::WELCOME: {
+            WelcomeScreen welcomeScreen;
+            welcomeScreen.show(renderer, currentScreen);
+            break;
+        }
+        case ScreenType::PLAYER_SELECTION: {
+            PlayerSelectionScreen playerSelectionScreen;
+            playerSelectionScreen.show(renderer, currentScreen);
+            break;
+        }
+        case ScreenType::RULES: {
+            RulesScreen rulesScreen;
+            rulesScreen.show(renderer, currentScreen);
+            break;
+        }
+        // Add more cases for other screens as needed
+        default:
+            // Handle unknown screen type
+            break;
+        }
+    }
+}
