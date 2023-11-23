@@ -1,29 +1,27 @@
-/*
--------------------------------------------------------------------------------------------------
-#include <SDL.h>
-#include <SDL_image.h>
-#include <SDL_mixer.h>
-#include <iostream>
 
-class Game {
-public:
-    Game();
-    ~Game();
-    void run();
-    void showWelcomeScreen();
-    void showPlayerSelectionScreen();
-    void showRulesScreen1(); // Add a function to show the rules screen
+// -------------------------------------------------------------------------------------------------
+// #include <SDL.h>
+// #include <SDL_image.h>
+// #include <SDL_mixer.h>
+// #include <iostream>
 
-private:
-    SDL_Window* window;
-    SDL_Renderer* renderer;
-    bool startGame;  // Set to true when the user clicks "Start"
-};
-----------------------------------------------------------------------------------------------
-*/
+// class Game {
+// public:
+//     Game();
+//     ~Game();
+//     void run();
+//     void showWelcomeScreen();
+//     void showPlayerSelectionScreen();
+//     void showRulesScreen1(); // Add a function to show the rules screen
+
+// private:
+//     SDL_Window* window;
+//     SDL_Renderer* renderer;
+//     bool startGame;  // Set to true when the user clicks "Start"
+// };
+// // ----------------------------------------------------------------------------------------------
 
 
-// game.hpp
 
 #include <SDL.h>
 #include <SDL_image.h>
@@ -54,7 +52,7 @@ public:
     ~WelcomeScreen();
 
 private:
-    // Add necessary member variables for surfaces and textures
+    // Add necessary member variables for surfaces and texturess
     bool startGame;  // Add this line
 };
 
@@ -67,7 +65,6 @@ public:
 private:
     // Add necessary member variables for surfaces and textures
 };
-
 // Update the RulesScreen class
 class RulesScreen : public Screen {
 public:
@@ -90,19 +87,6 @@ private:
     SDL_Renderer* renderer;
     ScreenType currentScreen;
 };
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

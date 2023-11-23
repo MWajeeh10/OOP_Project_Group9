@@ -523,229 +523,252 @@
 //     std::vector<Player*> players;
 // };
 
-/*
-Game::Game() 
-    : startGame(false) {
-    // Initialize SDL
-    if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) < 0) {
-        std::cout << "SDL could not initialize! SDL_Error: " << SDL_GetError() << std::endl;
-        return;
-    }
+// #include "game.hpp"
+// #include <SDL_mixer.h>
+// #include <iostream>
 
-    // Initialize SDL_mixer
-    if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0) {
-        std::cout << "SDL_mixer could not initialize! SDL_mixer Error: " << Mix_GetError() << std::endl;
-        return;
-    }
+// Game::Game() 
+//     : startGame(false) {
+//     // Initialize SDL
+//     if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) < 0) {
+//         std::cout << "SDL could not initialize! SDL_Error: " << SDL_GetError() << std::endl;
+//         return;
+//     }
 
-    window = SDL_CreateWindow("Ludo Game", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 640, 640, SDL_WINDOW_SHOWN);
-    if (!window) {
-        std::cout << "Window could not be created! SDL_Error: " << SDL_GetError() << std::endl;
-        return;
-    }
+//     // Initialize SDL_mixer
+//     if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0) {
+//         std::cout << "SDL_mixer could not initialize! SDL_mixer Error: " << Mix_GetError() << std::endl;
+//         return;
+//     }
 
-    renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
-    if (!renderer) {
-        std::cout << "Renderer could not be created! SDL_Error: " << SDL_GetError() << std::endl;
-        return;
-    }
-}
+//     window = SDL_CreateWindow("Ludo Game", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 640, 640, SDL_WINDOW_SHOWN);
+//     if (!window) {
+//         std::cout << "Window could not be created! SDL_Error: " << SDL_GetError() << std::endl;
+//         return;
+//     }
 
-Game::~Game() {
-    SDL_DestroyRenderer(renderer);
-    SDL_DestroyWindow(window);
-    Mix_Quit();
-    SDL_Quit();
-}
+//     renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+//     if (!renderer) {
+//         std::cout << "Renderer could not be created! SDL_Error: " << SDL_GetError() << std::endl;
+//         return;
+//     }
+// }
 
-void Game::run() {
-    showWelcomeScreen();
-    if (startGame) {
-        showPlayerSelectionScreen();
-    }
-}
+// Game::~Game() {
+//     SDL_DestroyRenderer(renderer);
+//     SDL_DestroyWindow(window);
+//     Mix_Quit();
+//     SDL_Quit();
+// }
 
-void Game::showWelcomeScreen() {
-    Mix_Music* music = Mix_LoadMUS("C:\\Users\\USER\\OneDrive\\Documents\\GitHub\\OOP_Project_Group9\\assets\\audio2.mp3");
-    if (!music) {
-        std::cout << "Unable to load music! SDL_mixer Error: " << Mix_GetError() << std::endl;
-        return;
-    }
+// void Game::run() {
+//     showWelcomeScreen();
+//     if (startGame) {
+//         showPlayerSelectionScreen();
+//     }
+// }
 
-    Mix_PlayMusic(music, -1);
+// void Game::showWelcomeScreen() {
+//     Mix_Music* music = Mix_LoadMUS("C:\\Users\\USER\\OneDrive\\Documents\\GitHub\\OOP_Project_Group9\\assets\\audio2.mp3");
+//     if (!music) {
+//         std::cout << "Unable to load music! SDL_mixer Error: " << Mix_GetError() << std::endl;
+//         return;
+//     }
 
-    SDL_Surface* image = IMG_Load("C:\\Users\\USER\\OneDrive\\Documents\\GitHub\\OOP_Project_Group9\\assets\\screen1.png");
-    SDL_Surface* imageClicked = IMG_Load("C:\\Users\\USER\\OneDrive\\Documents\\GitHub\\OOP_Project_Group9\\assets\\screen2.png");
-    SDL_Surface* rulesImage = IMG_Load("C:\\Users\\USER\\OneDrive\\Documents\\GitHub\\OOP_Project_Group9\\assets\\rulesblink.png");
+//     Mix_PlayMusic(music, -1);
 
-    if (!image || !imageClicked || !rulesImage) {
-        std::cout << "Unable to load image! SDL_image Error: " << IMG_GetError() << std::endl;
-        return;
-    }
+//     SDL_Surface* image = IMG_Load("C:\\Users\\USER\\OneDrive\\Documents\\GitHub\\OOP_Project_Group9\\assets\\screen1.png");
+//     SDL_Surface* imageClicked = IMG_Load("C:\\Users\\USER\\OneDrive\\Documents\\GitHub\\OOP_Project_Group9\\assets\\screen2.png");
+//     SDL_Surface* rulesImage = IMG_Load("C:\\Users\\USER\\OneDrive\\Documents\\GitHub\\OOP_Project_Group9\\assets\\rulesblink.png");
 
-    SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, image);
-    SDL_Texture* textureClicked = SDL_CreateTextureFromSurface(renderer, imageClicked);
-    SDL_Texture* rulesTexture = SDL_CreateTextureFromSurface(renderer, rulesImage);
+//     if (!image || !imageClicked || !rulesImage) {
+//         std::cout << "Unable to load image! SDL_image Error: " << IMG_GetError() << std::endl;
+//         return;
+//     }
 
-    if (!texture || !textureClicked || !rulesTexture) {
-        std::cout << "Unable to create texture from image! SDL_Error: " << SDL_GetError() << std::endl;
-        return;
-    }
+//     SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, image);
+//     SDL_Texture* textureClicked = SDL_CreateTextureFromSurface(renderer, imageClicked);
+//     SDL_Texture* rulesTexture = SDL_CreateTextureFromSurface(renderer, rulesImage);
 
-    SDL_FreeSurface(image);
-    SDL_FreeSurface(imageClicked);
-    SDL_FreeSurface(rulesImage);
+//     if (!texture || !textureClicked || !rulesTexture) {
+//         std::cout << "Unable to create texture from image! SDL_Error: " << SDL_GetError() << std::endl;
+//         return;
+//     }
 
-    bool startGame = false;
+//     SDL_FreeSurface(image);
+//     SDL_FreeSurface(imageClicked);
+//     SDL_FreeSurface(rulesImage);
 
-    SDL_RenderClear(renderer);
-    SDL_RenderCopy(renderer, texture, NULL, NULL);
-    SDL_RenderPresent(renderer);
+//     bool startGame = false;
 
-    bool showRulesScreen = false;
+//     SDL_RenderClear(renderer);
+//     SDL_RenderCopy(renderer, texture, NULL, NULL);
+//     SDL_RenderPresent(renderer);
 
-    SDL_Event event;
-    while (SDL_WaitEvent(&event)) {
-        if (event.type == SDL_QUIT) {
-            break;
-        } else if (event.type == SDL_MOUSEBUTTONDOWN) {
-            int x, y;
-            SDL_GetMouseState(&x, &y);
-            std::cout << "Mouse clicked at (" << x << ", " << y << ")\n";
-            if (x >= 187 && x <= 478 && y >= 208 && y <= 253) {
-                // Create a blinking effect for the "Start" button
-                for (int i = 0; i < 3; ++i) {
-                    SDL_RenderClear(renderer);
-                    SDL_RenderCopy(renderer, textureClicked, NULL, NULL);
-                    SDL_RenderPresent(renderer);
-                    SDL_Delay(250);
+//     bool showRulesScreen = false;
 
-                    SDL_RenderClear(renderer);
-                    SDL_RenderCopy(renderer, texture, NULL, NULL);
-                    SDL_RenderPresent(renderer);
-                    SDL_Delay(250);
-                }
-                startGame = true;
-                break;
-            } else if (x >= 189 && x <= 476 && y >= 375 && y <= 417) {
-                // Create a blinking effect for the "Rules" button
-                for (int i = 0; i < 3; ++i) {
-                    SDL_RenderClear(renderer);
-                    SDL_RenderCopy(renderer, rulesTexture, NULL, NULL);
-                    SDL_RenderPresent(renderer);
-                    SDL_Delay(250);
+//     SDL_Event event;
+//     while (SDL_WaitEvent(&event)) {
+//         if (event.type == SDL_QUIT) {
+//             break;
+//         } else if (event.type == SDL_MOUSEBUTTONDOWN) {
+//             int x, y;
+//             SDL_GetMouseState(&x, &y);
+//             std::cout << "Mouse clicked at (" << x << ", " << y << ")\n";
+//             if (x >= 187 && x <= 478 && y >= 208 && y <= 253) {
+//                 // Create a blinking effect for the "Start" button
+//                 for (int i = 0; i < 3; ++i) {
+//                     SDL_RenderClear(renderer);
+//                     SDL_RenderCopy(renderer, textureClicked, NULL, NULL);
+//                     SDL_RenderPresent(renderer);
+//                     SDL_Delay(250);
 
-                    SDL_RenderClear(renderer);
-                    SDL_RenderCopy(renderer, texture, NULL, NULL);
-                    SDL_RenderPresent(renderer);
-                    SDL_Delay(250);
-                }
+//                     SDL_RenderClear(renderer);
+//                     SDL_RenderCopy(renderer, texture, NULL, NULL);
+//                     SDL_RenderPresent(renderer);
+//                     SDL_Delay(250);
+//                 }
+//                 startGame = true;
+//                 break;
+//             } else if (x >= 189 && x <= 476 && y >= 375 && y <= 417) {
+//                 // Create a blinking effect for the "Rules" button
+//                 for (int i = 0; i < 3; ++i) {
+//                     SDL_RenderClear(renderer);
+//                     SDL_RenderCopy(renderer, rulesTexture, NULL, NULL);
+//                     SDL_RenderPresent(renderer);
+//                     SDL_Delay(250);
 
-                // Set the flag to transition to the rules screen
-                showRulesScreen = true;
-                break;  // Break out of the loop after showing the rules
-            }
-        }
-    }
+//                     SDL_RenderClear(renderer);
+//                     SDL_RenderCopy(renderer, texture, NULL, NULL);
+//                     SDL_RenderPresent(renderer);
+//                     SDL_Delay(250);
+//                 }
 
-    SDL_DestroyTexture(texture);
-    SDL_DestroyTexture(textureClicked);
-    SDL_DestroyTexture(rulesTexture);
+//                 // Set the flag to transition to the rules screen
+//                 showRulesScreen = true;
+//                 break;  // Break out of the loop after showing the rules
+//             }
+//         }
+//     }
 
-    if (startGame) {
-        // Stop the music when transitioning to the player selection screen
-        Mix_HaltMusic();
-        showPlayerSelectionScreen();
-    } else if (showRulesScreen) {
-        // Stop the music before transitioning to the rules screen
-        Mix_HaltMusic();
-        showRulesScreen1();
-    }
+//     SDL_DestroyTexture(texture);
+//     SDL_DestroyTexture(textureClicked);
+//     SDL_DestroyTexture(rulesTexture);
 
-    Mix_FreeMusic(music);
-}
+//     if (startGame) {
+//         // Stop the music when transitioning to the player selection screen
+//         Mix_HaltMusic();
+//         showPlayerSelectionScreen();
+//     } else if (showRulesScreen) {
+//         // Stop the music before transitioning to the rules screen
+//         Mix_HaltMusic();
+//         showRulesScreen1();
+//     }
+
+//     Mix_FreeMusic(music);
+// }
 
 
 
 
 
-void Game::showPlayerSelectionScreen() {
-    SDL_Surface* image = IMG_Load("C:\\Users\\USER\\OneDrive\\Documents\\GitHub\\OOP_Project_Group9\\assets\\board.png");
-    if (!image) {
-        std::cout << "Unable to load image! SDL_image Error: " << IMG_GetError() << std::endl;
-        return;
-    }
+// void Game::showPlayerSelectionScreen() {
+//     SDL_Surface* image = IMG_Load("C:\\Users\\USER\\OneDrive\\Documents\\GitHub\\OOP_Project_Group9\\assets\\board.png");
+//     if (!image) {
+//         std::cout << "Unable to load image! SDL_image Error: " << IMG_GetError() << std::endl;
+//         return;
+//     }
 
-    SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, image);
-    if (!texture) {
-        std::cout << "Unable to create texture from image! SDL_Error: " << SDL_GetError() << std::endl;
-        return;
-    }
+//     SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, image);
+//     if (!texture) {
+//         std::cout << "Unable to create texture from image! SDL_Error: " << SDL_GetError() << std::endl;
+//         return;
+//     }
 
-    SDL_FreeSurface(image);
+//     SDL_FreeSurface(image);
 
-    SDL_RenderClear(renderer);
-    SDL_RenderCopy(renderer, texture, NULL, NULL);
-    SDL_RenderPresent(renderer);
+//     SDL_RenderClear(renderer);
+//     SDL_RenderCopy(renderer, texture, NULL, NULL);
+//     SDL_RenderPresent(renderer);
 
-    bool running = true;
-    SDL_Event event;
-    while (running) {
-        while (SDL_PollEvent(&event)) {
-            if (event.type == SDL_QUIT) {
-                running = false;
-            } else if (event.type == SDL_MOUSEBUTTONDOWN) {
-                int x, y;
-                SDL_GetMouseState(&x, &y);
-                std::cout << "Mouse clicked at (" << x << ", " << y << ")\n";
-                // Add logic for player selection if needed
-            }
-        }
-    }
+//     bool running = true;
+//     SDL_Event event;
+//     while (running) {
+//         while (SDL_PollEvent(&event)) {
+//             if (event.type == SDL_QUIT) {
+//                 running = false;
+//             } else if (event.type == SDL_MOUSEBUTTONDOWN) {
+//                 int x, y;
+//                 SDL_GetMouseState(&x, &y);
+//                 std::cout << "Mouse clicked at (" << x << ", " << y << ")\n";
+//                 // Add logic for player selection if needed
+//             }
+//         }
+//     }
 
-    SDL_DestroyTexture(texture);
-}
+//     SDL_DestroyTexture(texture);
+// }
 
-void Game::showRulesScreen1() {
-    SDL_Surface* rules1 = IMG_Load("C:\\Users\\USER\\OneDrive\\Documents\\GitHub\\OOP_Project_Group9\\assets\\rules1.png");
-    if (!rules1) {
-        std::cout << "Unable to load image! SDL_image Error: " << IMG_GetError() << std::endl;
-        return;
-    }
+// void Game::showRulesScreen1() {
+//     SDL_Surface* rules1 = IMG_Load("C:\\Users\\USER\\OneDrive\\Documents\\GitHub\\OOP_Project_Group9\\assets\\rules1.png");
+//     if (!rules1) {
+//         std::cout << "Unable to load image! SDL_image Error: " << IMG_GetError() << std::endl;
+//         return;
+//     }
 
-    SDL_Texture* rules1Texture = SDL_CreateTextureFromSurface(renderer, rules1);
-    if (!rules1Texture) {
-        std::cout << "Unable to create texture from image! SDL_Error: " << SDL_GetError() << std::endl;
-        return;
-    }
+//     SDL_Texture* rules1Texture = SDL_CreateTextureFromSurface(renderer, rules1);
+//     if (!rules1Texture) {
+//         std::cout << "Unable to create texture from image! SDL_Error: " << SDL_GetError() << std::endl;
+//         return;
+//     }
 
-    SDL_FreeSurface(rules1);
+//     SDL_FreeSurface(rules1);
 
-     SDL_RenderClear(renderer);
-    SDL_RenderCopy(renderer, rules1Texture, NULL, NULL);
-    SDL_RenderPresent(renderer);
+//      SDL_RenderClear(renderer);
+//     SDL_RenderCopy(renderer, rules1Texture, NULL, NULL);
+//     SDL_RenderPresent(renderer);
 
-    // Wait for a quit event or a mouse click
-    SDL_Event event;
-    while (SDL_WaitEvent(&event)) {
-        if (event.type == SDL_QUIT) {
-            break;
-        } else if (event.type == SDL_MOUSEBUTTONDOWN) {
-            int x, y;
-            SDL_GetMouseState(&x, &y);
-            std::cout << "Mouse clicked at (" << x << ", " << y << ")\n";
+//     // Wait for a quit event or a mouse click
+//     SDL_Event event;
+//     while (SDL_WaitEvent(&event)) {
+//         if (event.type == SDL_QUIT) {
+//             break;
+//         } else if (event.type == SDL_MOUSEBUTTONDOWN) {
+//             int x, y;
+//             SDL_GetMouseState(&x, &y);
+//             std::cout << "Mouse clicked at (" << x << ", " << y << ")\n";
 
-            // Check if the BACK button is clicked
-            if (x >= 430 && x <= 600 && y >= 597 && y <= 629) {
-                showWelcomeScreen();
-                return;  // Return to the previous screen (Welcome screen)
-            }
-        }
-    }
+//             // Check if the BACK button is clicked
+//             if (x >= 430 && x <= 600 && y >= 597 && y <= 629) {
+//                 showWelcomeScreen();
+//                 return;  // Return to the previous screen (Welcome screen)
+//             }
+//         }
+//     }
 
-    SDL_DestroyTexture(rules1Texture);
-}
-*/
+//     SDL_DestroyTexture(rules1Texture);
+// }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 #include "game.hpp"
@@ -764,9 +787,9 @@ void WelcomeScreen::show(SDL_Renderer* renderer, ScreenType& nextScreen) {
 
     Mix_PlayMusic(music, -1);
 
-    SDL_Surface* image = IMG_Load("C:\\Users\\USER\\OneDrive\\Documents\\GitHub\\OOP_Project_Group9\\assets\\screen1.png");
-    SDL_Surface* imageClicked = IMG_Load("C:\\Users\\USER\\OneDrive\\Documents\\GitHub\\OOP_Project_Group9\\assets\\screen2.png");
-    SDL_Surface* rulesImage = IMG_Load("C:\\Users\\USER\\OneDrive\\Documents\\GitHub\\OOP_Project_Group9\\assets\\rulesblink.png");
+    SDL_Surface* image = IMG_Load("C:\\Users\\USER\\OneDrive\\Documents\\GitHub\\OOP_Project_Group9\\assets\\welcome\\screen1.png");
+    SDL_Surface* imageClicked = IMG_Load("C:\\Users\\USER\\OneDrive\\Documents\\GitHub\\OOP_Project_Group9\\assets\\welcome\\screen2.png");
+    SDL_Surface* rulesImage = IMG_Load("C:\\Users\\USER\\OneDrive\\Documents\\GitHub\\OOP_Project_Group9\\assets\\rules\\rulesblink.png");
 
     if (!image || !imageClicked || !rulesImage) {
         std::cout << "Unable to load image! SDL_image Error: " << IMG_GetError() << std::endl;
@@ -890,7 +913,7 @@ void PlayerSelectionScreen::show(SDL_Renderer* renderer, ScreenType& nextScreen)
 
 // RulesScreen class
 void RulesScreen::show(SDL_Renderer* renderer, ScreenType& nextScreen) {
-    SDL_Surface* rules1 = IMG_Load("C:\\Users\\USER\\OneDrive\\Documents\\GitHub\\OOP_Project_Group9\\assets\\rules1.png");
+    SDL_Surface* rules1 = IMG_Load("C:\\Users\\USER\\OneDrive\\Documents\\GitHub\\OOP_Project_Group9\\assets\\rules\\rules1.png");
     if (!rules1) {
         std::cout << "Unable to load image! SDL_image Error: " << IMG_GetError() << std::endl;
         return;
@@ -946,7 +969,7 @@ ScreenManager::ScreenManager()
         // Handle initialization failure as needed
     }
 
-    window = SDL_CreateWindow("Ludo Game", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 640, 640, SDL_WINDOW_SHOWN);
+    window = SDL_CreateWindow("Ludo Game", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 750, 750, SDL_WINDOW_SHOWN);
     if (!window) {
         std::cout << "Window could not be created! SDL_Error: " << SDL_GetError() << std::endl;
         // Handle window creation failure as needed
