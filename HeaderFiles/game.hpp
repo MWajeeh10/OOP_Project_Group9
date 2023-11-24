@@ -63,8 +63,10 @@ public:
     ~PlayerSelectionScreen();
 
 private:
-    // Add necessary member variables for surfaces and textures
+    SDL_Texture* loadTexture(const std::string& path, SDL_Renderer* renderer);
+    void renderTexture(SDL_Texture* texture, SDL_Renderer* renderer, int x, int y);
 };
+
 // Update the RulesScreen class
 class RulesScreen : public Screen {
 public:
@@ -86,6 +88,8 @@ private:
     SDL_Window* window;
     SDL_Renderer* renderer;
     ScreenType currentScreen;
+    Mix_Music* music;
+    void playMusic();
 };
 
 

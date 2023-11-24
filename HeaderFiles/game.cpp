@@ -785,7 +785,12 @@ void WelcomeScreen::show(SDL_Renderer* renderer, ScreenType& nextScreen) {
         return;
     }
 
-    Mix_PlayMusic(music, -1);
+    // Play music
+    if (Mix_PlayMusic(music, -1) == -1) {
+        std::cout << "Unable to play music! SDL_mixer Error: " << Mix_GetError() << std::endl;
+        Mix_FreeMusic(music);  // Free music if playing fails
+        return;
+    }
 
     SDL_Surface* image = IMG_Load("C:\\Users\\USER\\OneDrive\\Documents\\GitHub\\OOP_Project_Group9\\assets\\welcome\\screen1.png");
     SDL_Surface* imageClicked = IMG_Load("C:\\Users\\USER\\OneDrive\\Documents\\GitHub\\OOP_Project_Group9\\assets\\welcome\\screen2.png");
@@ -818,12 +823,13 @@ void WelcomeScreen::show(SDL_Renderer* renderer, ScreenType& nextScreen) {
     SDL_Event event;
     while (SDL_PollEvent(&event)) {
         if (event.type == SDL_QUIT) {
+            nextScreen = ScreenType::EXIT;  // Set nextScreen to EXIT when the window is closed
             break;
         } else if (event.type == SDL_MOUSEBUTTONDOWN) {
             int x, y;
             SDL_GetMouseState(&x, &y);
             std::cout << "Mouse clicked at (" << x << ", " << y << ")\n";
-            if (x >= 187 && x <= 478 && y >= 208 && y <= 253) {
+            if (x >= 222 && x <= 560 && y >= 246 && y <= 299) {
                 // Create a blinking effect for the "Start" button
                 for (int i = 0; i < 3; ++i) {
                     SDL_RenderClear(renderer);
@@ -838,7 +844,7 @@ void WelcomeScreen::show(SDL_Renderer* renderer, ScreenType& nextScreen) {
                 }
                 startGame = true;
                 break;
-            } else if (x >= 189 && x <= 476 && y >= 375 && y <= 417) {
+            } else if (x >= 222 && x <= 558 && y >= 438 && y <= 490) {
                 // Create a blinking effect for the "Rules" button
                 for (int i = 0; i < 3; ++i) {
                     SDL_RenderClear(renderer);
@@ -869,28 +875,90 @@ void WelcomeScreen::show(SDL_Renderer* renderer, ScreenType& nextScreen) {
         nextScreen = ScreenType::PLAYER_SELECTION;
     }
 
+    // Free the music at the end
     Mix_FreeMusic(music);
+}
+
+SDL_Texture* PlayerSelectionScreen::loadTexture(const std::string& path, SDL_Renderer* renderer) {
+    SDL_Surface* surface = IMG_Load(path.c_str());
+    if (!surface) {
+        std::cout << "Unable to load image! SDL_image Error: " << IMG_GetError() << std::endl;
+        return nullptr;
+    }
+    SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, surface);
+    SDL_FreeSurface(surface);
+    return texture;
+}
+
+void PlayerSelectionScreen::renderTexture(SDL_Texture* texture, SDL_Renderer* renderer, int x, int y) {
+    SDL_Rect destination;
+    destination.x = x;
+    destination.y = y;
+    SDL_QueryTexture(texture, nullptr, nullptr, &destination.w, &destination.h);
+    SDL_RenderCopy(renderer, texture, nullptr, &destination);
 }
 
 // PlayerSelectionScreen class
 void PlayerSelectionScreen::show(SDL_Renderer* renderer, ScreenType& nextScreen) {
-    SDL_Surface* image = IMG_Load("C:\\Users\\USER\\OneDrive\\Documents\\GitHub\\OOP_Project_Group9\\assets\\board.png");
-    if (!image) {
-        std::cout << "Unable to load image! SDL_image Error: " << IMG_GetError() << std::endl;
+    // Load the board image
+    SDL_Surface* boardImage = IMG_Load("C:\\Users\\USER\\OneDrive\\Documents\\GitHub\\OOP_Project_Group9\\assets\\board.png");
+    if (!boardImage) {
+        std::cout << "Unable to load board image! SDL_image Error: " << IMG_GetError() << std::endl;
         return;
     }
 
-    SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, image);
-    if (!texture) {
-        std::cout << "Unable to create texture from image! SDL_Error: " << SDL_GetError() << std::endl;
+    SDL_Texture* boardTexture = SDL_CreateTextureFromSurface(renderer, boardImage);
+    if (!boardTexture) {
+        std::cout << "Unable to create texture from board image! SDL_Error: " << SDL_GetError() << std::endl;
+        SDL_FreeSurface(boardImage);
         return;
     }
 
-    SDL_FreeSurface(image);
+    SDL_FreeSurface(boardImage);
 
+    // Load textures for different colored tokens
+    SDL_Texture* redTokenTexture = loadTexture("C:\\Users\\USER\\OneDrive\\Documents\\GitHub\\OOP_Project_Group9\\assets\\tokens\\red.png", renderer);
+    SDL_Texture* greenTokenTexture = loadTexture("C:\\Users\\USER\\OneDrive\\Documents\\GitHub\\OOP_Project_Group9\\assets\\tokens\\green.png", renderer);
+    SDL_Texture* blueTokenTexture = loadTexture("C:\\Users\\USER\\OneDrive\\Documents\\GitHub\\OOP_Project_Group9\\assets\\tokens\\blue.png", renderer);
+    SDL_Texture* yellowTokenTexture = loadTexture("C:\\Users\\USER\\OneDrive\\Documents\\GitHub\\OOP_Project_Group9\\assets\\tokens\\yellow.png", renderer);
+
+    // Check if loading any texture failed
+    if (!redTokenTexture || !greenTokenTexture || !blueTokenTexture || !yellowTokenTexture) {
+        // Handle error
+        SDL_DestroyTexture(boardTexture);
+        return;
+    }
+
+    // Render the board
     SDL_RenderClear(renderer);
-    SDL_RenderCopy(renderer, texture, NULL, NULL);
+    SDL_RenderCopy(renderer, boardTexture, NULL, NULL);
+
+    // Render red tokens at different positions
+    renderTexture(redTokenTexture, renderer, 0, 0);
+    renderTexture(redTokenTexture, renderer, 0, 260);
+    renderTexture(redTokenTexture, renderer, 260, 260);
+    renderTexture(redTokenTexture, renderer, 260, 0);
+
+    // Render green tokens at different positions
+    renderTexture(greenTokenTexture, renderer, 450, 0);
+    renderTexture(greenTokenTexture, renderer, 710, 0);
+    renderTexture(greenTokenTexture, renderer, 450, 260);
+    renderTexture(greenTokenTexture, renderer, 710, 260);
+
+    // Render blue tokens at different positions
+    renderTexture(blueTokenTexture, renderer, 0, 450);
+    renderTexture(blueTokenTexture, renderer, 0, 710);
+    renderTexture(blueTokenTexture, renderer, 260, 450);
+    renderTexture(blueTokenTexture, renderer, 260, 710);
+
+    // Render yellow tokens at different positions
+    renderTexture(yellowTokenTexture, renderer, 450, 450);
+    renderTexture(yellowTokenTexture, renderer, 450, 710);
+    renderTexture(yellowTokenTexture, renderer, 710, 710);
+    renderTexture(yellowTokenTexture, renderer, 710, 450);
+
     SDL_RenderPresent(renderer);
+   
 
     bool running = true;
     SDL_Event event;
@@ -907,8 +975,12 @@ void PlayerSelectionScreen::show(SDL_Renderer* renderer, ScreenType& nextScreen)
             }
         }
     }
-
-    SDL_DestroyTexture(texture);
+    SDL_DestroyTexture(boardTexture);
+    SDL_DestroyTexture(redTokenTexture);
+    SDL_DestroyTexture(greenTokenTexture);
+    SDL_DestroyTexture(blueTokenTexture);
+    SDL_DestroyTexture(yellowTokenTexture);
+    // SDL_DestroyTexture(texture);
 }
 
 // RulesScreen class
@@ -943,7 +1015,7 @@ void RulesScreen::show(SDL_Renderer* renderer, ScreenType& nextScreen) {
             std::cout << "Mouse clicked at (" << x << ", " << y << ")\n";
 
             // Check if the BACK button is clicked
-            if (x >= 430 && x <= 600 && y >= 597 && y <= 629) {
+            if (x >= 504 && x <= 700 && y >= 700 && y <= 735) {
                 nextScreen = ScreenType::WELCOME;
                 return;  // Return to the previous screen (Welcome screen)
             }
@@ -956,7 +1028,7 @@ void RulesScreen::show(SDL_Renderer* renderer, ScreenType& nextScreen) {
 
 // Implementation of ScreenManager
 ScreenManager::ScreenManager()
-    : currentScreen(ScreenType::WELCOME) {
+    : currentScreen(ScreenType::WELCOME), music(nullptr) {
     // Initialize SDL
     if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) < 0) {
         std::cout << "SDL could not initialize! SDL_Error: " << SDL_GetError() << std::endl;
@@ -980,27 +1052,36 @@ ScreenManager::ScreenManager()
         std::cout << "Renderer could not be created! SDL_Error: " << SDL_GetError() << std::endl;
         // Handle renderer creation failure as needed
     }
-}
 
-WelcomeScreen::~WelcomeScreen() {
-    // Add any cleanup code if needed
-}
+    // Load music
+    music = Mix_LoadMUS("C:\\Users\\USER\\OneDrive\\Documents\\GitHub\\OOP_Project_Group9\\assets\\audio2.mp3");
+    if (!music) {
+        std::cout << "Unable to load music! SDL_mixer Error: " << Mix_GetError() << std::endl;
+    }
 
-// PlayerSelectionScreen destructor
-PlayerSelectionScreen::~PlayerSelectionScreen() {
-    // Add any cleanup code if needed
-}
-
-// RulesScreen destructor
-RulesScreen::~RulesScreen() {
-    // Add any cleanup code if needed
+    // Play music only if it's not already playing
+    playMusic();
 }
 
 ScreenManager::~ScreenManager() {
+    // Free music
+    if (music) {
+        Mix_FreeMusic(music);
+    }
+
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
     Mix_Quit();
     SDL_Quit();
+}
+
+void ScreenManager::playMusic() {
+    if (music) {
+        // Play music only if it's not already playing
+        if (Mix_PlayingMusic() == 0) {
+            Mix_PlayMusic(music, -1);
+        }
+    }
 }
 
 void ScreenManager::run() {
@@ -1027,4 +1108,20 @@ void ScreenManager::run() {
             break;
         }
     }
+}
+
+
+WelcomeScreen::~WelcomeScreen() {
+    // Add any cleanup code if needed
+}
+
+
+// PlayerSelectionScreen destructor
+PlayerSelectionScreen::~PlayerSelectionScreen() {
+    // Add any cleanup code if needed
+}
+
+// RulesScreen destructor
+RulesScreen::~RulesScreen() {
+    // Add any cleanup code if needed
 }

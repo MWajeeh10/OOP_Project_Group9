@@ -1,0 +1,15 @@
+--design a UML and take the basic classes we plan to use in our game.
+--design screens using SDL
+--import the graphics library(#include<graphics.h>)
+i)Initialize SDL and create a window that will serve as the game screen by choosing an appropriate screen width and height.
+ SDL_Window *window = NULL;//initialize
+window = SDL_CreateWindow("LudoVenture(Title)", SDL_WINDOWPOS_UNDEFINED(position of x), SDL_WINDOWPOS_UNDEFINED (position of y),WIDTH,HEIGHT)//setting
+(done this in the game.cpp and hpp files)
+ii)Create an SDL renderer to draw graphics on the window.(it captures location of pixel on the screen)
+SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+iii)load different assets(font,color,sounds) and choose the ones we find better-These assets may include tokens,dice,ludo board
+iv)Create different screens for different inputs from the user(menu,gameplay...)
+v)Render and Update screens
+vi)Close the SDL when game is over
+--Implement game logic
+--Testing the code and make it better
