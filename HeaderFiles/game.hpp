@@ -40,8 +40,6 @@ public:
 private:
     SDL_Texture* loadTexture(const std::string& path, SDL_Renderer* renderer);
     void renderTexture(SDL_Texture* texture, SDL_Renderer* renderer, int x, int y);
-    Dice dice1;
-    Dice dice2;
 };
 // class PlayerSelectionScreen : public Screen {
 // public:
