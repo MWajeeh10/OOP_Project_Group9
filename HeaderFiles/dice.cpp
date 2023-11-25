@@ -1,6 +1,9 @@
-// #include<iostream>
-// #include "HUMania.hpp"
-// #include <vector>
+#include <SDL.h>
+#include <SDL_image.h>
+#include <SDL_mixer.h>
+#include<iostream>
+#include "dice.hpp"
+#include <vector>
 
 // using namespace std;
 

@@ -1,28 +1,3 @@
-
-// -------------------------------------------------------------------------------------------------
-// #include <SDL.h>
-// #include <SDL_image.h>
-// #include <SDL_mixer.h>
-// #include <iostream>
-
-// class Game {
-// public:
-//     Game();
-//     ~Game();
-//     void run();
-//     void showWelcomeScreen();
-//     void showPlayerSelectionScreen();
-//     void showRulesScreen1(); // Add a function to show the rules screen
-
-// private:
-//     SDL_Window* window;
-//     SDL_Renderer* renderer;
-//     bool startGame;  // Set to true when the user clicks "Start"
-// };
-// // ----------------------------------------------------------------------------------------------
-
-
-
 #include <SDL.h>
 #include <SDL_image.h>
 #include <SDL_mixer.h>
@@ -46,12 +21,12 @@ public:
 
 // Update the WelcomeScreen class
 class WelcomeScreen : public Screen {
-public:
+    public:
     WelcomeScreen() : startGame(false) {}
     virtual void show(SDL_Renderer* renderer, ScreenType& nextScreen) override;
     ~WelcomeScreen();
 
-private:
+    private:
     // Add necessary member variables for surfaces and texturess
     bool startGame;  // Add this line
 };
@@ -65,7 +40,18 @@ public:
 private:
     SDL_Texture* loadTexture(const std::string& path, SDL_Renderer* renderer);
     void renderTexture(SDL_Texture* texture, SDL_Renderer* renderer, int x, int y);
+    Dice dice1;
+    Dice dice2;
 };
+// class PlayerSelectionScreen : public Screen {
+// public:
+//     virtual void show(SDL_Renderer* renderer, ScreenType& nextScreen) override;
+//     ~PlayerSelectionScreen();
+
+// private:
+//     SDL_Texture* loadTexture(const std::string& path, SDL_Renderer* renderer);
+//     void renderTexture(SDL_Texture* texture, SDL_Renderer* renderer, int x, int y);
+// };
 
 // Update the RulesScreen class
 class RulesScreen : public Screen {
@@ -94,25 +80,4 @@ private:
 
 
 
-// #include <SDL.h>
-// #include <SDL_image.h>
-// #include <SDL_mixer.h>
-// #include <iostream>
 
-// class Game {
-// public:
-//     Game();
-//     ~Game();
-//     void run();
-
-// private:
-//     SDL_Window* window;
-//     SDL_Renderer* renderer;
-//     bool quit;
-//     enum GameState { WELCOME, PLAYER_SELECTION, RULES };
-//     GameState gameState;
-
-//     void showWelcomeScreen();
-//     void showPlayerSelectionScreen();
-//     void showRulesScreen();
-// };
