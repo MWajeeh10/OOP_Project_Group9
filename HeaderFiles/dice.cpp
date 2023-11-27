@@ -30,6 +30,23 @@ void Dice::roll(){
     }
 }
 
+// void Dice::updateDiceSprite() {
+//     // Assuming each row in the sprite sheet corresponds to one face of the dice
+//     // and the sprite sheet has 6 rows (1-6)
+//     int roll=rand()%2 +1;
+//     int row = roll - 1; // Assuming roll is the value from 1 to 6
+
+//     // Assuming each dice sprite has dimensions (0, 0, 145, 145)
+//     int spriteWidth = 145;
+//     int spriteHeight = 145;
+
+//     // Update the dice sprite coordinates
+//     diceSprite.x = 0;
+//     diceSprite.y = row * spriteHeight;
+//     diceSprite.w = spriteWidth;
+//     diceSprite.h = spriteHeight;
+// }
+
 DiceState Dice::getState() const { 
     return state; 
     }
@@ -39,9 +56,8 @@ int Dice::getPosition() const {
     }
 
 for(int i=1,i<3,i++){
-    if(Dice::getState()==1){
-
-    SDL_Surface* yellowdice2 = IMG_Load("C:\\Users\\hp\\Downloads\\oop project assets\\yellowdice2.png");
+    if(Dice::getState()==1){  
+    SDL_Surface* yellowdice2 = IMG_Load("C:\Users\786 COMPUTERS\\Documents\\GitHub\\OOP_Project_Group9\\assets\\yellowdice2.png");
     if (!yellowdice2) {
         std::cout << "Unable to load image! SDL_image Error: " << IMG_GetError() << std::endl;
         return;
@@ -60,7 +76,7 @@ for(int i=1,i<3,i++){
 
     }
     else if(Dice::getState()==2){
-    SDL_Surface* yellowdice3 = IMG_Load("C:\\Users\\hp\\Downloads\\oop project assets\\yellowdice3.png");
+    SDL_Surface* yellowdice3 = IMG_Load("C:\Users\786 COMPUTERS\\Documents\\GitHub\\OOP_Project_Group9\\assets\\yellowdice3.png");
     if (!yellowdice3) {
         std::cout << "Unable to load image! SDL_image Error: " << IMG_GetError() << std::endl;
         return;

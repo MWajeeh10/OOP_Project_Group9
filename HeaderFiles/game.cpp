@@ -10,7 +10,7 @@ void WelcomeScreen::show(SDL_Renderer* renderer, ScreenType& nextScreen) {
     //Load background music(path on device)
     //Mix_LoadMUS-->function from SDL_Mixer library which loads the music
     //music is a pointer to the loaded Mix_Music object
-    Mix_Music* music = Mix_LoadMUS("C:\\Users\\hp\\Downloads\\oop project assets\\audio2.mp3");
+    Mix_Music* music = Mix_LoadMUS("C:\Users\786 COMPUTERS\\Documents\\GitHub\\OOP_Project_Group9\\assets\\audio2.mp3");
     //If music is not found or loading fails then show error
     if (!music) {
         std::cout << "Unable to load music! SDL_mixer Error: " << Mix_GetError() << std::endl;
@@ -25,9 +25,9 @@ void WelcomeScreen::show(SDL_Renderer* renderer, ScreenType& nextScreen) {
         return;
     }
     //Load images for the welcome screen
-    SDL_Surface* image=IMG_Load("C:\\Users\\hp\\Downloads\\oop project assets\\screen1.png");
-    SDL_Surface* imageClicked = IMG_Load("C:\\Users\\hp\\Downloads\\oop project assets\\screen2.png");
-    SDL_Surface* rulesImage = IMG_Load("C:\\Users\\hp\\Downloads\\oop project assets\\rulesblink.png");
+    SDL_Surface* image=IMG_Load("C:\Users\786 COMPUTERS\\Documents\\GitHub\\OOP_Project_Group9\\assets\\screen1.png");
+    SDL_Surface* imageClicked = IMG_Load("C:\Users\786 COMPUTERS\\Documents\\GitHub\\OOP_Project_Group9\\assets\\screen2.png");
+    SDL_Surface* rulesImage = IMG_Load("C:\Users\786 COMPUTERS\\Documents\\GitHub\\OOP_Project_Group9\\assets\\rulesblink.png");
 
     //If image fails to load then IMG_GetError() gives the error
     if (!image || !imageClicked || !rulesImage) {
@@ -164,7 +164,7 @@ void PlayerSelectionScreen::renderTexture(SDL_Texture* texture, SDL_Renderer* re
 // PlayerSelectionScreen class
 void PlayerSelectionScreen::show(SDL_Renderer* renderer, ScreenType& nextScreen) {
     // Load the board image
-    SDL_Surface* boardImage = IMG_Load("C:\\Users\\hp\\Downloads\\oop project assets\\board.png");
+    SDL_Surface* boardImage = IMG_Load("C:\Users\786 COMPUTERS\\Documents\\GitHub\\OOP_Project_Group9\\assets\\board.png");
     //give an error if image fails to load
     if (!boardImage) {
         std::cout << "Unable to load board image! SDL_image Error: " << IMG_GetError() << std::endl;
@@ -181,10 +181,10 @@ void PlayerSelectionScreen::show(SDL_Renderer* renderer, ScreenType& nextScreen)
     SDL_FreeSurface(boardImage);
 
     // Load textures for different colored tokens
-    SDL_Texture* redTokenTexture = loadTexture("C:\\Users\\hp\\Downloads\\oop project assets\\red.png",renderer);
-    SDL_Texture* greenTokenTexture = loadTexture("C:\\Users\\hp\\Downloads\\oop project assets\\green.png",renderer);
-    SDL_Texture* blueTokenTexture = loadTexture("C:\\Users\\hp\\Downloads\\oop project assets\\blue.png",renderer);
-    SDL_Texture* yellowTokenTexture = loadTexture("C:\\Users\\hp\\Downloads\\oop project assets\\yellow.png",renderer);
+    SDL_Texture* redTokenTexture = loadTexture("C:\Users\786 COMPUTERS\\Documents\\GitHub\\OOP_Project_Group9\\assets\\red.png",renderer);
+    SDL_Texture* greenTokenTexture = loadTexture("C:\Users\786 COMPUTERS\\Documents\\GitHub\\OOP_Project_Group9\\assets\\green.png",renderer);
+    SDL_Texture* blueTokenTexture = loadTexture("C:\Users\786 COMPUTERS\\Documents\\GitHub\\OOP_Project_Group9\\assets\\blue.png",renderer);
+    SDL_Texture* yellowTokenTexture = loadTexture("C:\Users\786 COMPUTERS\\Documents\\GitHub\\OOP_Project_Group9\\assets\\yellow.png",renderer);
 
 
     // Check if loading any texture failed
@@ -253,7 +253,7 @@ void PlayerSelectionScreen::show(SDL_Renderer* renderer, ScreenType& nextScreen)
 
 // RulesScreen class--show funtion to show the rules screen
 void RulesScreen::show(SDL_Renderer* renderer, ScreenType& nextScreen) {
-    SDL_Surface* rules1 = IMG_Load("C:\\Users\\hp\\Downloads\\oop project assets\\rules1.png");
+    SDL_Surface* rules1 = IMG_Load("C:\Users\786 COMPUTERS\\Documents\\GitHub\\OOP_Project_Group9\\assets\\rules1.png");
     if (!rules1) {
         std::cout << "Unable to load image! SDL_image Error: " << IMG_GetError() << std::endl;
         return;

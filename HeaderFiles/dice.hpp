@@ -20,6 +20,7 @@ class Dice{
 
     //Returns the current position of the dice on the playing field (1 to 56)
     int getPosition() const;
+    SDL_Rect diceSprite; // Sprite path
 
     private:
     enum DiceState{
