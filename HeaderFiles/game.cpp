@@ -777,7 +777,6 @@
 // #include "game.hpp"
 
 // Implementation of WelcomeScreen
-// WelcomeScreen class
 void WelcomeScreen::show(SDL_Renderer* renderer, ScreenType& nextScreen) {
     Mix_Music* music = Mix_LoadMUS("C:\\Users\\USER\\OneDrive\\Documents\\GitHub\\OOP_Project_Group9\\assets\\audio2.mp3");
     if (!music) {
@@ -786,11 +785,7 @@ void WelcomeScreen::show(SDL_Renderer* renderer, ScreenType& nextScreen) {
     }
 
     // Play music
-    if (Mix_PlayMusic(music, -1) == -1) {
-        std::cout << "Unable to play music! SDL_mixer Error: " << Mix_GetError() << std::endl;
-        Mix_FreeMusic(music);  // Free music if playing fails
-        return;
-    }
+    Mix_PlayMusic(music, -1);
 
     SDL_Surface* image = IMG_Load("C:\\Users\\USER\\OneDrive\\Documents\\GitHub\\OOP_Project_Group9\\assets\\welcome\\screen1.png");
     SDL_Surface* imageClicked = IMG_Load("C:\\Users\\USER\\OneDrive\\Documents\\GitHub\\OOP_Project_Group9\\assets\\welcome\\screen2.png");
@@ -820,6 +815,7 @@ void WelcomeScreen::show(SDL_Renderer* renderer, ScreenType& nextScreen) {
 
     bool startGame = false;
 
+    //event handling loop
     SDL_Event event;
     while (SDL_PollEvent(&event)) {
         if (event.type == SDL_QUIT) {
@@ -871,7 +867,7 @@ void WelcomeScreen::show(SDL_Renderer* renderer, ScreenType& nextScreen) {
 
     if (startGame) {
         // Stop the music when transitioning to the player selection screen
-        Mix_HaltMusic();
+        // Mix_HaltMusic();
         nextScreen = ScreenType::PLAYER_SELECTION;
     }
 
@@ -900,6 +896,14 @@ void PlayerSelectionScreen::renderTexture(SDL_Texture* texture, SDL_Renderer* re
 
 // PlayerSelectionScreen class
 void PlayerSelectionScreen::show(SDL_Renderer* renderer, ScreenType& nextScreen) {
+
+    Mix_Music* music = Mix_LoadMUS("C:\\Users\\USER\\OneDrive\\Documents\\GitHub\\OOP_Project_Group9\\assets\\audio1.mp3");
+        if (!music) {
+            std::cout << "Unable to load music! SDL_mixer Error: " << Mix_GetError() << std::endl;
+            return;
+        }
+    Mix_PlayMusic(music, -1);
+
     // Load the board image
     SDL_Surface* boardImage = IMG_Load("C:\\Users\\USER\\OneDrive\\Documents\\GitHub\\OOP_Project_Group9\\assets\\board.png");
     if (!boardImage) {
@@ -946,7 +950,7 @@ void PlayerSelectionScreen::show(SDL_Renderer* renderer, ScreenType& nextScreen)
     renderTexture(greenTokenTexture, renderer, 710, 260);
 
     // Render blue tokens at different positions
-    renderTexture(blueTokenTexture, renderer, 0, 450);
+    renderTexture(blueTokenTexture, renderer, 305, 655);//0, 450);
     renderTexture(blueTokenTexture, renderer, 0, 710);
     renderTexture(blueTokenTexture, renderer, 260, 450);
     renderTexture(blueTokenTexture, renderer, 260, 710);
@@ -981,6 +985,7 @@ void PlayerSelectionScreen::show(SDL_Renderer* renderer, ScreenType& nextScreen)
     SDL_DestroyTexture(blueTokenTexture);
     SDL_DestroyTexture(yellowTokenTexture);
     // SDL_DestroyTexture(texture);
+    Mix_FreeMusic(music);
 }
 
 // RulesScreen class

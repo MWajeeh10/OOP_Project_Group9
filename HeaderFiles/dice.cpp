@@ -170,3 +170,78 @@
 
 
 
+#include "Dice.hpp"
+#include <SDL_image.h>
+#include <cstdlib>  // For rand function
+#include <ctime>    // For time function
+
+Dice::Dice(SDL_Renderer* renderer, const std::string& color, int x, int y) : currentValue(1), isRolling(false) {
+    // Load dice faces based on color
+    for (int i = 1; i <= 6; ++i) {
+        std::string facePath = "path/to/" + color + "_dice_face_" + std::to_string(i) + ".png";
+        diceFaces.push_back(loadTexture(facePath, renderer));
+    }
+
+    // Set initial position
+    position.x = x;
+    position.y = y;
+    // Set other properties like width and height as needed
+}
+
+Dice::~Dice() {
+    // Free loaded textures
+    for (SDL_Texture* face : diceFaces) {
+        SDL_DestroyTexture(face);
+    }
+}
+
+SDL_Texture* Dice::loadTexture(const std::string& path, SDL_Renderer* renderer) {
+    SDL_Surface* surface = IMG_Load(path.c_str());
+    if (!surface) {
+        std::cout << "Unable to load image! SDL_image Error: " << IMG_GetError() << std::endl;
+        return nullptr;
+    }
+
+    SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, surface);
+    SDL_FreeSurface(surface);
+
+    return texture;
+}
+
+void Dice::handleDiceClick(int mouseX, int mouseY) {
+    // Check if the click is within the area of the dice
+    if (!isRolling && mouseX >= position.x && mouseX <= position.x + position.w &&
+        mouseY >= position.y && mouseY <= position.y + position.h) {
+        startRollAnimation();
+    }
+}
+
+void Dice::startRollAnimation() {
+    isRolling = true;
+    rollStartTime = std::chrono::high_resolution_clock::now();
+}
+
+void Dice::update() {
+    if (isRolling) {
+        auto currentTime = std::chrono::high_resolution_clock::now();
+        auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(currentTime - rollStartTime);
+
+        // Roll for 2 seconds
+        if (duration.count() < 2000) {
+            // Display a face at random during the animation
+            currentValue = rand() % 6 + 1;
+        } else {
+            // Stop rolling after 2 seconds
+            isRolling = false;
+        }
+    }
+}
+
+void Dice::render(SDL_Renderer* renderer) {
+    // Render the current face based on the current value
+    SDL_RenderCopy(renderer, diceFaces[currentValue - 1], nullptr, &position);
+}
+
+int Dice::getValue() const {
+    return currentValue;
+}

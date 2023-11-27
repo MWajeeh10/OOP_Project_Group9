@@ -52,16 +52,13 @@ public:
     ~WelcomeScreen();
 
 private:
-    // Add necessary member variables for surfaces and texturess
-    bool startGame;  // Add this line
+    bool startGame; 
 };
-
 // Update the PlayerSelectionScreen class
 class PlayerSelectionScreen : public Screen {
 public:
     virtual void show(SDL_Renderer* renderer, ScreenType& nextScreen) override;
     ~PlayerSelectionScreen();
-
 private:
     SDL_Texture* loadTexture(const std::string& path, SDL_Renderer* renderer);
     void renderTexture(SDL_Texture* texture, SDL_Renderer* renderer, int x, int y);
@@ -74,7 +71,6 @@ public:
     ~RulesScreen();
 
 private:
-    // Add necessary member variables for surfaces and textures
 };
 
 // Update the ScreenManager class
@@ -83,7 +79,6 @@ public:
     ScreenManager();
     ~ScreenManager();
     void run();
-
 private:
     SDL_Window* window;
     SDL_Renderer* renderer;
