@@ -6,7 +6,9 @@
 
 // Implementation of WelcomeScreen
 void WelcomeScreen::show(SDL_Renderer* renderer, ScreenType& nextScreen) {
-    Mix_Music* music = Mix_LoadMUS("C:\\Users\\USER\\OneDrive\\Documents\\GitHub\\OOP_Project_Group9\\assets\\audio2.mp3");
+    Mix_Music* music = Mix_LoadMUS("C:\\Users\\hp\\Downloads\\oop project assets\\audio2.mp3");
+
+    // Mix_Music* music = Mix_LoadMUS("C:\\Users\\hp\\Downloads\\oop project assets\\audio2.mp3");
     if (!music) {
         std::cout << "Unable to load music! SDL_mixer Error: " << Mix_GetError() << std::endl;
         return;
@@ -15,18 +17,21 @@ void WelcomeScreen::show(SDL_Renderer* renderer, ScreenType& nextScreen) {
     // Play music
     Mix_PlayMusic(music, -1);
 
-    SDL_Surface* image = IMG_Load("C:\\Users\\USER\\OneDrive\\Documents\\GitHub\\OOP_Project_Group9\\assets\\welcome\\screen1.png");
-    SDL_Surface* imageClicked = IMG_Load("C:\\Users\\USER\\OneDrive\\Documents\\GitHub\\OOP_Project_Group9\\assets\\welcome\\screen2.png");
-    SDL_Surface* rulesImage = IMG_Load("C:\\Users\\USER\\OneDrive\\Documents\\GitHub\\OOP_Project_Group9\\assets\\rules\\rulesblink.png");
+    SDL_Surface* image = IMG_Load("C:\\Users\\hp\\Downloads\\oop project assets\\screen1.png");
+    SDL_Surface* imageClicked = IMG_Load("C:\\Users\\hp\\Downloads\\oop project assets\\screen2.png");
+    SDL_Surface* rulesImage = IMG_Load("C:\\Users\\hp\\Downloads\\oop project assets\\rulesblink.png");
 
-    if (!image || !imageClicked || !rulesImage) {
-        std::cout << "Unable to load image! SDL_image Error: " << IMG_GetError() << std::endl;
-        return;
-    }
+
+
+    // if (!image || !imageClicked || !rulesImage||!yellow1image||!yellow2image) {
+    //     std::cout << "Unable to load image! SDL_image Error: " << IMG_GetError() << std::endl;
+    //     return;
+    // }
 
     SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, image);
     SDL_Texture* textureClicked = SDL_CreateTextureFromSurface(renderer, imageClicked);
     SDL_Texture* rulesTexture = SDL_CreateTextureFromSurface(renderer, rulesImage);
+
 
     if (!texture || !textureClicked || !rulesTexture) {
         std::cout << "Unable to create texture from image! SDL_Error: " << SDL_GetError() << std::endl;
@@ -106,6 +111,13 @@ void WelcomeScreen::show(SDL_Renderer* renderer, ScreenType& nextScreen) {
 }
 
 SDL_Texture* PlayerSelectionScreen::loadTexture(const std::string& path, SDL_Renderer* renderer) {
+    
+    // SDL_Surface* yellow1image = IMG_Load("C:\\Users\\hp\\Downloads\\oop project assets\\yellow dice 1.png");
+    // SDL_Surface* yellow2image = IMG_Load("C:\\Users\\hp\\Downloads\\oop project assets\\yellow dice 2.png");
+    // SDL_Surface* yellow3image = IMG_Load("C:\\Users\\hp\\Downloads\\oop project assets\\yellow dice 3.png");
+    // SDL_Surface* yellow4image = IMG_Load("C:\\Users\\hp\\Downloads\\oop project assets\\yellow dice 4.png");
+    // SDL_Surface* yellow5image = IMG_Load("C:\\Users\\hp\\Downloads\\oop project assets\\yellow dice 5.png");
+    // SDL_Surface* yellow6image = IMG_Load("C:\\Users\\hp\\Downloads\\oop project assets\\yellow dice 6.png");
     SDL_Surface* surface = IMG_Load(path.c_str());
     if (!surface) {
         std::cout << "Unable to load image! SDL_image Error: " << IMG_GetError() << std::endl;
@@ -116,6 +128,7 @@ SDL_Texture* PlayerSelectionScreen::loadTexture(const std::string& path, SDL_Ren
     return texture;
 }
 
+
 void PlayerSelectionScreen::renderTexture(SDL_Texture* texture, SDL_Renderer* renderer, int x, int y) {
     SDL_Rect destination;
     destination.x = x;
@@ -123,6 +136,7 @@ void PlayerSelectionScreen::renderTexture(SDL_Texture* texture, SDL_Renderer* re
     SDL_QueryTexture(texture, nullptr, nullptr, &destination.w, &destination.h);
     SDL_RenderCopy(renderer, texture, nullptr, &destination);
 }
+void displayDiceFor2_5Seconds(SDL_Renderer* renderer, SDL_Texture* yellowDiceTextures[], int x, int y);
 
 PlayerSelectionScreen::PlayerSelectionScreen(SDL_Renderer* renderer) : dice(nullptr) {
     // Initialize the Dice object with the path to the dice image and initial position
@@ -139,7 +153,7 @@ PlayerSelectionScreen::PlayerSelectionScreen(SDL_Renderer* renderer) : dice(null
 // PlayerSelectionScreen class
 void PlayerSelectionScreen::show(SDL_Renderer* renderer, ScreenType& nextScreen) {
 
-    Mix_Music* music = Mix_LoadMUS("C:\\Users\\USER\\OneDrive\\Documents\\GitHub\\OOP_Project_Group9\\assets\\audio1.mp3");
+    Mix_Music* music = Mix_LoadMUS("C:\\Users\\hp\\Downloads\\oop project assets\\audio2.mp3");
         if (!music) {
             std::cout << "Unable to load music! SDL_mixer Error: " << Mix_GetError() << std::endl;
             return;
@@ -147,7 +161,7 @@ void PlayerSelectionScreen::show(SDL_Renderer* renderer, ScreenType& nextScreen)
     Mix_PlayMusic(music, -1);
 
     // Load the board image
-    SDL_Surface* boardImage = IMG_Load("C:\\Users\\USER\\OneDrive\\Documents\\GitHub\\OOP_Project_Group9\\assets\\board.png");
+    SDL_Surface* boardImage = IMG_Load("C:\\Users\\hp\\Downloads\\oop project assets\\board.png");
     if (!boardImage) {
         std::cout << "Unable to load board image! SDL_image Error: " << IMG_GetError() << std::endl;
         return;
@@ -163,10 +177,21 @@ void PlayerSelectionScreen::show(SDL_Renderer* renderer, ScreenType& nextScreen)
     SDL_FreeSurface(boardImage);
 
     // Load textures for different colored tokens
-    SDL_Texture* redTokenTexture = loadTexture("C:\\Users\\USER\\OneDrive\\Documents\\GitHub\\OOP_Project_Group9\\assets\\tokens\\red.png", renderer);
-    SDL_Texture* greenTokenTexture = loadTexture("C:\\Users\\USER\\OneDrive\\Documents\\GitHub\\OOP_Project_Group9\\assets\\tokens\\green.png", renderer);
-    SDL_Texture* blueTokenTexture = loadTexture("C:\\Users\\USER\\OneDrive\\Documents\\GitHub\\OOP_Project_Group9\\assets\\tokens\\blue.png", renderer);
-    SDL_Texture* yellowTokenTexture = loadTexture("C:\\Users\\USER\\OneDrive\\Documents\\GitHub\\OOP_Project_Group9\\assets\\tokens\\yellow.png", renderer);
+    SDL_Texture* redTokenTexture = loadTexture("C:\\Users\\hp\\Downloads\\oop project assets\\red.png", renderer);
+    SDL_Texture* greenTokenTexture = loadTexture("C:\\Users\\hp\\Downloads\\oop project assets\\green.png", renderer);
+    SDL_Texture* blueTokenTexture = loadTexture("C:\\Users\\hp\\Downloads\\oop project assets\\blue.png", renderer);
+    SDL_Texture* yellowTokenTexture = loadTexture("C:\\Users\\hp\\Downloads\\oop project assets\\yellow.png", renderer);
+
+    SDL_Texture* yellowDiceTextures[6];
+
+    yellowDiceTextures[0] = loadTexture("C:\\Users\\hp\\Downloads\\oop project assets\\yellow dice 1.png", renderer);
+    yellowDiceTextures[1] = loadTexture("C:\\Users\\hp\\Downloads\\oop project assets\\yellow dice 2.png", renderer);
+    yellowDiceTextures[2] = loadTexture("C:\\Users\\hp\\Downloads\\oop project assets\\yellow dice 3.png", renderer);
+    yellowDiceTextures[3] = loadTexture("C:\\Users\\hp\\Downloads\\oop project assets\\yellow dice 4.png", renderer);
+    yellowDiceTextures[4] = loadTexture("C:\\Users\\hp\\Downloads\\oop project assets\\yellow dice 5.png", renderer);
+    yellowDiceTextures[5] = loadTexture("C:\\Users\\hp\\Downloads\\oop project assets\\yellow dice 6.png", renderer);
+
+
 
     // Check if loading any texture failed
     if (!redTokenTexture || !greenTokenTexture || !blueTokenTexture || !yellowTokenTexture) {
@@ -203,10 +228,6 @@ void PlayerSelectionScreen::show(SDL_Renderer* renderer, ScreenType& nextScreen)
     renderTexture(yellowTokenTexture, renderer, 710, 710);
     renderTexture(yellowTokenTexture, renderer, 710, 450);
 
-    if (dice) {
-        dice->render(renderer);  // Pass the renderer here
-    }
-
     SDL_RenderPresent(renderer);
    
 
@@ -240,13 +261,20 @@ void PlayerSelectionScreen::show(SDL_Renderer* renderer, ScreenType& nextScreen)
     SDL_DestroyTexture(greenTokenTexture);
     SDL_DestroyTexture(blueTokenTexture);
     SDL_DestroyTexture(yellowTokenTexture);
-    // SDL_DestroyTexture(texture);
+    // SDL_DestroyTexture(yellow1);
+    // SDL_DestroyTexture(yellow2);
+    // SDL_DestroyTexture(yellow3);
+    // SDL_DestroyTexture(yellow4);
+    // SDL_DestroyTexture(yellow5);
+    // SDL_DestroyTexture(yellow6);
+    //SDL_DestroyTexture(texture);
     Mix_FreeMusic(music);
 }
 
+
 // RulesScreen class
 void RulesScreen::show(SDL_Renderer* renderer, ScreenType& nextScreen) {
-    SDL_Surface* rules1 = IMG_Load("C:\\Users\\USER\\OneDrive\\Documents\\GitHub\\OOP_Project_Group9\\assets\\rules\\rules1.png");
+    SDL_Surface* rules1 = IMG_Load("C:\\Users\\hp\\Downloads\\oop project assets\\rules1.png");
     if (!rules1) {
         std::cout << "Unable to load image! SDL_image Error: " << IMG_GetError() << std::endl;
         return;
@@ -315,7 +343,7 @@ ScreenManager::ScreenManager()
     }
 
     // Load music
-    music = Mix_LoadMUS("C:\\Users\\USER\\OneDrive\\Documents\\GitHub\\OOP_Project_Group9\\assets\\audio2.mp3");
+    music = Mix_LoadMUS("C:\\Users\\hp\\Downloads\\oop project assets\\audio2.mp3");
     if (!music) {
         std::cout << "Unable to load music! SDL_mixer Error: " << Mix_GetError() << std::endl;
     }
