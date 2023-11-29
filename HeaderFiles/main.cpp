@@ -1,4 +1,4 @@
-#include "game.hpp"
+
 
 // int main(int argc, char* argv[]) {
 //     Game game;
@@ -8,6 +8,7 @@
 
 
 
+#include "game.hpp"
 int main(int argc, char* argv[]) {
     ScreenManager screenManager;
     screenManager.run();

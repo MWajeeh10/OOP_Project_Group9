@@ -21,14 +21,13 @@ public:
 
 // Update the WelcomeScreen class
 class WelcomeScreen : public Screen {
-    public:
+public:
     WelcomeScreen() : startGame(false) {}
     virtual void show(SDL_Renderer* renderer, ScreenType& nextScreen) override;
     ~WelcomeScreen();
 
 private:
-    // Add necessary member variables for surfaces and texturess
-    bool startGame;  // Add this line
+    bool startGame; 
 };
 // Update the PlayerSelectionScreen class
 class PlayerSelectionScreen : public Screen {
@@ -39,15 +38,6 @@ private:
     SDL_Texture* loadTexture(const std::string& path, SDL_Renderer* renderer);
     void renderTexture(SDL_Texture* texture, SDL_Renderer* renderer, int x, int y);
 };
-// class PlayerSelectionScreen : public Screen {
-// public:
-//     virtual void show(SDL_Renderer* renderer, ScreenType& nextScreen) override;
-//     ~PlayerSelectionScreen();
-
-// private:
-//     SDL_Texture* loadTexture(const std::string& path, SDL_Renderer* renderer);
-//     void renderTexture(SDL_Texture* texture, SDL_Renderer* renderer, int x, int y);
-// };
 
 // Update the RulesScreen class
 class RulesScreen : public Screen {
@@ -71,7 +61,3 @@ private:
     Mix_Music* music;
     void playMusic();
 };
-
-
-
-
