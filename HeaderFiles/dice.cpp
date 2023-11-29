@@ -1,172 +1,101 @@
-// #include<iostream>
-// #include "HUMania.hpp"
-// #include <vector>
+#include <SDL.h>
+#include <SDL_image.h>
+#include <SDL_mixer.h>
+#include<iostream>
+#include "dice.hpp"
+#include <vector>
 
-// using namespace std;
+using namespace std;
 
-// // int x;
-// // int y;
+Dice::Dice(Color color) : color(color), state(DiceState::In_home), position(0) {}
 
-// vector<Unit> blue; //blue vector is initialized
-// vector<Unit> yellow;//bees vector is initialized
-// vector<Unit>red;//butterflies vector is initialized
-// vector<Unit> green;//butterflies vector is initialized
+void Dice::roll(){
+    //Generate random number between 1 and 2
+    int roll=rand()%2 +1;
 
+    if(state==DiceState::In_home && roll==2){
+        state=DiceState::Out_home;
+        position=1;
+    }
+    else if(state==DiceState::Out_home){
+        position+=roll;
+        if (position>56){
+            position-=56;
+        }
+        if (color == Color::Yellow && position == 1) {
+            // Implement the logic to move the corresponding token out of the home board
+            // This part will depend on your specific game logic and token representation
+        }
 
-// int blue_state=0;//initial state of pigeon is set to zero
+    }
+}
 
-// int red_state=0;//initial state of bee is set to zero
+// void Dice::updateDiceSprite() {
+//     // Assuming each row in the sprite sheet corresponds to one face of the dice
+//     // and the sprite sheet has 6 rows (1-6)
+//     int roll=rand()%2 +1;
+//     int row = roll - 1; // Assuming roll is the value from 1 to 6
 
-// int green_state=0;////initial state of butterfly is set to zero
-// int yellow_state=0;////initial state of butterfly is set to zero
+//     // Assuming each dice sprite has dimensions (0, 0, 145, 145)
+//     int spriteWidth = 145;
+//     int spriteHeight = 145;
 
-// void drawObjects(SDL_Renderer* gRenderer, SDL_Texture* assets){
-//     // TODO: Write code to iterate over all the vectors and draw objects here: 
-    
-//    //Loop over all the blue in the pigeon vector(blue.size()-->no of blue in the vector)
-//     for (int i=0;i<blue.size();i++) 
-//     {
-//        //reference to the pigeon object from the blue vector
-//        Unit& blues = blue[i];
-//        //Draw the pigeon
-//        SDL_RenderCopy(gRenderer, assets, &blues.srcRect, &blues.moverRect);
-//        // moves the pigeon two pixel towards right
-//        pigeon.moverRect.x+=2;// moves the pigeon two pixel towards right
-       
-//        if(blue_state==0){//initial state
-//         blue[i].srcRect.x=12;
-//         blue[i].srcRect.y=1234;
-//         blue[i].srcRect.w=180;
-//         blue[i].srcRect.h=158;
-//         blue_state+=1;
-//        }
-//        else if(blue_state==1){//flying up state of the pigeon
-//             blue[i].srcRect.x=17;
-//             blue[i].srcRect.y=1436;
-//             blue[i].srcRect.w=179;
-//             blue[i].srcRect.h=159;
-//             blue_state+=1;
-//        }
-//        else if{//flying down state of the pigeon(blue_state=2)
-//             blue[i].srcRect.x=13;
-//             blue[i].srcRect.y=1641;
-//             blue[i].srcRect.w=180;
-//             blue[i].srcRect.h=159;
-//             blue_state+=1;//after this state of the pigeon again becomes static and then the loop goes on
-//        }
-              
-//        else if(blue_state==0){//initial state
-//         blue[i].srcRect.x=12;
-//         blue[i].srcRect.y=1234;
-//         blue[i].srcRect.w=180;
-//         blue[i].srcRect.h=158;
-//         blue_state+=1;
-//        }
-//        else if(blue_state==1){//flying up state of the pigeon
-//             blue[i].srcRect.x=17;
-//             blue[i].srcRect.y=1436;
-//             blue[i].srcRect.w=179;
-//             blue[i].srcRect.h=159;
-//             blue_state+=1;
-//        }
-//        else {//flying down state of the pigeon(blue_state=2)
-//             blue[i].srcRect.x=13;
-//             blue[i].srcRect.y=1641;
-//             blue[i].srcRect.w=180;
-//             blue[i].srcRect.h=159;
-//             blue_state+=1;//after this state of the pigeon again becomes static and then the loop goes on
-//        }
-//        //if pigeon goes to the right hand side it should again appear from the left side
-//        if(pigeon.moverRect.x>=1000){//screenwidth=1000 from game.hpp
-//         pigeon.moverRect.x = 0;
-//        }
-//     }
-
-//     for (int i=0;i<butterflies.size();i++) {
-//        //reference to the pigeon object from the blue vector
-//        Unit& butterfly = butterflies[i];
-//        //Draw the butterfly
-//        SDL_RenderCopy(gRenderer, assets, &butterfly.srcRect, &butterfly.moverRect);
-//        // moves the butterfly two pixel towards right
-//        butterfly.moverRect.x+=2;
-//         if(butterfly_state==0){//initial state
-//             butterflies[i].srcRect.x=257;
-//             butterflies[i].srcRect.y=24;
-//             butterflies[i].srcRect.w=173;
-//             butterflies[i].srcRect.h=134;
-//             butterfly_state+=1;
-//        }
-//        else if(butterfly_state==1){//flying down state of the butterfly
-//             butterflies[i].srcRect.x=257;
-//             butterflies[i].srcRect.y=182;
-//             butterflies[i].srcRect.w=192;
-//             butterflies[i].srcRect.h=214;
-//             butterfly_state+=1;
-//        }
-//        else {//flying up state of the butterfly(butterfly_state=2)
-//             butterflies[i].srcRect.x=248;
-//             butterflies[i].srcRect.y=432;
-//             butterflies[i].srcRect.w=248;
-//             butterflies[i].srcRect.h=179;
-//             butterfly_state=0;//after this state of the butterfly again becomes static and then the loop goes on
-//        }
-//        //if butterfly goes to the right hand side it should again appear from the left side
-//        if(butterfly.moverRect.x>1000){//screenwidth=1000 from game.hpp
-//         butterfly.moverRect.x = 0;
-//        }
-//     }
-
-//     for (int i=0;i<bees.size();i++) {
-//        //reference to the bee object from the blue vector
-//        Unit& bee = bees[i];
-//        //Draw the bee
-//        SDL_RenderCopy(gRenderer, assets, &bee.srcRect, &bee.moverRect);
-//        // moves the bee two pixel towards right
-//        bee.moverRect.x+=2;
-//         if(bee_state==0){//initial state
-//             bees[i].srcRect.x=527;
-//             bees[i].srcRect.y=138;
-//             bees[i].srcRect.w=194;
-//             bees[i].srcRect.h=115;
-//             bee_state+=1;
-//        }
-//        else if(bee_state==1){//intermediate flying state of bee
-//             bees[i].srcRect.x=527;
-//             bees[i].srcRect.y=254;
-//             bees[i].srcRect.w=194;
-//             bees[i].srcRect.h=115;
-//             bee_state+=1;
-//        }
-//        else {//flying up state of the butterfly(butterfly_state=2)
-//             bees[i].srcRect.x=540;
-//             bees[i].srcRect.y=370;
-//             bees[i].srcRect.w=193;
-//             bees[i].srcRect.h=115;
-//             bee_state=0;//after this state of the bee again becomes static and then the loop goes on
-//        }
-//        //if bee goes to the right hand side it should again appear from the left side
-//        if(bee.moverRect.x>1000){//screenwidth=1000 from game.hpp
-//         bee.moverRect.x = 0;
-//        }
-//     }
+//     // Update the dice sprite coordinates
+//     diceSprite.x = 0;
+//     diceSprite.y = row * spriteHeight;
+//     diceSprite.w = spriteWidth;
+//     diceSprite.h = spriteHeight;
 // }
 
-// void createObject(int x, int y){
+DiceState Dice::getState() const { 
+    return state; 
+    }
 
-//     // TODO: create an object randomly, and push it into corresponding vector
-//     std::cout<<"Mouse clicked at: "<<x<<" -- "<<y<<std::endl;
-//     int random_object= rand() % 3;
+int Dice::getPosition() const { 
+    return position; 
+    }
 
-//     if (random_object== 0) {//a pigeon is pushed into the vector
-//         blue.push_back({{7,88,155,103},{x, y, 50, 50}});
-//     } 
-//     else if (random_object == 1) {//a butterfly is pushed into the vector
-//         butterflies.push_back({{257,24,173,134}, {x, y, 50, 50}});
-//     } 
-//     else if (random_object == 2) {// a bee is pushed into the vector
-//         bees.push_back({{527,138,194,115}, {x, y, 50, 50}});
-//     }
-// }
+for(int i=1,i<3,i++){
+    if(Dice::getState()==1){  
+    SDL_Surface* yellowdice2 = IMG_Load("C:\Users\786 COMPUTERS\\Documents\\GitHub\\OOP_Project_Group9\\assets\\yellowdice2.png");
+    if (!yellowdice2) {
+        std::cout << "Unable to load image! SDL_image Error: " << IMG_GetError() << std::endl;
+        return;
+    }
+    SDL_Texture* yellowdice2 = SDL_CreateTextureFromSurface(renderer, rules1);
+    if (!yellowdice2) {
+        std::cout << "Unable to create texture from image! SDL_Error: " << SDL_GetError() << std::endl;
+        return;
+    }
+
+    SDL_FreeSurface(yellowdice2);
+
+    SDL_RenderClear(renderer);
+    SDL_RenderCopy(renderer, yellowdice2, NULL, NULL);
+    SDL_RenderPresent(renderer);
+
+    }
+    else if(Dice::getState()==2){
+    SDL_Surface* yellowdice3 = IMG_Load("C:\Users\786 COMPUTERS\\Documents\\GitHub\\OOP_Project_Group9\\assets\\yellowdice3.png");
+    if (!yellowdice3) {
+        std::cout << "Unable to load image! SDL_image Error: " << IMG_GetError() << std::endl;
+        return;
+    }
+    SDL_Texture* yellowdice2 = SDL_CreateTextureFromSurface(renderer, rules1);
+    if (!yellowdice3) {
+        std::cout << "Unable to create texture from image! SDL_Error: " << SDL_GetError() << std::endl;
+        return;
+    }
+
+    SDL_FreeSurface(yellowdice3);
+
+    SDL_RenderClear(renderer);
+    SDL_RenderCopy(renderer, yellowdice3, NULL, NULL);
+    SDL_RenderPresent(renderer);
+
+
+    }
+}
 
 
 
