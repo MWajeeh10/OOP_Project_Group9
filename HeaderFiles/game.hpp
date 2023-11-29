@@ -2,6 +2,8 @@
 #include <SDL_image.h>
 #include <SDL_mixer.h>
 #include <iostream>
+#include <string>
+#include "dice.hpp"
 
 // Enumeration to represent different screens
 enum ScreenType {
@@ -32,11 +34,14 @@ private:
 // Update the PlayerSelectionScreen class
 class PlayerSelectionScreen : public Screen {
 public:
+    PlayerSelectionScreen(SDL_Renderer* renderer);
     virtual void show(SDL_Renderer* renderer, ScreenType& nextScreen) override;
     ~PlayerSelectionScreen();
+
 private:
     SDL_Texture* loadTexture(const std::string& path, SDL_Renderer* renderer);
     void renderTexture(SDL_Texture* texture, SDL_Renderer* renderer, int x, int y);
+    Dice* dice;
 };
 
 // Update the RulesScreen class

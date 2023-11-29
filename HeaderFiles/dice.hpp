@@ -1,38 +1,39 @@
-// Dice.hpp
-
-#ifndef DICE_HPP
-#define DICE_HPP
+#pragma once
 
 #include <SDL.h>
+#include <SDL_image.h>
+#include <iostream>
 #include <string>
 #include <vector>
 
 class Dice {
-public:
-    Dice(const std::string& color, int x, int y, SDL_Renderer* renderer);
-    ~Dice();
+    private:
+        std::vector<SDL_Texture*> faceTextures; // Textures for each face of the dice
+        int xPosition; // X-coordinate position of the dice
+        int yPosition; // Y-coordinate position of the dice
+        bool rolling;   // Flag to indicate if the dice is currently rolling
+        int score;      // Current score of the dice
 
-    // Render the current face of the dice at its position
-    void render(SDL_Renderer* renderer);
+        // Load a texture from an image file
+        void loadTexture(const std::string& imagePath, SDL_Renderer* renderer, SDL_Texture*& texture);
+        
+    public:
+        // Constructor for the Dice class
+        Dice(SDL_Renderer* renderer, const std::vector<std::string>& facePaths, int x, int y);
 
-    // Check if a point (x, y) is inside the boundaries of the dice
-    bool isPointInside(int x, int y);
+        // Destructor for the Dice class
+        ~Dice();
 
-    // Handle a click on the dice, updating the face to a random value
-    void handleClick();
+        // Render the current face of the dice
+        void render(SDL_Renderer* renderer);
 
-private:
-    std::string color;
-    int x;
-    int y;
-    SDL_Texture* currentFace;
-    std::vector<SDL_Texture*> faces;
+        // Simulate the rolling of the dice
+        void roll(SDL_Renderer* renderer);
 
-    // Load dice images for a specific color
-    std::vector<SDL_Texture*> loadDiceFaces(const std::string& color, SDL_Renderer* renderer);
+        // Get the current dice score
+        int diceScore() const {
+            return score;
+        }
 
-    // Render a face of the dice at its position
-    void renderFace(SDL_Renderer* renderer);
+
 };
-
-#endif // DICE_HPP
