@@ -41,7 +41,11 @@ public:
 private:
     SDL_Texture* loadTexture(const std::string& path, SDL_Renderer* renderer);
     void renderTexture(SDL_Texture* texture, SDL_Renderer* renderer, int x, int y);
-    Dice* dice;
+    Dice* dice1;  // red dice
+    Dice* dice2;  // green dice
+    Dice* dice3;  // yellow dice
+    Dice* dice4;  // blue dice
+
 };
 
 // Update the RulesScreen class

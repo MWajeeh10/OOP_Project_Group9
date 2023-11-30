@@ -65,7 +65,7 @@ void Dice::roll(SDL_Renderer* renderer) {
             score = randomIndex + 1; 
             std::cout << "Dice Score: " << score << std::endl;  // Print the score
         }
-
+        
         // Check for quit event
         SDL_Event event;
         while (SDL_PollEvent(&event)) {
@@ -81,6 +81,7 @@ void Dice::roll(SDL_Renderer* renderer) {
     // Render and display the final face
     render(renderer);
     SDL_RenderPresent(renderer);
+    
 }
 
 // Render the current face of the dice
