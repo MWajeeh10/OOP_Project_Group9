@@ -84,6 +84,10 @@ void Dice::roll(SDL_Renderer* renderer) {
     
 }
 
+
+// void Dice::token_move(SDL_Renderer* renderer){
+    
+// }
 // Render the current face of the dice
 void Dice::render(SDL_Renderer* renderer) {
     SDL_Rect destination;
@@ -97,3 +101,5 @@ void Dice::render(SDL_Renderer* renderer) {
     SDL_RenderCopy(renderer, faceTextures.front(), nullptr, &destination);
     SDL_RenderPresent(renderer);
 }
+
+
