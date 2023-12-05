@@ -6,7 +6,7 @@
 
 // Implementation of WelcomeScreen
 void WelcomeScreen::show(SDL_Renderer* renderer, ScreenType& nextScreen) {
-    Mix_Music* music = Mix_LoadMUS("C:\\Users\\786 COMPUTERS\\Documents\\GitHub\\OOP_Project_Group9\\assets\\audio2.mp3");
+    Mix_Music* music = Mix_LoadMUS("C:\\Users\\USER\\OneDrive\\Documents\\GitHub\\OOP_Project_Group9\\assets\\audio2.mp3");
     if (!music) {
         std::cout << "Unable to load music! SDL_mixer Error: " << Mix_GetError() << std::endl;
         return;
@@ -15,9 +15,9 @@ void WelcomeScreen::show(SDL_Renderer* renderer, ScreenType& nextScreen) {
     // Play music
     Mix_PlayMusic(music, -1);
 
-    SDL_Surface* image = IMG_Load("C:\\Users\\786 COMPUTERS\\Documents\\GitHub\\OOP_Project_Group9\\assets\\welcome\\screen1.png");
-    SDL_Surface* imageClicked = IMG_Load("C:\\Users\\786 COMPUTERS\\Documents\\GitHub\\OOP_Project_Group9\\assets\\welcome\\screen2.png");
-    SDL_Surface* rulesImage = IMG_Load("C:\\Users\\786 COMPUTERS\\Documents\\GitHub\\OOP_Project_Group9\\assets\\rules\\rulesblink.png");
+    SDL_Surface* image = IMG_Load("C:\\Users\\USER\\OneDrive\\Documents\\GitHub\\OOP_Project_Group9\\assets\\welcome\\screen1.png");
+    SDL_Surface* imageClicked = IMG_Load("C:\\Users\\USER\\OneDrive\\Documents\\GitHub\\OOP_Project_Group9\\assets\\welcome\\screen2.png");
+    SDL_Surface* rulesImage = IMG_Load("C:\\Users\\USER\\OneDrive\\Documents\\GitHub\\OOP_Project_Group9\\assets\\rules\\rulesblink.png");
 
     if (!image || !imageClicked || !rulesImage) {
         std::cout << "Unable to load image! SDL_image Error: " << IMG_GetError() << std::endl;
@@ -127,51 +127,53 @@ void PlayerSelectionScreen::renderTexture(SDL_Texture* texture, SDL_Renderer* re
 PlayerSelectionScreen::PlayerSelectionScreen(SDL_Renderer* renderer) : dice1(nullptr), dice2(nullptr), dice3(nullptr), dice4(nullptr) {
     // Initialize the Dice object with the path to the dice image and initial position
     
-    dice1 = new Dice(renderer, {"C:\\Users\\786 COMPUTERS\\Documents\\GitHub\\OOP_Project_Group9\\assets\\dices\\red\\red1.png", 
-                               "C:\\Users\\786 COMPUTERS\\Documents\\GitHub\\OOP_Project_Group9\\assets\\dices\\red\\red2.png", 
-                               "C:\\Users\\786 COMPUTERS\\Documents\\GitHub\\OOP_Project_Group9\\assets\\dices\\red\\red3.png", 
-                               "C:\\Users\\786 COMPUTERS\\Documents\\GitHub\\OOP_Project_Group9\\assets\\dices\\red\\red4.png",
-                               "C:\\Users\\786 COMPUTERS\\Documents\\GitHub\\OOP_Project_Group9\\assets\\dices\\red\\red5.png", 
-                               "C:\\Users\\786 COMPUTERS\\Documents\\GitHub\\OOP_Project_Group9\\assets\\dices\\red\\red6.png"},
+    dice1 = new Dice(renderer, {"C:\\Users\\USER\\OneDrive\\Documents\\GitHub\\OOP_Project_Group9\\assets\\dices\\red\\red1.png", 
+                               "C:\\Users\\USER\\OneDrive\\Documents\\GitHub\\OOP_Project_Group9\\assets\\dices\\red\\red2.png", 
+                               "C:\\Users\\USER\\OneDrive\\Documents\\GitHub\\OOP_Project_Group9\\assets\\dices\\red\\red3.png", 
+                               "C:\\Users\\USER\\OneDrive\\Documents\\GitHub\\OOP_Project_Group9\\assets\\dices\\red\\red4.png",
+                               "C:\\Users\\USER\\OneDrive\\Documents\\GitHub\\OOP_Project_Group9\\assets\\dices\\red\\red5.png", 
+                               "C:\\Users\\USER\\OneDrive\\Documents\\GitHub\\OOP_Project_Group9\\assets\\dices\\red\\red6.png"},
                     82, 80);
 
-    dice2 = new Dice(renderer, {"C:\\Users\\786 COMPUTERS\\Documents\\GitHub\\OOP_Project_Group9\\assets\\dices\\green\\green1.png", 
-                               "C:\\Users\\786 COMPUTERS\\Documents\\GitHub\\OOP_Project_Group9\\assets\\dices\\green\\green2.png", 
-                               "C:\\Users\\786 COMPUTERS\\Documents\\GitHub\\OOP_Project_Group9\\assets\\dices\\green\\green3.png", 
-                               "C:\\Users\\786 COMPUTERS\\Documents\\GitHub\\OOP_Project_Group9\\assets\\dices\\green\\green4.png",
-                               "C:\\Users\\786 COMPUTERS\\Documents\\GitHub\\OOP_Project_Group9\\assets\\dices\\green\\green5.png", 
-                               "C:\\Users\\786 COMPUTERS\\Documents\\GitHub\\OOP_Project_Group9\\assets\\dices\\green\\green6.png"},
+    dice2 = new Dice(renderer, {"C:\\Users\\USER\\OneDrive\\Documents\\GitHub\\OOP_Project_Group9\\assets\\dices\\green\\green1.png", 
+                               "C:\\Users\\USER\\OneDrive\\Documents\\GitHub\\OOP_Project_Group9\\assets\\dices\\green\\green2.png", 
+                               "C:\\Users\\USER\\OneDrive\\Documents\\GitHub\\OOP_Project_Group9\\assets\\dices\\green\\green3.png", 
+                               "C:\\Users\\USER\\OneDrive\\Documents\\GitHub\\OOP_Project_Group9\\assets\\dices\\green\\green4.png",
+                               "C:\\Users\\USER\\OneDrive\\Documents\\GitHub\\OOP_Project_Group9\\assets\\dices\\green\\green5.png", 
+                               "C:\\Users\\USER\\OneDrive\\Documents\\GitHub\\OOP_Project_Group9\\assets\\dices\\green\\green6.png"},
                     530, 80);
 
-    dice3 = new Dice(renderer, {"C:\\Users\\786 COMPUTERS\\Documents\\GitHub\\OOP_Project_Group9\\assets\\dices\\yellow\\yellow1.png", 
-                               "C:\\Users\\786 COMPUTERS\\Documents\\GitHub\\OOP_Project_Group9\\assets\\dices\\yellow\\yellow2.png", 
-                               "C:\\Users\\786 COMPUTERS\\Documents\\GitHub\\OOP_Project_Group9\\assets\\dices\\yellow\\yellow3.png", 
-                               "C:\\Users\\786 COMPUTERS\\Documents\\GitHub\\OOP_Project_Group9\\assets\\dices\\yellow\\yellow4.png",
-                               "C:\\Users\\786 COMPUTERS\\Documents\\GitHub\\OOP_Project_Group9\\assets\\dices\\yellow\\yellow5.png", 
-                               "C:\\Users\\786 COMPUTERS\\Documents\\GitHub\\OOP_Project_Group9\\assets\\dices\\yellow\\yellow6.png"},
+    dice3 = new Dice(renderer, {"C:\\Users\\USER\\OneDrive\\Documents\\GitHub\\OOP_Project_Group9\\assets\\dices\\yellow\\yellow1.png", 
+                               "C:\\Users\\USER\\OneDrive\\Documents\\GitHub\\OOP_Project_Group9\\assets\\dices\\yellow\\yellow2.png", 
+                               "C:\\Users\\USER\\OneDrive\\Documents\\GitHub\\OOP_Project_Group9\\assets\\dices\\yellow\\yellow3.png", 
+                               "C:\\Users\\USER\\OneDrive\\Documents\\GitHub\\OOP_Project_Group9\\assets\\dices\\yellow\\yellow4.png",
+                               "C:\\Users\\USER\\OneDrive\\Documents\\GitHub\\OOP_Project_Group9\\assets\\dices\\yellow\\yellow5.png", 
+                               "C:\\Users\\USER\\OneDrive\\Documents\\GitHub\\OOP_Project_Group9\\assets\\dices\\yellow\\yellow6.png"},
                     530, 530);
 
-    dice4 = new Dice(renderer, {"C:\\Users\\786 COMPUTERS\\Documents\\GitHub\\OOP_Project_Group9\\assets\\dices\\blue\\blue1.png", 
-                               "C:\\Users\\786 COMPUTERS\\Documents\\GitHub\\OOP_Project_Group9\\assets\\dices\\blue\\blue2.png", 
-                               "C:\\Users\\786 COMPUTERS\\Documents\\GitHub\\OOP_Project_Group9\\assets\\dices\\blue\\blue3.png", 
-                               "C:\\Users\\786 COMPUTERS\\Documents\\GitHub\\OOP_Project_Group9\\assets\\dices\\blue\\blue4.png",
-                               "C:\\Users\\786 COMPUTERS\\Documents\\GitHub\\OOP_Project_Group9\\assets\\dices\\blue\\blue5.png", 
-                               "C:\\Users\\786 COMPUTERS\\Documents\\GitHub\\OOP_Project_Group9\\assets\\dices\\blue\\blue6.png"},
+    dice4 = new Dice(renderer, {"C:\\Users\\USER\\OneDrive\\Documents\\GitHub\\OOP_Project_Group9\\assets\\dices\\blue\\blue1.png", 
+                               "C:\\Users\\USER\\OneDrive\\Documents\\GitHub\\OOP_Project_Group9\\assets\\dices\\blue\\blue2.png", 
+                               "C:\\Users\\USER\\OneDrive\\Documents\\GitHub\\OOP_Project_Group9\\assets\\dices\\blue\\blue3.png", 
+                               "C:\\Users\\USER\\OneDrive\\Documents\\GitHub\\OOP_Project_Group9\\assets\\dices\\blue\\blue4.png",
+                               "C:\\Users\\USER\\OneDrive\\Documents\\GitHub\\OOP_Project_Group9\\assets\\dices\\blue\\blue5.png", 
+                               "C:\\Users\\USER\\OneDrive\\Documents\\GitHub\\OOP_Project_Group9\\assets\\dices\\blue\\blue6.png"},
                     80, 530);
 
 }
+
+
+
 // PlayerSelectionScreen class
 void PlayerSelectionScreen::show(SDL_Renderer* renderer, ScreenType& nextScreen) {
-
-    Mix_Music* music = Mix_LoadMUS("C:\\Users\\786 COMPUTERS\\Documents\\GitHub\\OOP_Project_Group9\\assets\\audio1.mp3");
-        if (!music) {
-            std::cout << "Unable to load music! SDL_mixer Error: " << Mix_GetError() << std::endl;
-            return;
-        }
+    Mix_Music* music = Mix_LoadMUS("C:\\Users\\USER\\OneDrive\\Documents\\GitHub\\OOP_Project_Group9\\assets\\audio1.mp3");
+    if (!music) {
+        std::cout << "Unable to load music! SDL_mixer Error: " << Mix_GetError() << std::endl;
+        return;
+    }
     Mix_PlayMusic(music, -1);
 
     // Load the board image
-    SDL_Surface* boardImage = IMG_Load("C:\\Users\\786 COMPUTERS\\Documents\\GitHub\\OOP_Project_Group9\\assets\\board.png");
+    SDL_Surface* boardImage = IMG_Load("C:\\Users\\USER\\OneDrive\\Documents\\GitHub\\OOP_Project_Group9\\assets\\board.png");
     if (!boardImage) {
         std::cout << "Unable to load board image! SDL_image Error: " << IMG_GetError() << std::endl;
         return;
@@ -184,49 +186,34 @@ void PlayerSelectionScreen::show(SDL_Renderer* renderer, ScreenType& nextScreen)
         return;
     }
 
-    SDL_FreeSurface(boardImage);
 
+    //TOKEN:
     // Load textures for different colored tokens
-    SDL_Texture* redTokenTexture = loadTexture("C:\\Users\\786 COMPUTERS\\Documents\\GitHub\\OOP_Project_Group9\\assets\\tokens\\red.png", renderer);
-    SDL_Texture* greenTokenTexture = loadTexture("C:\\Users\\786 COMPUTERS\\Documents\\GitHub\\OOP_Project_Group9\\assets\\tokens\\green.png", renderer);
-    SDL_Texture* blueTokenTexture = loadTexture("C:\\Users\\786 COMPUTERS\\Documents\\GitHub\\OOP_Project_Group9\\assets\\tokens\\blue.png", renderer);
-    SDL_Texture* yellowTokenTexture = loadTexture("C:\\Users\\786 COMPUTERS\\Documents\\GitHub\\OOP_Project_Group9\\assets\\tokens\\yellow.png", renderer);
+    SDL_Texture* redTokenTexture = loadTexture("C:\\Users\\USER\\OneDrive\\Documents\\GitHub\\OOP_Project_Group9\\assets\\tokens\\red.png", renderer);
+    // Load textures for other colored tokens if needed
 
     // Check if loading any texture failed
-    if (!redTokenTexture || !greenTokenTexture || !blueTokenTexture || !yellowTokenTexture) {
+    if (!redTokenTexture) {
         // Handle error
         SDL_DestroyTexture(boardTexture);
         return;
     }
 
+    // Create tokens based on dice color
+    redToken = new Token(renderer, redTokenTexture);
+    redToken->setStartPosition(55, 305);
+
+
+
+
+    SDL_FreeSurface(boardImage);
+
     // Render the board
     SDL_RenderClear(renderer);
     SDL_RenderCopy(renderer, boardTexture, NULL, NULL);
-
-    // Render red tokens at different positions
-    renderTexture(redTokenTexture, renderer, 0, 0);
-    renderTexture(redTokenTexture, renderer, 0, 260);
-    renderTexture(redTokenTexture, renderer, 260, 260);
-    renderTexture(redTokenTexture, renderer, 260, 0);
-
-    // Render green tokens at different positions
-    renderTexture(greenTokenTexture, renderer, 450, 0);
-    renderTexture(greenTokenTexture, renderer, 710, 0);
-    renderTexture(greenTokenTexture, renderer, 450, 260);
-    renderTexture(greenTokenTexture, renderer, 710, 260);
-
-    // Render blue tokens at different positions
-    renderTexture(blueTokenTexture, renderer, 305, 655);//0, 450);
-    renderTexture(blueTokenTexture, renderer, 0, 710);
-    renderTexture(blueTokenTexture, renderer, 260, 450);
-    renderTexture(blueTokenTexture, renderer, 260, 710);
-
-    // Render yellow tokens at different positions
-    renderTexture(yellowTokenTexture, renderer, 450, 450);
-    renderTexture(yellowTokenTexture, renderer, 450, 710);
-    renderTexture(yellowTokenTexture, renderer, 710, 710);
-    renderTexture(yellowTokenTexture, renderer, 710, 450);
-
+    redToken->render(renderer);
+    SDL_RenderPresent(renderer);
+    
     if (dice1) {
         dice1->render(renderer);  // Pass the renderer here
     }
@@ -243,102 +230,89 @@ void PlayerSelectionScreen::show(SDL_Renderer* renderer, ScreenType& nextScreen)
         dice4->render(renderer);  // Pass the renderer here
     }
 
-    SDL_RenderPresent(renderer);
-   
+    
 
     bool running = true;
     SDL_Event event;
     while (running) {
+        // Handle events
         while (SDL_PollEvent(&event)) {
             if (event.type == SDL_QUIT) {
                 running = false;
-                nextScreen = ScreenType::EXIT;  // Update nextScreen if the user quits
+                nextScreen = ScreenType::EXIT;
             } else if (event.type == SDL_MOUSEBUTTONDOWN) {
                 int x, y;
                 SDL_GetMouseState(&x, &y);
                 std::cout << "Mouse clicked at (" << x << ", " << y << ")\n";
 
-                // Check if the click is on the dice
+                // Handle dice rolling logic based on mouse click
                 if (x >= 80 && x <= 212 && y >= 80 && y <= 212) {
-                    // Add logic for rolling effect and random selection of dice value
                     if (dice1) {
                         dice1->roll(renderer);
+                        int diceScore = dice1->diceScore();
+                        std::cout << "Dice Score: " << diceScore << std::endl;
+                        redToken->moveToNextPosition(diceScore);
                     }
-                } 
-                else if (x >= 530 && x <= 662 && y >= 80 && y <= 212) {
-                    // Add logic for rolling effect and random selection of dice value for the second dice
+                } else if (x >= 530 && x <= 662 && y >= 80 && y <= 212) {
                     if (dice2) {
                         dice2->roll(renderer);
                     }
-                }
-                else if (x >= 530 && x <= 662 && y >= 530 && y <= 662) {
-                    // Add logic for rolling effect and random selection of dice value for the third dice
+                } else if (x >= 530 && x <= 662 && y >= 530 && y <= 662) {
                     if (dice3) {
                         dice3->roll(renderer);
                     }
-                }
-                else if (x >= 80 && x <= 530 && y >= 530 && y <= 662) {
-                    // Add logic for rolling effect and random selection of dice value for the fourth dice
+                } else if (x >= 80 && x <= 530 && y >= 530 && y <= 662) {
                     if (dice4) {
                         dice4->roll(renderer);
                     }
                 }
-
-                // Add other logic for player selection if needed
             }
         }
-    }
 
-    SDL_DestroyTexture(boardTexture);
-    SDL_DestroyTexture(redTokenTexture);
-    SDL_DestroyTexture(greenTokenTexture);
-    SDL_DestroyTexture(blueTokenTexture);
-    SDL_DestroyTexture(yellowTokenTexture);
-    // SDL_DestroyTexture(texture);
-    Mix_FreeMusic(music);
-}
-// Inside the PlayerSelectionScreen class
-void PlayerSelectionScreen::token_move(SDL_Renderer* renderer) {
-    int token_movement_array[][2] = {
-        {305, 655}, {305, 605}, {305, 555}, {305, 505},
-        {305, 455}, {255, 405}, {205, 405}, {155, 405},
-        {105, 405}, {55, 405}, {5, 405}, {5, 355},
-        {5, 305}, {55, 305}, {105, 305}, {155, 305},
-        {205, 305}, {255, 305}, {305, 255}, {305, 205},
-        {305, 155}, {305, 105}, {305, 55}, {305, 5},
-        {355, 5}, {405, 5}, {405, 55}, {405, 105},
-        {405, 155}, {405, 205}, {405, 255}, {405, 305},
-        {505, 305}, {555, 305}, {605, 305}, {655, 305},
-        {705, 305}, {705, 355}, {705, 405}, {655, 405},
-        {605, 405}, {555, 405}, {505, 405}, {455, 405},
-        {405, 455}, {405, 505}, {405, 555}, {405, 605},
-        {405, 655}, {405, 705}, {355, 705}, {305, 705}
-    };
-
-    SDL_Texture* redTokenTexture = loadTexture("C:\\Users\\786 COMPUTERS\\Documents\\GitHub\\OOP_Project_Group9\\assets\\tokens\\red.png", renderer);
-    if (!redTokenTexture) {
-        std::cout<<"Not found!"<<std::endl;
-        return;
-    }
-
-    for (int i = 0; i < sizeof(token_movement_array) / sizeof(token_movement_array[0]); ++i) {
+        // Clear the renderer
         SDL_RenderClear(renderer);
+
+        // Render the board
         SDL_RenderCopy(renderer, boardTexture, NULL, NULL);
 
-        // Render red tokens at different positions
-        renderTexture(redTokenTexture, renderer, token_movement_array[i][0], token_movement_array[i][1]);
+        // Render the tokens
+        redToken->render(renderer);
 
+        // Render the dice
+        if (dice1) {
+            dice1->render(renderer);
+        }
+
+        if (dice2) {
+            dice2->render(renderer);
+        }
+
+        if (dice3) {
+            dice3->render(renderer);
+        }
+
+        if (dice4) {
+            dice4->render(renderer);
+        }
+
+        // Present the renderer
         SDL_RenderPresent(renderer);
-        SDL_Delay(250); // Adjust the delay as needed
+
+        // Add a slight delay to control the frame rate
+        SDL_Delay(16);
     }
 
-    SDL_DestroyTexture(redTokenTexture);
+
+
+    SDL_DestroyTexture(boardTexture);
+    Mix_FreeMusic(music);
 }
+
 
 
 // RulesScreen class
 void RulesScreen::show(SDL_Renderer* renderer, ScreenType& nextScreen) {
-    SDL_Surface* rules1 = IMG_Load("C:\\Users\\786 COMPUTERS\\Documents\\GitHub\\OOP_Project_Group9\\assets\\rules\\rules1.png");
+    SDL_Surface* rules1 = IMG_Load("C:\\Users\\USER\\OneDrive\\Documents\\GitHub\\OOP_Project_Group9\\assets\\rules\\rules1.png");
     if (!rules1) {
         std::cout << "Unable to load image! SDL_image Error: " << IMG_GetError() << std::endl;
         return;
@@ -407,7 +381,7 @@ ScreenManager::ScreenManager()
     }
 
     // Load music
-    music = Mix_LoadMUS("C:\\Users\\786 COMPUTERS\\Documents\\GitHub\\OOP_Project_Group9\\assets\\audio2.mp3");
+    music = Mix_LoadMUS("C:\\Users\\USER\\OneDrive\\Documents\\GitHub\\OOP_Project_Group9\\assets\\audio2.mp3");
     if (!music) {
         std::cout << "Unable to load music! SDL_mixer Error: " << Mix_GetError() << std::endl;
     }
@@ -490,10 +464,14 @@ PlayerSelectionScreen::~PlayerSelectionScreen() {
     if (dice4) {
         delete dice4;
     }
+
+    if (redToken) {
+        delete redToken;
+    }
+
 }
 
 // RulesScreen destructor
 RulesScreen::~RulesScreen() {
     // Add any cleanup code if needed
 }
-
