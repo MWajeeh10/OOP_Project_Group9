@@ -1,6 +1,7 @@
 #include <SDL.h>
 #include <SDL_image.h>
 #include <SDL_mixer.h>
+#include <SDL_ttf.h>
 #include <iostream>
 #include <string>
 #include "dice.hpp"
@@ -44,6 +45,17 @@ class WelcomeScreen : public Screen {
 class PlayerSelectionScreen : public Screen {
 
     private:
+
+        //for managing the dice turns
+        enum class Turn {
+            DICE1,
+            DICE2,
+            DICE3,
+            DICE4
+        };
+
+        Turn currentTurn;
+
         SDL_Texture* loadTexture(const std::string& path, SDL_Renderer* renderer);
         void renderTexture(SDL_Texture* texture, SDL_Renderer* renderer, int x, int y);
         Dice* dice1;  // red dice
@@ -51,10 +63,15 @@ class PlayerSelectionScreen : public Screen {
         Dice* dice3;  // yellow dice
         Dice* dice4;  // blue dice
         Token* redToken;  // red token
-    
+        Token* greenToken; // green token
+        Token* yellowToken;
+        Token* blueToken;
+        // int currentTurn;
+
     public:
     PlayerSelectionScreen(SDL_Renderer* renderer);
-    virtual void show(SDL_Renderer* renderer, ScreenType& nextScreen) override;
+    // virtual void show(SDL_Renderer* renderer, ScreenType& nextScreen) override;
+    void show(SDL_Renderer* renderer, ScreenType& nextScreen);
     ~PlayerSelectionScreen();
 
 
