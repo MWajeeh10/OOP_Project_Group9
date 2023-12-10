@@ -822,10 +822,20 @@ void PlayerSelectionScreen::show(SDL_Renderer* renderer, ScreenType& nextScreen)
                             }
                         }
                         else{
-                            redToken->moveToNextPositionRed(diceScore);
-                            currentTurn = Turn::DICE2;
-                            std::cout<<"Current turn: Player Green!!\n"<<std::endl;
+                            if(diceScore==6){
+                                redToken->moveToNextPositionRed(diceScore);
+                                currentTurn = Turn::DICE1;
+                                std::cout<<"Player Red has another turn!!\n"<<std::endl;
+                                continue;
+                            }
+
+                            else{
+                                redToken->moveToNextPositionRed(diceScore);
+                                currentTurn = Turn::DICE2;
+                                std::cout<<"Next Player turn is: Player Green!!\n"<<std::endl;
+                            }
                         }
+
                     }
                 } else if (x >= 530 && x <= 662 && y >= 80 && y <= 212 && currentTurn == Turn::DICE2) {
                     if (dice2) {
@@ -850,10 +860,20 @@ void PlayerSelectionScreen::show(SDL_Renderer* renderer, ScreenType& nextScreen)
                             }
                         }
                         else{
+                            if(diceScore==6){
                             greenToken->moveToNextPositionGreen(diceScore);
-                            currentTurn = Turn::DICE3;
-                            std::cout<<"Next Player's turn: Player Blue!!\n"<<std::endl;
+                            currentTurn = Turn::DICE2;
+                            std::cout<<"Player Green gets another turn!!\n"<<std::endl;
                             std::cout<<std::endl;
+                            continue;
+                            }
+
+                            else{
+                                greenToken->moveToNextPositionGreen(diceScore);
+                                currentTurn = Turn::DICE3;
+                                std::cout<<"Next Player's turn is: Player Yellow!!\n"<<std::endl;
+                                std::cout<<std::endl;
+                                }
                         }
                     }
                 } else if (x >= 530 && x <= 662 && y >= 530 && y <= 662 && currentTurn == Turn::DICE3) {
@@ -879,10 +899,20 @@ void PlayerSelectionScreen::show(SDL_Renderer* renderer, ScreenType& nextScreen)
                             }
                         }
                         else{
+                            if(diceScore==6){
+                                yellowToken->moveToNextPositionYellow(diceScore);
+                                currentTurn = Turn::DICE3;
+                                std::cout<<"Player Yellow gets another turn!!"<<std::endl;
+                                std::cout<<std::endl;
+                                continue;
+                            }
+
+                            else{
                             yellowToken->moveToNextPositionYellow(diceScore);
                             currentTurn = Turn::DICE4;
                             std::cout<<"Next Player's turn: Player Blue!!"<<std::endl;
                             std::cout<<std::endl;
+                            }
                         }
                     }
                 } else if (x >= 80 && x <= 530 && y >= 530 && y <= 662 && currentTurn == Turn::DICE4) {
@@ -908,10 +938,19 @@ void PlayerSelectionScreen::show(SDL_Renderer* renderer, ScreenType& nextScreen)
                             }
                         }
                         else{
+                            if(diceScore==6){
                             blueToken->moveToNextPositionBlue(diceScore);
-                            currentTurn = Turn::DICE1;
-                            std::cout<<"Next Player's turn: Player Red!!"<<std::endl;
+                            currentTurn = Turn::DICE4;
+                            std::cout<<"Player Blue gets another turn!!"<<std::endl;
                             std::cout<<std::endl;
+                            }
+
+                            else{
+                                blueToken->moveToNextPositionBlue(diceScore);
+                                currentTurn = Turn::DICE1;
+                                std::cout<<"Next Player's turn: Player Red!!"<<std::endl;
+                                std::cout<<std::endl;
+                            }
                         }
                     }
                 }
