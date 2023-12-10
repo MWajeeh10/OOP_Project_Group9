@@ -691,7 +691,6 @@ PlayerSelectionScreen::PlayerSelectionScreen(SDL_Renderer* renderer) : dice1(nul
 
 }
 
-
 // PlayerSelectionScreen class
 void PlayerSelectionScreen::show(SDL_Renderer* renderer, ScreenType& nextScreen) {
     Mix_Music* music = Mix_LoadMUS("C:\\Users\\USER\\OneDrive\\Documents\\GitHub\\OOP_Project_Group9\\assets\\audio1.mp3");
@@ -734,17 +733,26 @@ void PlayerSelectionScreen::show(SDL_Renderer* renderer, ScreenType& nextScreen)
 
     // Create tokens based on dice colorS
     redToken = new Token(renderer, redTokenTexture);
-    redToken->setStartPosition(55, 305);
+    // redToken->setStartPosition(5, 305);
+    redToken->setStartPosition(0, 0);
+    redToken->lock(); //initial state will be locked
 
     greenToken = new Token(renderer, greenTokenTexture);
-    greenToken->setStartPosition(405, 55);
+    // greenToken->setStartPosition(405, 55);
+    greenToken->setStartPosition(450, 0);
+    greenToken->lock(); //initial state will be locked
+
 
     yellowToken = new Token(renderer, yellowTokenTexture);
-    yellowToken->setStartPosition(655,405);
+    // yellowToken->setStartPosition(655,405);
+    yellowToken->setStartPosition(710, 450);
+    yellowToken->lock(); //initial state will be locked
+
 
     blueToken = new Token(renderer, blueTokenTexture);
-    blueToken -> setStartPosition(305,655);
-
+    // blueToken -> setStartPosition(305,655);
+    blueToken->setStartPosition(260, 710);
+    blueToken->lock(); //initial state will be locked
 
     SDL_FreeSurface(boardImage);
 
@@ -788,43 +796,123 @@ void PlayerSelectionScreen::show(SDL_Renderer* renderer, ScreenType& nextScreen)
                 SDL_GetMouseState(&x, &y);
                 std::cout << "Mouse clicked at (" << x << ", " << y << ")\n";
 
-                std::cout<<"Current Turn: Player Red!!!"<<std::endl;
+                // std::cout<<"Current Turn: Player Red!!!"<<std::endl;
                 // Handle dice rolling logic based on mouse click
                 if (x >= 80 && x <= 212 && y >= 80 && y <= 212 && currentTurn == Turn::DICE1) {
                     if (dice1) {
+                        //dice roll will happen and a random face will be generated
                         dice1->roll(renderer);
+                        //dice score is stored and displayed
                         int diceScore = dice1->diceScore();
                         std::cout << "Dice Score for Red is: " << diceScore << std::endl;
-                        redToken->moveToNextPositionRed(diceScore);
-                        currentTurn = Turn::DICE2;
-                        std::cout<<"Current Turn: Player Green!!!"<<std::endl;
+
+                        //condition if redToken is not locked, then move to next position based on diceScore
+                        if(redToken->getPosition().x == 0 && redToken->getPosition().y == 0 && redToken->isLocked()){
+                            if(diceScore==6){
+                                redToken->unlock(); //unlock red if dice score is 6
+                                redToken->setStartPosition(55,305); //Move token to start position
+                                std::cout<<"Player Red unlocked and moved to start location\n"<<std::endl;
+                                std::cout<<"Player Red gets another turn\n";
+                                // std::endl;
+
+                                continue; //gets another turn
+                            }
+                            else{
+                                currentTurn = Turn::DICE2;
+                            }
+                        }
+                        else{
+                            redToken->moveToNextPositionRed(diceScore);
+                            currentTurn = Turn::DICE2;
+                            std::cout<<"Current turn: Player Green!!\n"<<std::endl;
+                        }
                     }
                 } else if (x >= 530 && x <= 662 && y >= 80 && y <= 212 && currentTurn == Turn::DICE2) {
                     if (dice2) {
+                        //dice roll will happen and a random face will be generated
                         dice2->roll(renderer);
+                        //dice score is stored and displayed
                         int diceScore = dice2->diceScore();
                         std::cout << "Dice Score for Green is: " << diceScore << std::endl;
-                        greenToken->moveToNextPositionGreen(diceScore);
-                        currentTurn = Turn::DICE3;
-                        std::cout<<"Current Turn: Player Yellow!!!"<<std::endl;
+
+                        //condition if greenToken is not locked, then move to next position based on diceScore
+                        if(greenToken->getPosition().x == 450 && greenToken->getPosition().y == 0 && greenToken->isLocked()){
+                            if(diceScore==6){
+                                greenToken->unlock(); //unlock green if dice score is 6
+                                greenToken->setStartPosition(405,55); //Move token to start position
+                                std::cout<<"Player green unlocked and moved to start location"<<std::endl;
+                                std::cout<<"Player Green has another turn\n";
+                                std::cout<<std::endl;
+                                continue; //gets another turn
+                            }
+                            else{
+                                currentTurn = Turn::DICE3;
+                            }
+                        }
+                        else{
+                            greenToken->moveToNextPositionGreen(diceScore);
+                            currentTurn = Turn::DICE3;
+                            std::cout<<"Next Player's turn: Player Blue!!\n"<<std::endl;
+                            std::cout<<std::endl;
+                        }
                     }
                 } else if (x >= 530 && x <= 662 && y >= 530 && y <= 662 && currentTurn == Turn::DICE3) {
                     if (dice3) {
+                        //dice roll will happen and a random face will be generated
                         dice3->roll(renderer);
+                        //dice score is stored and displayed
                         int diceScore = dice3->diceScore();
                         std::cout << "Dice Score for Yellow is: " << diceScore << std::endl;
-                        yellowToken->moveToNextPositionYellow(diceScore);
-                        currentTurn = Turn::DICE4;
-                        std::cout<<"Current Turn: Player Blue!!!"<<std::endl;
+
+                        //condition if yellowToken is not locked, then move to next position based on diceScore
+                        if(yellowToken->getPosition().x == 710 && yellowToken->getPosition().y == 450 && yellowToken->isLocked()){
+                            if(diceScore==6){
+                                yellowToken->unlock(); //unlock yellow if dice score is 6
+                                yellowToken->setStartPosition(655, 405); //Move token to start position
+                                std::cout<<"Player Yellow unlocked and moved to start location"<<std::endl;
+                                std::cout<<"Player Yellow has another turn!!!\n";
+                                std::cout<<std::endl;
+                                continue; //gets another turn
+                            }
+                            else{
+                                currentTurn = Turn::DICE4;
+                            }
+                        }
+                        else{
+                            yellowToken->moveToNextPositionYellow(diceScore);
+                            currentTurn = Turn::DICE4;
+                            std::cout<<"Next Player's turn: Player Blue!!"<<std::endl;
+                            std::cout<<std::endl;
+                        }
                     }
                 } else if (x >= 80 && x <= 530 && y >= 530 && y <= 662 && currentTurn == Turn::DICE4) {
                     if (dice4) {
+                        //dice roll will happen and a random face will be generated
                         dice4->roll(renderer);
+                        //dice score is stored and displayed
                         int diceScore = dice4->diceScore();
                         std::cout << "Dice Score for Blue is: " << diceScore << std::endl;
-                        blueToken->moveToNextPositionBlue(diceScore);
-                        currentTurn = Turn::DICE1;
-                        std::cout<<"Current Turn: Player Red!!!"<<std::endl;
+
+                        //condition if blueToken is not locked, then move to next position based on diceScore
+                        if(blueToken->getPosition().x == 260 && blueToken->getPosition().y == 710 && blueToken->isLocked()){
+                            if(diceScore==6){
+                                blueToken->unlock(); //unlock blue if dice score is 6
+                                blueToken->setStartPosition(305,655); //Move token to start position
+                                std::cout<<"Player Blue unlocked and moved to start location";
+                                std::cout<<"Player Blue has another Turn"<<std::endl;
+                                std::cout<<std::endl;
+                                continue; //gets another turn
+                            }
+                            else{
+                                currentTurn = Turn::DICE1;
+                            }
+                        }
+                        else{
+                            blueToken->moveToNextPositionBlue(diceScore);
+                            currentTurn = Turn::DICE1;
+                            std::cout<<"Next Player's turn: Player Red!!"<<std::endl;
+                            std::cout<<std::endl;
+                        }
                     }
                 }
             }

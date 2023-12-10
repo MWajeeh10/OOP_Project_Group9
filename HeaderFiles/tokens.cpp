@@ -266,6 +266,9 @@ void Token::moveToNextPositionYellow(int diceScore) {
     }
 }
 
+SDL_Rect Token::getPosition() const {
+    return position;
+}
 
 
 //movement for Blue
@@ -369,9 +372,6 @@ void Token::moveToNextPositionBlue(int diceScore) {
 //     }
 
 
-// SDL_Rect Token::getPosition() const {
-//     return position;
-// }
 
 
 

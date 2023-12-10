@@ -12,12 +12,12 @@ int main(int argc, char* argv[]) {
 ----------------------------------------------------------------------------------------
 
 
-
-
 game.hpp:
+
 #include <SDL.h>
 #include <SDL_image.h>
 #include <SDL_mixer.h>
+#include <SDL_ttf.h>
 #include <iostream>
 #include <string>
 #include "dice.hpp"
@@ -61,6 +61,17 @@ class WelcomeScreen : public Screen {
 class PlayerSelectionScreen : public Screen {
 
     private:
+
+        //for managing the dice turns
+        enum class Turn {
+            DICE1,
+            DICE2,
+            DICE3,
+            DICE4
+        };
+
+        Turn currentTurn;
+
         SDL_Texture* loadTexture(const std::string& path, SDL_Renderer* renderer);
         void renderTexture(SDL_Texture* texture, SDL_Renderer* renderer, int x, int y);
         Dice* dice1;  // red dice
@@ -68,10 +79,15 @@ class PlayerSelectionScreen : public Screen {
         Dice* dice3;  // yellow dice
         Dice* dice4;  // blue dice
         Token* redToken;  // red token
-    
+        Token* greenToken; // green token
+        Token* yellowToken;
+        Token* blueToken;
+        // int currentTurn;
+
     public:
     PlayerSelectionScreen(SDL_Renderer* renderer);
-    virtual void show(SDL_Renderer* renderer, ScreenType& nextScreen) override;
+    // virtual void show(SDL_Renderer* renderer, ScreenType& nextScreen) override;
+    void show(SDL_Renderer* renderer, ScreenType& nextScreen);
     ~PlayerSelectionScreen();
 
 
@@ -106,19 +122,21 @@ class ScreenManager {
 };
 
 
-
-----------------------------------------------------------------------------------------
-----------------------------------------------------------------------------------------
-----------------------------------------------------------------------------------------
-
-
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
 
 
+
+
+game.cpp:
 
 #include "game.hpp"
 #include <SDL_mixer.h>
+#include <SDL_ttf.h>
 #include <iostream>
 
 // #include "game.hpp"
@@ -126,31 +144,16 @@ class ScreenManager {
 // Implementation of WelcomeScreen
 void WelcomeScreen::show(SDL_Renderer* renderer, ScreenType& nextScreen) {
     Mix_Music* music = Mix_LoadMUS("C:\\Users\\USER\\OneDrive\\Documents\\GitHub\\OOP_Project_Group9\\assets\\audio2.mp3");
-    if (!music) {
-        std::cout << "Unable to load music! SDL_mixer Error: " << Mix_GetError() << std::endl;
-        return;
-    }
-
     // Play music
     Mix_PlayMusic(music, -1);
 
     SDL_Surface* image = IMG_Load("C:\\Users\\USER\\OneDrive\\Documents\\GitHub\\OOP_Project_Group9\\assets\\welcome\\screen1.png");
     SDL_Surface* imageClicked = IMG_Load("C:\\Users\\USER\\OneDrive\\Documents\\GitHub\\OOP_Project_Group9\\assets\\welcome\\screen2.png");
     SDL_Surface* rulesImage = IMG_Load("C:\\Users\\USER\\OneDrive\\Documents\\GitHub\\OOP_Project_Group9\\assets\\rules\\rulesblink.png");
-
-    if (!image || !imageClicked || !rulesImage) {
-        std::cout << "Unable to load image! SDL_image Error: " << IMG_GetError() << std::endl;
-        return;
-    }
-
+    
     SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, image);
     SDL_Texture* textureClicked = SDL_CreateTextureFromSurface(renderer, imageClicked);
     SDL_Texture* rulesTexture = SDL_CreateTextureFromSurface(renderer, rulesImage);
-
-    if (!texture || !textureClicked || !rulesTexture) {
-        std::cout << "Unable to create texture from image! SDL_Error: " << SDL_GetError() << std::endl;
-        return;
-    }
 
     SDL_FreeSurface(image);
     SDL_FreeSurface(imageClicked);
@@ -226,10 +229,6 @@ void WelcomeScreen::show(SDL_Renderer* renderer, ScreenType& nextScreen) {
 
 SDL_Texture* PlayerSelectionScreen::loadTexture(const std::string& path, SDL_Renderer* renderer) {
     SDL_Surface* surface = IMG_Load(path.c_str());
-    if (!surface) {
-        std::cout << "Unable to load image! SDL_image Error: " << IMG_GetError() << std::endl;
-        return nullptr;
-    }
     SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, surface);
     SDL_FreeSurface(surface);
     return texture;
@@ -243,7 +242,7 @@ void PlayerSelectionScreen::renderTexture(SDL_Texture* texture, SDL_Renderer* re
     SDL_RenderCopy(renderer, texture, nullptr, &destination);
 }
 
-PlayerSelectionScreen::PlayerSelectionScreen(SDL_Renderer* renderer) : dice1(nullptr), dice2(nullptr), dice3(nullptr), dice4(nullptr) {
+PlayerSelectionScreen::PlayerSelectionScreen(SDL_Renderer* renderer) : dice1(nullptr), dice2(nullptr), dice3(nullptr), dice4(nullptr),currentTurn(Turn::DICE1) {
     // Initialize the Dice object with the path to the dice image and initial position
     
     dice1 = new Dice(renderer, {"C:\\Users\\USER\\OneDrive\\Documents\\GitHub\\OOP_Project_Group9\\assets\\dices\\red\\red1.png", 
@@ -280,49 +279,58 @@ PlayerSelectionScreen::PlayerSelectionScreen(SDL_Renderer* renderer) : dice1(nul
 
 }
 
-
-
 // PlayerSelectionScreen class
 void PlayerSelectionScreen::show(SDL_Renderer* renderer, ScreenType& nextScreen) {
     Mix_Music* music = Mix_LoadMUS("C:\\Users\\USER\\OneDrive\\Documents\\GitHub\\OOP_Project_Group9\\assets\\audio1.mp3");
-    if (!music) {
-        std::cout << "Unable to load music! SDL_mixer Error: " << Mix_GetError() << std::endl;
-        return;
-    }
     Mix_PlayMusic(music, -1);
-
     // Load the board image
     SDL_Surface* boardImage = IMG_Load("C:\\Users\\USER\\OneDrive\\Documents\\GitHub\\OOP_Project_Group9\\assets\\board.png");
-    if (!boardImage) {
-        std::cout << "Unable to load board image! SDL_image Error: " << IMG_GetError() << std::endl;
-        return;
-    }
-
     SDL_Texture* boardTexture = SDL_CreateTextureFromSurface(renderer, boardImage);
-    if (!boardTexture) {
-        std::cout << "Unable to create texture from board image! SDL_Error: " << SDL_GetError() << std::endl;
-        SDL_FreeSurface(boardImage);
-        return;
-    }
-
-
     //TOKEN:
     // Load textures for different colored tokens
-    SDL_Texture* redTokenTexture = loadTexture("C:\\Users\\USER\\OneDrive\\Documents\\GitHub\\OOP_Project_Group9\\assets\\tokens\\red.png", renderer);
-    // Load textures for other colored tokens if needed
-
-    // Check if loading any texture failed
+    SDL_Texture* redTokenTexture = loadTexture("C:\\Users\\USER\\OneDrive\\Documents\\GitHub\\OOP_Project_Group9\\assets\\tokens\\red1.png", renderer);
+    SDL_Texture* greenTokenTexture = loadTexture("C:\\Users\\USER\\OneDrive\\Documents\\GitHub\\OOP_Project_Group9\\assets\\tokens\\green1.png", renderer);
+    SDL_Texture* yellowTokenTexture = loadTexture("C:\\Users\\USER\\OneDrive\\Documents\\GitHub\\OOP_Project_Group9\\assets\\tokens\\yellow1.png", renderer);
+    SDL_Texture* blueTokenTexture = loadTexture("C:\\Users\\USER\\OneDrive\\Documents\\GitHub\\OOP_Project_Group9\\assets\\tokens\\blue1.png", renderer);
+        // Check if loading any texture failed
     if (!redTokenTexture) {
         // Handle error
         SDL_DestroyTexture(boardTexture);
         return;
     }
 
-    // Create tokens based on dice color
+    if (!greenTokenTexture) {
+        // Handle error
+        SDL_DestroyTexture(boardTexture);
+        return;
+    }
+
+    
+    if (!yellowTokenTexture) {
+        // Handle error
+        SDL_DestroyTexture(boardTexture);
+        return;
+    }
+
+    
+    if (!blueTokenTexture) {
+        // Handle error
+        SDL_DestroyTexture(boardTexture);
+        return;
+    }
+
+    // Create tokens based on dice colorS
     redToken = new Token(renderer, redTokenTexture);
     redToken->setStartPosition(55, 305);
 
+    greenToken = new Token(renderer, greenTokenTexture);
+    greenToken->setStartPosition(405, 55);
 
+    yellowToken = new Token(renderer, yellowTokenTexture);
+    yellowToken->setStartPosition(655,405);
+
+    blueToken = new Token(renderer, blueTokenTexture);
+    blueToken -> setStartPosition(305,655);
 
 
     SDL_FreeSurface(boardImage);
@@ -330,7 +338,12 @@ void PlayerSelectionScreen::show(SDL_Renderer* renderer, ScreenType& nextScreen)
     // Render the board
     SDL_RenderClear(renderer);
     SDL_RenderCopy(renderer, boardTexture, NULL, NULL);
+
     redToken->render(renderer);
+    greenToken->render(renderer);
+    yellowToken->render(renderer);
+    blueToken->render(renderer);
+
     SDL_RenderPresent(renderer);
     
     if (dice1) {
@@ -349,8 +362,6 @@ void PlayerSelectionScreen::show(SDL_Renderer* renderer, ScreenType& nextScreen)
         dice4->render(renderer);  // Pass the renderer here
     }
 
-    
-
     bool running = true;
     SDL_Event event;
     while (running) {
@@ -364,25 +375,43 @@ void PlayerSelectionScreen::show(SDL_Renderer* renderer, ScreenType& nextScreen)
                 SDL_GetMouseState(&x, &y);
                 std::cout << "Mouse clicked at (" << x << ", " << y << ")\n";
 
+                std::cout<<"Current Turn: Player Red!!!"<<std::endl;
                 // Handle dice rolling logic based on mouse click
-                if (x >= 80 && x <= 212 && y >= 80 && y <= 212) {
+                if (x >= 80 && x <= 212 && y >= 80 && y <= 212 && currentTurn == Turn::DICE1) {
                     if (dice1) {
                         dice1->roll(renderer);
                         int diceScore = dice1->diceScore();
-                        std::cout << "Dice Score: " << diceScore << std::endl;
-                        redToken->moveToNextPosition(diceScore);
+                        std::cout << "Dice Score for Red is: " << diceScore << std::endl;
+                        redToken->moveToNextPositionRed(diceScore);
+                        currentTurn = Turn::DICE2;
+                        std::cout<<"Current Turn: Player Green!!!"<<std::endl;
                     }
-                } else if (x >= 530 && x <= 662 && y >= 80 && y <= 212) {
+                } else if (x >= 530 && x <= 662 && y >= 80 && y <= 212 && currentTurn == Turn::DICE2) {
                     if (dice2) {
                         dice2->roll(renderer);
+                        int diceScore = dice2->diceScore();
+                        std::cout << "Dice Score for Green is: " << diceScore << std::endl;
+                        greenToken->moveToNextPositionGreen(diceScore);
+                        currentTurn = Turn::DICE3;
+                        std::cout<<"Current Turn: Player Yellow!!!"<<std::endl;
                     }
-                } else if (x >= 530 && x <= 662 && y >= 530 && y <= 662) {
+                } else if (x >= 530 && x <= 662 && y >= 530 && y <= 662 && currentTurn == Turn::DICE3) {
                     if (dice3) {
                         dice3->roll(renderer);
+                        int diceScore = dice3->diceScore();
+                        std::cout << "Dice Score for Yellow is: " << diceScore << std::endl;
+                        yellowToken->moveToNextPositionYellow(diceScore);
+                        currentTurn = Turn::DICE4;
+                        std::cout<<"Current Turn: Player Blue!!!"<<std::endl;
                     }
-                } else if (x >= 80 && x <= 530 && y >= 530 && y <= 662) {
+                } else if (x >= 80 && x <= 530 && y >= 530 && y <= 662 && currentTurn == Turn::DICE4) {
                     if (dice4) {
                         dice4->roll(renderer);
+                        int diceScore = dice4->diceScore();
+                        std::cout << "Dice Score for Blue is: " << diceScore << std::endl;
+                        blueToken->moveToNextPositionBlue(diceScore);
+                        currentTurn = Turn::DICE1;
+                        std::cout<<"Current Turn: Player Red!!!"<<std::endl;
                     }
                 }
             }
@@ -396,6 +425,9 @@ void PlayerSelectionScreen::show(SDL_Renderer* renderer, ScreenType& nextScreen)
 
         // Render the tokens
         redToken->render(renderer);
+        greenToken->render(renderer);
+        yellowToken->render(renderer);
+        blueToken->render(renderer);
 
         // Render the dice
         if (dice1) {
@@ -420,9 +452,6 @@ void PlayerSelectionScreen::show(SDL_Renderer* renderer, ScreenType& nextScreen)
         // Add a slight delay to control the frame rate
         SDL_Delay(16);
     }
-
-
-
     SDL_DestroyTexture(boardTexture);
     Mix_FreeMusic(music);
 }
@@ -432,17 +461,7 @@ void PlayerSelectionScreen::show(SDL_Renderer* renderer, ScreenType& nextScreen)
 // RulesScreen class
 void RulesScreen::show(SDL_Renderer* renderer, ScreenType& nextScreen) {
     SDL_Surface* rules1 = IMG_Load("C:\\Users\\USER\\OneDrive\\Documents\\GitHub\\OOP_Project_Group9\\assets\\rules\\rules1.png");
-    if (!rules1) {
-        std::cout << "Unable to load image! SDL_image Error: " << IMG_GetError() << std::endl;
-        return;
-    }
-
     SDL_Texture* rules1Texture = SDL_CreateTextureFromSurface(renderer, rules1);
-    if (!rules1Texture) {
-        std::cout << "Unable to create texture from image! SDL_Error: " << SDL_GetError() << std::endl;
-        return;
-    }
-
     SDL_FreeSurface(rules1);
 
     SDL_RenderClear(renderer);
@@ -475,36 +494,10 @@ void RulesScreen::show(SDL_Renderer* renderer, ScreenType& nextScreen) {
 // Implementation of ScreenManager
 ScreenManager::ScreenManager()
     : currentScreen(ScreenType::WELCOME), music(nullptr) {
-    // Initialize SDL
-    if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) < 0) {
-        std::cout << "SDL could not initialize! SDL_Error: " << SDL_GetError() << std::endl;
-        // Handle initialization failure as needed
-    }
-
-    // Initialize SDL_mixer
-    if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0) {
-        std::cout << "SDL_mixer could not initialize! SDL_mixer Error: " << Mix_GetError() << std::endl;
-        // Handle initialization failure as needed
-    }
-
     window = SDL_CreateWindow("Ludo Game", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 750, 750, SDL_WINDOW_SHOWN);
-    if (!window) {
-        std::cout << "Window could not be created! SDL_Error: " << SDL_GetError() << std::endl;
-        // Handle window creation failure as needed
-    }
-
     renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
-    if (!renderer) {
-        std::cout << "Renderer could not be created! SDL_Error: " << SDL_GetError() << std::endl;
-        // Handle renderer creation failure as needed
-    }
-
     // Load music
     music = Mix_LoadMUS("C:\\Users\\USER\\OneDrive\\Documents\\GitHub\\OOP_Project_Group9\\assets\\audio2.mp3");
-    if (!music) {
-        std::cout << "Unable to load music! SDL_mixer Error: " << Mix_GetError() << std::endl;
-    }
-
     // Play music only if it's not already playing
     playMusic();
 }
@@ -514,7 +507,6 @@ ScreenManager::~ScreenManager() {
     if (music) {
         Mix_FreeMusic(music);
     }
-
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
     Mix_Quit();
@@ -561,8 +553,6 @@ void ScreenManager::run() {
 WelcomeScreen::~WelcomeScreen() {
     // Add any cleanup code if needed
 }
-
-
 // PlayerSelectionScreen destructor
 PlayerSelectionScreen::~PlayerSelectionScreen() {
     // Cleanup the first Dice object
@@ -588,14 +578,23 @@ PlayerSelectionScreen::~PlayerSelectionScreen() {
         delete redToken;
     }
 
-}
+    if(greenToken){
+        delete greenToken;
+    }
 
+    if (yellowToken) {
+        delete yellowToken;
+    }
+
+    if(blueToken){
+        delete blueToken;
+    }
+
+}
 // RulesScreen destructor
 RulesScreen::~RulesScreen() {
     // Add any cleanup code if needed
 }
-
-
 
 
 
@@ -616,6 +615,7 @@ RulesScreen::~RulesScreen() {
 
 
 dice.hpp:
+
 #pragma once
 
 #include <SDL.h>
@@ -669,7 +669,6 @@ class Dice {
 
 
 
-
 ----------------------------------------------------------------------------------------
 ----------------------------------------------------------------------------------------
 ----------------------------------------------------------------------------------------
@@ -719,7 +718,7 @@ void Dice::loadTexture(const std::string& imagePath, SDL_Renderer* renderer, SDL
     }
 }
 
-// Simulate the rolling of the dice
+
 void Dice::roll(SDL_Renderer* renderer) {
     rolling = true;
 
@@ -739,11 +738,8 @@ void Dice::roll(SDL_Renderer* renderer) {
             // Render and display the current face
             render(renderer);
             SDL_RenderPresent(renderer);
-
-            score = randomIndex + 1; 
-            std::cout << "Dice Score: " << score << std::endl;  // Print the score
         }
-        
+
         // Check for quit event
         SDL_Event event;
         while (SDL_PollEvent(&event)) {
@@ -756,17 +752,17 @@ void Dice::roll(SDL_Renderer* renderer) {
 
     rolling = false;
 
+    // Update the score based on the final face of the dice
+    int finalFaceIndex = rand() % faceTextures.size();
+    score = finalFaceIndex + 1;
+
     // Render and display the final face
     render(renderer);
     SDL_RenderPresent(renderer);
-    
+
+    std::cout << "Dice Score: " << score << std::endl;  // Print the score
 }
 
-
-// void Dice::token_move(SDL_Renderer* renderer){
-    
-// }
-// Render the current face of the dice
 void Dice::render(SDL_Renderer* renderer) {
     SDL_Rect destination;
     destination.x = xPosition;
@@ -783,55 +779,18 @@ void Dice::render(SDL_Renderer* renderer) {
 
 
 
-----------------------------------------------------------------------------------------
-----------------------------------------------------------------------------------------
-----------------------------------------------------------------------------------------
-
-
-
-tokens.hpp:
-// token.hpp
-#pragma once
-
-#include <SDL.h>
-#include <SDL_image.h>
-#include <iostream>
-#include <vector>
-
-class Token {
-public:
-    Token(SDL_Renderer* renderer, SDL_Texture* texture);
-    ~Token();
-
-    void render(SDL_Renderer* renderer);
-    void setStartPosition(int startX, int startY);
-    // void move(int steps);
-    SDL_Rect getPosition() const;
-    void moveToNextPosition(int diceScore);
-
-private:
-    SDL_Texture* texture;
-    SDL_Rect position;
-    int currentX;
-    int currentY;
-
-    // Declare boardMovement as a static member variable
-    static std::vector<SDL_Point> boardMovement;
-};
 
 
 
 
 
-
-
-
-
-
-
-
+----------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------
 
 tokens.cpp:
+
 // token.cpp
 #include "tokens.hpp"
 #include <SDL.h>
@@ -839,7 +798,14 @@ tokens.cpp:
 #include <iostream>
 #include <vector>
 
-std::vector<SDL_Point> Token::boardMovement = {
+
+/*
+VECTORS FOR DEFINING PATH OF EACH TOKEN ON THE BOARD.
+THE PATHS DO NOT INCLUDE THE FINAL GAME WINNING PATH
+*/
+
+//PATH FOR RED TOKEN
+std::vector<SDL_Point> Token::boardMovementRed = {
     {55, 305 }, {105, 305}, {155, 305}, 
     {205, 305}, {255, 305}, {305, 255}, {305, 205}, 
     {305, 155}, {305, 105}, {305, 55 }, {305, 5  }, 
@@ -854,6 +820,66 @@ std::vector<SDL_Point> Token::boardMovement = {
     {305, 455}, {255, 405}, {205, 405}, {155, 405}, 
     {105, 405}, {55, 405 }, {5, 405  }, {5, 355  }, 
 };
+
+
+//PATH FOR GREEN TOKEN
+std::vector<SDL_Point> Token::boardMovementGreen= {
+    {405, 55 }, {405, 105}, {405, 155}, {405, 205}, 
+    {405, 255}, {455, 305}, {505, 305}, {555, 305}, 
+    {605, 305}, {655, 305}, {705, 305}, {705, 355}, 
+    {705, 405}, {655, 405}, {605, 405}, {555, 405}, 
+    {505, 405}, {455, 405}, {405, 455}, {405, 505},
+    {405, 555}, {405, 605}, {405, 655}, {405, 705}, 
+    {355, 705}, {305, 705},{305, 655}, {305, 605}, 
+    {305, 555}, {305, 505}, {305, 455}, {255, 405}, 
+    {205, 405}, {155, 405}, {105, 405}, {55, 405 }, 
+    {5, 405  }, {5, 355  }, {55, 305 }, {105, 305},  
+    {155, 305},{205, 305}, {255, 305}, {305, 255}, 
+    {305, 205}, {305, 155}, {305, 105}, {305, 55 }, 
+    {305, 5  },{355,5}
+};
+
+
+//PATH FOR YELLOW TOKEN
+std::vector<SDL_Point> Token::boardMovementYellow= {
+    {655, 405}, {605, 405}, {555, 405}, 
+    {505, 405}, {455, 405}, {405, 455}, {405, 505},
+    {405, 555}, {405, 605}, {405, 655}, {405, 705}, 
+    {355, 705}, {305, 705},{305, 655}, {305, 605}, 
+    {305, 555}, {305, 505}, {305, 455}, {255, 405}, 
+    {205, 405}, {155, 405}, {105, 405}, {55, 405 }, 
+    {5, 405  }, {5, 355  }, {55, 305 }, {105, 305},  
+    {155, 305},{205, 305}, {255, 305}, {305, 255}, 
+    {305, 205}, {305, 155}, {305, 105}, {305, 55 }, 
+    {305, 5  },{355,5},{405, 55 }, {405, 105}, 
+    {405, 155}, {405, 205}, {405, 255}, {455, 305}, 
+    {505, 305}, {555, 305}, {605, 305}, {655, 305}, 
+    {705, 305}, {705, 355}
+};
+
+
+//PATH FOR BLUE TOKEN
+std::vector<SDL_Point> Token::boardMovementBlue= {
+    {305, 655}, {305, 605}, 
+    {305, 555}, {305, 505}, {305, 455}, {255, 405}, 
+    {205, 405}, {155, 405}, {105, 405}, {55, 405 }, 
+    {5, 405  }, {5, 355  }, {55, 305 }, {105, 305},  
+    {155, 305},{205, 305}, {255, 305}, {305, 255}, 
+    {305, 205}, {305, 155}, {305, 105}, {305, 55 }, 
+    {305, 5  },{355,5},{405, 55 }, {405, 105},
+    {405, 155}, {405, 205}, {405, 255}, {455, 305}, 
+    {505, 305}, {555, 305}, {605, 305}, {655, 305}, 
+    {705, 305}, {705, 355}, {705, 405}, {655, 405}, 
+    {605, 405}, {555, 405}, {505, 405}, {455, 405}, 
+    {405, 655}, {405, 705}, {355, 705}
+};
+
+
+
+
+
+
+
 
 Token::Token(SDL_Renderer* renderer, SDL_Texture* texture)
     : texture(texture), currentX(0), currentY(0) {
@@ -878,7 +904,9 @@ void Token::setStartPosition(int startX, int startY) {
 }
 
 
-void Token::moveToNextPosition(int diceScore) {
+
+//movement for Red
+void Token::moveToNextPositionRed(int diceScore) {
     // Assuming a standard Ludo board
     const int homeX = 5;
     const int homeY = 5;
@@ -897,20 +925,72 @@ void Token::moveToNextPosition(int diceScore) {
         }
     } else {
         // Calculate the current position within the main track based on the board movement array
-        for (size_t i = 0; i < boardMovement.size(); ++i) {
-            if (position.x == boardMovement[i].x && position.y == boardMovement[i].y) {
+        for (size_t i = 0; i < boardMovementRed.size(); ++i) {
+            if (position.x == boardMovementRed[i].x && position.y == boardMovementRed[i].y) {
                 int newPositionIndex = i + diceScore;
 
                 // If the new position index exceeds the boardMovement size, set it to the destination
-                if (newPositionIndex >= boardMovement.size()) {
-                    newPositionIndex = boardMovement.size() - 1;
+                if (newPositionIndex >= boardMovementRed.size()) {
+                    newPositionIndex = boardMovementRed.size() - 1;
                     // newPositionIndex = (i + diceScore) % boardMovement.size();
 
                 }
 
                 // Move the token along the predefined board positions
-                position.x = boardMovement[newPositionIndex].x;
-                position.y = boardMovement[newPositionIndex].y;
+                position.x = boardMovementRed[newPositionIndex].x;
+                position.y = boardMovementRed[newPositionIndex].y;
+
+                // Check if the token has reached the destination
+                if (position.x == destinationX && position.y == destinationY) {
+                    // You may want to add additional logic or handle reaching the destination here
+                    // For now, let's set the position to the destination to stop the token
+                    position.x = destinationX;
+                    position.y = destinationY;
+                }
+
+                break;  // Exit the loop once the new position is set
+            }
+        }
+    }
+}
+
+
+
+
+//movement for green
+void Token::moveToNextPositionGreen(int diceScore) {
+    // Assuming a standard Ludo board
+    const int homeX = 450;
+    const int homeY = 0;
+    const int mainTrackStartX = 605;
+    const int mainTrackStartY = 405;
+    const int mainTrackLength = 50;
+    const int destinationX = 355;
+    const int destinationY = 5;
+
+    // Check if the token is in the home area
+    if (position.x == homeX && position.y == homeY && diceScore > 0) {
+        // Move along the vertical path to the starting point of the main track
+        position.y -= diceScore * mainTrackLength; // Adjust TOKEN_STEP_SIZE according to your needs
+        if (position.y < mainTrackStartY) {
+            position.y = mainTrackStartY;
+        }
+    } else {
+        // Calculate the current position within the main track based on the board movement array
+        for (size_t i = 0; i < boardMovementGreen.size(); ++i) {
+            if (position.x == boardMovementGreen[i].x && position.y == boardMovementGreen[i].y) {
+                int newPositionIndex = i + diceScore;
+
+                // If the new position index exceeds the boardMovement size, set it to the destination
+                if (newPositionIndex >= boardMovementGreen.size()) {
+                    newPositionIndex = boardMovementGreen.size() - 1;
+                    // newPositionIndex = (i + diceScore) % boardMovement.size();
+
+                }
+
+                // Move the token along the predefined board positions
+                position.x = boardMovementGreen[newPositionIndex].x;
+                position.y = boardMovementGreen[newPositionIndex].y;
 
                 // Check if the token has reached the destination
                 if (position.x == destinationX && position.y == destinationY) {
@@ -930,58 +1010,104 @@ void Token::moveToNextPosition(int diceScore) {
 
 
 
+//movement for Yellow
+void Token::moveToNextPositionYellow(int diceScore) {
+    // Assuming a standard Ludo board
+    const int homeX = 660;
+    const int homeY = 450;
+    const int mainTrackStartX = 655;
+    const int mainTrackStartY = 405;
+    const int mainTrackLength = 50;
+    const int destinationX = 705;
+    const int destinationY = 355;
+
+    // Check if the token is in the home area
+    if (position.x == homeX && position.y == homeY && diceScore > 0) {
+        // Move along the vertical path to the starting point of the main track
+        position.y -= diceScore * mainTrackLength; // Adjust TOKEN_STEP_SIZE according to your needs
+        if (position.y < mainTrackStartY) {
+            position.y = mainTrackStartY;
+        }
+    } else {
+        // Calculate the current position within the main track based on the board movement array
+        for (size_t i = 0; i < boardMovementYellow.size(); ++i) {
+            if (position.x == boardMovementYellow[i].x && position.y == boardMovementYellow[i].y) {
+                int newPositionIndex = i + diceScore;
+
+                // If the new position index exceeds the boardMovement size, set it to the destination
+                if (newPositionIndex >= boardMovementYellow.size()) {
+                    newPositionIndex = boardMovementYellow.size() - 1;
+                    // newPositionIndex = (i + diceScore) % boardMovement.size();
+
+                }
+
+                // Move the token along the predefined board positions
+                position.x = boardMovementYellow[newPositionIndex].x;
+                position.y = boardMovementYellow[newPositionIndex].y;
+
+                // Check if the token has reached the destination
+                if (position.x == destinationX && position.y == destinationY) {
+                    // You may want to add additional logic or handle reaching the destination here
+                    // For now, let's set the position to the destination to stop the token
+                    position.x = destinationX;
+                    position.y = destinationY;
+                }
+
+                break;  // Exit the loop once the new position is set
+            }
+        }
+    }
+}
 
 
 
+//movement for Blue
+void Token::moveToNextPositionBlue(int diceScore) {
+    // Assuming a standard Ludo board
+    const int homeX = 260;
+    const int homeY = 710;
+    const int mainTrackStartX = 305;
+    const int mainTrackStartY = 655;
+    const int mainTrackLength = 50;
+    const int destinationX = 355;
+    const int destinationY = 705;
 
-// void Token::moveToNextPosition(int diceScore) {
-//     // Assuming a standard Ludo board
-//     const int homeX = 5;
-//     const int homeY = 5;
-//     const int mainTrackStartX = 55;
-//     const int mainTrackStartY = 305;
-//     const int mainTrackLength = 50;
-//     const int destinationX = 5;
-//     const int destinationY = 355;
+    // Check if the token is in the home area
+    if (position.x == homeX && position.y == homeY && diceScore > 0) {
+        // Move along the vertical path to the starting point of the main track
+        position.y -= diceScore * mainTrackLength; // Adjust TOKEN_STEP_SIZE according to your needs
+        if (position.y < mainTrackStartY) {
+            position.y = mainTrackStartY;
+        }
+    } else {
+        // Calculate the current position within the main track based on the board movement array
+        for (size_t i = 0; i < boardMovementBlue.size(); ++i) {
+            if (position.x == boardMovementBlue[i].x && position.y == boardMovementBlue[i].y) {
+                int newPositionIndex = i + diceScore;
 
-//     // Calculate the current position within the main track
-//     int currentPositionIndex = -1;
+                // If the new position index exceeds the boardMovement size, set it to the destination
+                if (newPositionIndex >= boardMovementBlue.size()) {
+                    newPositionIndex = boardMovementBlue.size() - 1;
+                    // newPositionIndex = (i + diceScore) % boardMovement.size();
 
-//     // If the token is in the home area
-//     // If the token is in the home area
-//     if (position.x == homeX && position.y == homeY && diceScore > 0) {
-//         // Move along the vertical path to the starting point of the main track
-//         position.y -= diceScore * mainTrackLength; // Adjust TOKEN_STEP_SIZE according to your needs
-//         if (position.y < mainTrackStartY) {
-//             position.y = mainTrackStartY;
-//         }
-//     } else {
-//         // Calculate the current position within the main track based on the board movement array
-//         for (size_t i = 0; i < boardMovement.size(); ++i) {
-//             if (position.x == boardMovement[i].x && position.y == boardMovement[i].y) {
-//                 currentPositionIndex = i;
-//                 break;
-//             }
-//         }
+                }
 
-//         // If the token is still on the board and needs to move
-//         if (currentPositionIndex >= 0 && currentPositionIndex < boardMovement.size() && diceScore > 0) {
-//             int newPositionIndex = currentPositionIndex + diceScore;
+                // Move the token along the predefined board positions
+                position.x = boardMovementBlue[newPositionIndex].x;
+                position.y = boardMovementBlue[newPositionIndex].y;
 
-//             // If the new position index exceeds the boardMovement size, adjust the index
-//             if (newPositionIndex >= boardMovement.size()) {
-//                 newPositionIndex = boardMovement.size() - 1;
-//             }
+                // Check if the token has reached the destination
+                if (position.x == destinationX && position.y == destinationY) {
+                    // You may want to add additional logic or handle reaching the destination here
+                    // For now, let's set the position to the destination to stop the token
+                    position.x = destinationX;
+                    position.y = destinationY;
+                }
 
-//             // Move the token along the predefined board positions
-//             position.x = boardMovement[newPositionIndex].x;
-//             position.y = boardMovement[newPositionIndex].y;
-//         }
-//     }
-//     }
+                break;  // Exit the loop once the new position is set
+            }
+        }
+    }
+}
 
-
-// SDL_Rect Token::getPosition() const {
-//     return position;
-// }
 

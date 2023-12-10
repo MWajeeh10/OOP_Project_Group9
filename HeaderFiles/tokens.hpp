@@ -33,7 +33,6 @@
 
 
 
-
 // token.hpp
 #pragma once
 
@@ -52,24 +51,33 @@ public:
     // void move(int steps);
     SDL_Rect getPosition() const;
 
-    //moving to the next position for each token
+    // Moving to the next position for each token
     void moveToNextPositionRed(int diceScore);
     void moveToNextPositionGreen(int diceScore);
     void moveToNextPositionYellow(int diceScore);
     void moveToNextPositionBlue(int diceScore);
+    bool isLocked() const {
+        return locked;
+    }
+    void unlock() {
+        locked = false;
+    }
+
+    // Add the lock method
+    void lock() {
+        locked = true;
+    }
 
 private:
     SDL_Texture* texture;
     SDL_Rect position;
 
-
     int currentX;
     int currentY;
-
+    bool locked;
     // Declare boardMovement as a static member variable
     static std::vector<SDL_Point> boardMovementRed;
     static std::vector<SDL_Point> boardMovementGreen;
     static std::vector<SDL_Point> boardMovementYellow;
     static std::vector<SDL_Point> boardMovementBlue;
 };
-

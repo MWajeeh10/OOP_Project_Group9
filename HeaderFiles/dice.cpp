@@ -83,7 +83,7 @@ void Dice::roll(SDL_Renderer* renderer) {
     render(renderer);
     SDL_RenderPresent(renderer);
 
-    std::cout << "Dice Score: " << score << std::endl;  // Print the score
+    // std::cout << "Dice Score: " << score << std::endl;  // Print the score
 }
 
 void Dice::render(SDL_Renderer* renderer) {
