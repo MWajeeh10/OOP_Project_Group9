@@ -737,6 +737,7 @@ void PlayerSelectionScreen::show(SDL_Renderer* renderer, ScreenType& nextScreen)
     redToken->setStartPosition(0, 0);
     redToken->lock(); //initial state will be locked
 
+
     greenToken = new Token(renderer, greenTokenTexture);
     // greenToken->setStartPosition(405, 55);
     greenToken->setStartPosition(450, 0);
@@ -747,6 +748,7 @@ void PlayerSelectionScreen::show(SDL_Renderer* renderer, ScreenType& nextScreen)
     // yellowToken->setStartPosition(655,405);
     yellowToken->setStartPosition(710, 450);
     yellowToken->lock(); //initial state will be locked
+
 
 
     blueToken = new Token(renderer, blueTokenTexture);
@@ -835,6 +837,7 @@ void PlayerSelectionScreen::show(SDL_Renderer* renderer, ScreenType& nextScreen)
                                 std::cout<<"Next Player turn is: Player Green!!\n"<<std::endl;
                             }
                         }
+                        checkAndMoveBackToHome(redToken, greenToken, yellowToken, blueToken);
 
                     }
                 } else if (x >= 530 && x <= 662 && y >= 80 && y <= 212 && currentTurn == Turn::DICE2) {
@@ -875,6 +878,9 @@ void PlayerSelectionScreen::show(SDL_Renderer* renderer, ScreenType& nextScreen)
                                 std::cout<<std::endl;
                                 }
                         }
+                        checkAndMoveBackToHome(greenToken, redToken, yellowToken, blueToken);
+
+                        
                     }
                 } else if (x >= 530 && x <= 662 && y >= 530 && y <= 662 && currentTurn == Turn::DICE3) {
                     if (dice3) {
@@ -914,6 +920,9 @@ void PlayerSelectionScreen::show(SDL_Renderer* renderer, ScreenType& nextScreen)
                             std::cout<<std::endl;
                             }
                         }
+                        checkAndMoveBackToHome(yellowToken, greenToken, redToken, blueToken);
+
+                        
                     }
                 } else if (x >= 80 && x <= 530 && y >= 530 && y <= 662 && currentTurn == Turn::DICE4) {
                     if (dice4) {
@@ -922,7 +931,6 @@ void PlayerSelectionScreen::show(SDL_Renderer* renderer, ScreenType& nextScreen)
                         //dice score is stored and displayed
                         int diceScore = dice4->diceScore();
                         std::cout << "Dice Score for Blue is: " << diceScore << std::endl;
-
                         //condition if blueToken is not locked, then move to next position based on diceScore
                         if(blueToken->getPosition().x == 260 && blueToken->getPosition().y == 710 && blueToken->isLocked()){
                             if(diceScore==6){
@@ -935,6 +943,7 @@ void PlayerSelectionScreen::show(SDL_Renderer* renderer, ScreenType& nextScreen)
                             }
                             else{
                                 currentTurn = Turn::DICE1;
+                                std::cout<<"Next Player's turn: Red\n";
                             }
                         }
                         else{
@@ -952,16 +961,21 @@ void PlayerSelectionScreen::show(SDL_Renderer* renderer, ScreenType& nextScreen)
                                 std::cout<<std::endl;
                             }
                         }
-                    }
+                    
+                    checkAndMoveBackToHome(blueToken, greenToken, yellowToken, redToken);
+                        
+                    
                 }
+
             }
         }
-
+        }
         // Clear the renderer
         SDL_RenderClear(renderer);
 
         // Render the board
         SDL_RenderCopy(renderer, boardTexture, NULL, NULL);
+
 
         // Render the tokens
         redToken->render(renderer);
@@ -970,6 +984,12 @@ void PlayerSelectionScreen::show(SDL_Renderer* renderer, ScreenType& nextScreen)
         blueToken->render(renderer);
 
         // Render the dice
+
+        // Present the renderer
+        SDL_RenderPresent(renderer);
+
+        // Add a slight delay to control the frame rate
+        SDL_Delay(16);
         if (dice1) {
             dice1->render(renderer);
         }
@@ -985,17 +1005,86 @@ void PlayerSelectionScreen::show(SDL_Renderer* renderer, ScreenType& nextScreen)
         if (dice4) {
             dice4->render(renderer);
         }
-
-        // Present the renderer
-        SDL_RenderPresent(renderer);
-
-        // Add a slight delay to control the frame rate
-        SDL_Delay(16);
     }
     SDL_DestroyTexture(boardTexture);
     Mix_FreeMusic(music);
 }
 
+
+bool PlayerSelectionScreen::checkAndMoveBackToHome(Token* currentToken, Token* token2, Token* token3, Token* token4) {
+    // if (currentToken->getPosition().x != currentToken->mainTrackStartX() && currentToken->getPosition().y != currentToken->mainTrackStartY()){
+        // Check if the new position overlaps with other tokens
+        if (currentToken->getPosition().x == token2->getPosition().x &&currentToken->getPosition().y == token2->getPosition().y) {
+            // // token2->moveToHome();
+            // token2->lock();
+            // bool check = true;
+            if(token2 == redToken){
+                redToken->lock();
+                redToken->setStartPosition(0,0);
+                // return true;
+            }
+            else if (token2 == greenToken){
+                greenToken->lock();
+                greenToken->setStartPosition(450,0);
+                // return true;
+            }
+            else if(token2 == blueToken){
+                blueToken->lock();
+                blueToken->setStartPosition(260,710);
+                // return true;
+            }
+            else if(token2 == yellowToken){
+                yellowToken->lock();
+                yellowToken->setStartPosition(710,450);
+                // return true;
+            }
+            
+        } else if (currentToken->getPosition().x == token3->getPosition().x &&currentToken->getPosition().y == token3->getPosition().y) {
+            if(token3 == redToken){
+                redToken->lock();
+                redToken->setStartPosition(0,0);
+                return true;
+            }
+            else if (token3 == greenToken){
+                greenToken->lock();
+                greenToken->setStartPosition(450,0);
+                return true;
+            }
+            else if(token3 == blueToken){
+                blueToken->lock();
+                blueToken->setStartPosition(260,710);
+                return true;
+            }
+            else if(token3 == yellowToken){
+                yellowToken->lock();
+                yellowToken->setStartPosition(710,450);
+                return true;
+            }
+        } else if (currentToken->getPosition().x == token4->getPosition().x &&currentToken->getPosition().y == token4->getPosition().y) {
+            if(token4 == redToken){
+                redToken->lock();
+                redToken->setStartPosition(0,0);
+                return true;
+            }
+            else if (token4 == greenToken){
+                greenToken->lock();
+                greenToken->setStartPosition(450,0);
+                return true;
+            }
+            else if(token4 == blueToken){
+                blueToken->lock();
+                blueToken->setStartPosition(260,710);
+                return true;
+            }
+            else if(token4 == yellowToken){
+                yellowToken->lock();
+                yellowToken->setStartPosition(710,450);
+                return true;
+            }
+        }
+        return false;
+    // }
+}
 
 
 // RulesScreen class

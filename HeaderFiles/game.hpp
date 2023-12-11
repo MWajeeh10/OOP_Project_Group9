@@ -6,6 +6,10 @@
 #include <string>
 #include "dice.hpp"
 #include "tokens.hpp"
+// #pragma once
+
+
+
 
 // Enumeration to represent different screens
 enum ScreenType {
@@ -66,13 +70,15 @@ class PlayerSelectionScreen : public Screen {
         Token* greenToken; // green token
         Token* yellowToken;
         Token* blueToken;
-        // int currentTurn;
+        bool checkAndMoveBackToHome(Token* currentToken, Token* token2, Token* token3, Token* token4);
+
+
 
     public:
-    PlayerSelectionScreen(SDL_Renderer* renderer);
-    // virtual void show(SDL_Renderer* renderer, ScreenType& nextScreen) override;
-    void show(SDL_Renderer* renderer, ScreenType& nextScreen);
-    ~PlayerSelectionScreen();
+        PlayerSelectionScreen(SDL_Renderer* renderer);
+        // virtual void show(SDL_Renderer* renderer, ScreenType& nextScreen) override;
+        void show(SDL_Renderer* renderer, ScreenType& nextScreen);
+        ~PlayerSelectionScreen();
 
 
 };

@@ -91,6 +91,7 @@ std::vector<SDL_Point> Token::boardMovementBlue= {
 Token::Token(SDL_Renderer* renderer, SDL_Texture* texture)
     : texture(texture), currentX(0), currentY(0) {
     SDL_QueryTexture(texture, nullptr, nullptr, &position.w, &position.h);
+    
 }
 
 Token::~Token() {
@@ -115,8 +116,8 @@ void Token::setStartPosition(int startX, int startY) {
 //movement for Red
 void Token::moveToNextPositionRed(int diceScore) {
     // Assuming a standard Ludo board
-    const int homeX = 5;
-    const int homeY = 5;
+    const int homeX = 0;
+    const int homeY = 0;
     const int mainTrackStartX = 55;
     const int mainTrackStartY = 305;
     const int mainTrackLength = 50;
@@ -220,7 +221,7 @@ void Token::moveToNextPositionGreen(int diceScore) {
 //movement for Yellow
 void Token::moveToNextPositionYellow(int diceScore) {
     // Assuming a standard Ludo board
-    const int homeX = 660;
+    const int homeX = 710;
     const int homeY = 450;
     const int mainTrackStartX = 655;
     const int mainTrackStartY = 405;

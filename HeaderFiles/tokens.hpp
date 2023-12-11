@@ -80,4 +80,7 @@ private:
     static std::vector<SDL_Point> boardMovementGreen;
     static std::vector<SDL_Point> boardMovementYellow;
     static std::vector<SDL_Point> boardMovementBlue;
+    
+
+    // virtual ~Token(){}
 };
