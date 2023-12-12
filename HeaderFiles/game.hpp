@@ -6,6 +6,7 @@
 #include <string>
 #include "dice.hpp"
 #include "tokens.hpp"
+#include "music.hpp"
 // #pragma once
 
 
@@ -27,6 +28,7 @@ public:
     virtual ~Screen() {}
     virtual void show(SDL_Renderer* renderer, ScreenType& nextScreen) = 0;
 };
+
 
 
 
@@ -57,6 +59,7 @@ class PlayerSelectionScreen : public Screen {
             DICE3,
             DICE4
         };
+
 
         Turn currentTurn;
 
@@ -102,6 +105,9 @@ class ScreenManager {
         SDL_Window* window;
         SDL_Renderer* renderer;
         ScreenType currentScreen;
+        MusicPlayer* welcomeMusic;
+        MusicPlayer* playerSelectionMusic;
+        MusicPlayer* rulesMusic;
         Mix_Music* music;
         void playMusic();
         
