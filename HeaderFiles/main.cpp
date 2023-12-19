@@ -15,8 +15,14 @@
 
 //     return 0;
 // }
+#include <iostream>
 #include "game.hpp"
+// #include "musicManager.hpp"
+// #include <SDL.h>
+
 int main(int argc, char* argv[]) {
+    // MusicManager musicManager;
+    // musicManager.playWelcomeScreenMusic();
     ScreenManager screenManager;
     screenManager.run();
 

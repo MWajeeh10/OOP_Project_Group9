@@ -545,20 +545,14 @@
 
 
 
-
+//header files
 #include "game.hpp"
 #include <SDL_mixer.h>
 #include <SDL_ttf.h>
 #include <iostream>
 
-// #include "game.hpp"
 
-// Implementation of WelcomeScreen
 void WelcomeScreen::show(SDL_Renderer* renderer, ScreenType& nextScreen) {
-    Mix_Music* music = Mix_LoadMUS("C:\\Users\\USER\\OneDrive\\Documents\\GitHub\\OOP_Project_Group9\\assets\\audio2.mp3");
-    // Play music
-    Mix_PlayMusic(music, -1);
-
     SDL_Surface* image = IMG_Load("C:\\Users\\USER\\OneDrive\\Documents\\GitHub\\OOP_Project_Group9\\assets\\welcome\\screen1.png");
     SDL_Surface* imageClicked = IMG_Load("C:\\Users\\USER\\OneDrive\\Documents\\GitHub\\OOP_Project_Group9\\assets\\welcome\\screen2.png");
     SDL_Surface* rulesImage = IMG_Load("C:\\Users\\USER\\OneDrive\\Documents\\GitHub\\OOP_Project_Group9\\assets\\rules\\rulesblink.png");
@@ -615,7 +609,6 @@ void WelcomeScreen::show(SDL_Renderer* renderer, ScreenType& nextScreen) {
                     SDL_RenderPresent(renderer);
                     SDL_Delay(250);
                 }
-
                 // Set the flag to transition to the rules screen
                 nextScreen = ScreenType::RULES;
                 break;  // Break out of the loop after showing the rules
@@ -623,20 +616,13 @@ void WelcomeScreen::show(SDL_Renderer* renderer, ScreenType& nextScreen) {
         }
     }
 
-    
-
     SDL_DestroyTexture(texture);
     SDL_DestroyTexture(textureClicked);
     SDL_DestroyTexture(rulesTexture);
 
     if (startGame) {
-        // Stop the music when transitioning to the player selection screen
-        // Mix_HaltMusic();
         nextScreen = ScreenType::PLAYER_SELECTION;
     }
-
-    // Free the music at the end
-    Mix_FreeMusic(music);
 }
 
 SDL_Texture* PlayerSelectionScreen::loadTexture(const std::string& path, SDL_Renderer* renderer) {
@@ -693,9 +679,8 @@ PlayerSelectionScreen::PlayerSelectionScreen(SDL_Renderer* renderer) : dice1(nul
 
 // PlayerSelectionScreen class
 void PlayerSelectionScreen::show(SDL_Renderer* renderer, ScreenType& nextScreen) {
-    Mix_Music* music = Mix_LoadMUS("C:\\Users\\USER\\OneDrive\\Documents\\GitHub\\OOP_Project_Group9\\assets\\audio1.mp3");
-    Mix_PlayMusic(music, -1);
-    // Load the board image
+
+    //load board image
     SDL_Surface* boardImage = IMG_Load("C:\\Users\\USER\\OneDrive\\Documents\\GitHub\\OOP_Project_Group9\\assets\\board.png");
     SDL_Texture* boardTexture = SDL_CreateTextureFromSurface(renderer, boardImage);
     //TOKEN:
@@ -717,13 +702,11 @@ void PlayerSelectionScreen::show(SDL_Renderer* renderer, ScreenType& nextScreen)
         return;
     }
 
-    
     if (!yellowTokenTexture) {
         // Handle error
         SDL_DestroyTexture(boardTexture);
         return;
     }
-
     
     if (!blueTokenTexture) {
         // Handle error
@@ -731,44 +714,36 @@ void PlayerSelectionScreen::show(SDL_Renderer* renderer, ScreenType& nextScreen)
         return;
     }
 
-    // Create tokens based on dice colorS
+    // Create tokens based on dice colorS 
     redToken = new Token(renderer, redTokenTexture);
-    // redToken->setStartPosition(5, 305);
     redToken->setStartPosition(0, 0);
     redToken->lock(); //initial state will be locked
+    // redToken->notGoIn(); //the token can't inside the winning squares
 
 
     greenToken = new Token(renderer, greenTokenTexture);
-    // greenToken->setStartPosition(405, 55);
     greenToken->setStartPosition(450, 0);
     greenToken->lock(); //initial state will be locked
-
+    // greenToken->notGoIn(); //Token can't go in the winning squares
 
     yellowToken = new Token(renderer, yellowTokenTexture);
-    // yellowToken->setStartPosition(655,405);
     yellowToken->setStartPosition(710, 450);
     yellowToken->lock(); //initial state will be locked
-
+    // yellowToken->notGoIn(); //token can't go in 
 
 
     blueToken = new Token(renderer, blueTokenTexture);
-    // blueToken -> setStartPosition(305,655);
     blueToken->setStartPosition(260, 710);
     blueToken->lock(); //initial state will be locked
 
     SDL_FreeSurface(boardImage);
-
-    // Render the board
     SDL_RenderClear(renderer);
     SDL_RenderCopy(renderer, boardTexture, NULL, NULL);
-
     redToken->render(renderer);
     greenToken->render(renderer);
     yellowToken->render(renderer);
     blueToken->render(renderer);
-
-    SDL_RenderPresent(renderer);
-    
+    // Render the board
     if (dice1) {
         dice1->render(renderer);  // Pass the renderer here
     }
@@ -783,8 +758,10 @@ void PlayerSelectionScreen::show(SDL_Renderer* renderer, ScreenType& nextScreen)
 
     if (dice4) {
         dice4->render(renderer);  // Pass the renderer here
+
     }
 
+    SDL_RenderPresent(renderer);
     bool running = true;
     SDL_Event event;
     while (running) {
@@ -797,9 +774,6 @@ void PlayerSelectionScreen::show(SDL_Renderer* renderer, ScreenType& nextScreen)
                 int x, y;
                 SDL_GetMouseState(&x, &y);
                 std::cout << "Mouse clicked at (" << x << ", " << y << ")\n";
-
-                // std::cout<<"Current Turn: Player Red!!!"<<std::endl;
-                // Handle dice rolling logic based on mouse click
                 if (x >= 80 && x <= 212 && y >= 80 && y <= 212 && currentTurn == Turn::DICE1) {
                     if (dice1) {
                         //dice roll will happen and a random face will be generated
@@ -807,7 +781,6 @@ void PlayerSelectionScreen::show(SDL_Renderer* renderer, ScreenType& nextScreen)
                         //dice score is stored and displayed
                         int diceScore = dice1->diceScore();
                         std::cout << "Dice Score for Red is: " << diceScore << std::endl;
-
                         //condition if redToken is not locked, then move to next position based on diceScore
                         if(redToken->getPosition().x == 0 && redToken->getPosition().y == 0 && redToken->isLocked()){
                             if(diceScore==6){
@@ -815,7 +788,6 @@ void PlayerSelectionScreen::show(SDL_Renderer* renderer, ScreenType& nextScreen)
                                 redToken->setStartPosition(55,305); //Move token to start position
                                 std::cout<<"Player Red unlocked and moved to start location\n"<<std::endl;
                                 std::cout<<"Player Red gets another turn\n";
-                                // std::endl;
 
                                 continue; //gets another turn
                             }
@@ -837,7 +809,7 @@ void PlayerSelectionScreen::show(SDL_Renderer* renderer, ScreenType& nextScreen)
                                 std::cout<<"Next Player turn is: Player Green!!\n"<<std::endl;
                             }
                         }
-                        checkAndMoveBackToHome(redToken, greenToken, yellowToken, blueToken);
+                        checkAndMoveBackToHome(redToken, blueToken, greenToken, yellowToken);
 
                     }
                 } else if (x >= 530 && x <= 662 && y >= 80 && y <= 212 && currentTurn == Turn::DICE2) {
@@ -879,8 +851,6 @@ void PlayerSelectionScreen::show(SDL_Renderer* renderer, ScreenType& nextScreen)
                                 }
                         }
                         checkAndMoveBackToHome(greenToken, redToken, yellowToken, blueToken);
-
-                        
                     }
                 } else if (x >= 530 && x <= 662 && y >= 530 && y <= 662 && currentTurn == Turn::DICE3) {
                     if (dice3) {
@@ -921,8 +891,7 @@ void PlayerSelectionScreen::show(SDL_Renderer* renderer, ScreenType& nextScreen)
                             }
                         }
                         checkAndMoveBackToHome(yellowToken, greenToken, redToken, blueToken);
-
-                        
+    
                     }
                 } else if (x >= 80 && x <= 530 && y >= 530 && y <= 662 && currentTurn == Turn::DICE4) {
                     if (dice4) {
@@ -949,6 +918,7 @@ void PlayerSelectionScreen::show(SDL_Renderer* renderer, ScreenType& nextScreen)
                         else{
                             if(diceScore==6){
                             blueToken->moveToNextPositionBlue(diceScore);
+                            checkAndMoveBackToHome(blueToken, greenToken, yellowToken, redToken);
                             currentTurn = Turn::DICE4;
                             std::cout<<"Player Blue gets another turn!!"<<std::endl;
                             std::cout<<std::endl;
@@ -956,23 +926,20 @@ void PlayerSelectionScreen::show(SDL_Renderer* renderer, ScreenType& nextScreen)
 
                             else{
                                 blueToken->moveToNextPositionBlue(diceScore);
+                                checkAndMoveBackToHome(blueToken, greenToken, yellowToken, redToken);
                                 currentTurn = Turn::DICE1;
                                 std::cout<<"Next Player's turn: Player Red!!"<<std::endl;
                                 std::cout<<std::endl;
                             }
                         }
                     
-                    checkAndMoveBackToHome(blueToken, greenToken, yellowToken, redToken);
-                        
-                    
+                    checkAndMoveBackToHome(blueToken, greenToken, yellowToken, redToken);   
                 }
 
             }
         }
         }
-        // Clear the renderer
         SDL_RenderClear(renderer);
-
         // Render the board
         SDL_RenderCopy(renderer, boardTexture, NULL, NULL);
 
@@ -982,14 +949,6 @@ void PlayerSelectionScreen::show(SDL_Renderer* renderer, ScreenType& nextScreen)
         greenToken->render(renderer);
         yellowToken->render(renderer);
         blueToken->render(renderer);
-
-        // Render the dice
-
-        // Present the renderer
-        SDL_RenderPresent(renderer);
-
-        // Add a slight delay to control the frame rate
-        SDL_Delay(16);
         if (dice1) {
             dice1->render(renderer);
         }
@@ -1005,19 +964,21 @@ void PlayerSelectionScreen::show(SDL_Renderer* renderer, ScreenType& nextScreen)
         if (dice4) {
             dice4->render(renderer);
         }
+
+        // Present the renderer
+        SDL_RenderPresent(renderer);
+
+        // Add a slight delay to control the frame rate
+        SDL_Delay(16);
     }
     SDL_DestroyTexture(boardTexture);
-    Mix_FreeMusic(music);
+    // Mix_FreeMusic(music);
 }
 
 
 bool PlayerSelectionScreen::checkAndMoveBackToHome(Token* currentToken, Token* token2, Token* token3, Token* token4) {
-    // if (currentToken->getPosition().x != currentToken->mainTrackStartX() && currentToken->getPosition().y != currentToken->mainTrackStartY()){
         // Check if the new position overlaps with other tokens
-        if (currentToken->getPosition().x == token2->getPosition().x &&currentToken->getPosition().y == token2->getPosition().y) {
-            // // token2->moveToHome();
-            // token2->lock();
-            // bool check = true;
+        if (currentToken->getPosition().x == token2->getPosition().x && currentToken->getPosition().y == token2->getPosition().y) {
             if(token2 == redToken){
                 redToken->lock();
                 redToken->setStartPosition(0,0);
@@ -1039,7 +1000,7 @@ bool PlayerSelectionScreen::checkAndMoveBackToHome(Token* currentToken, Token* t
                 // return true;
             }
             
-        } else if (currentToken->getPosition().x == token3->getPosition().x &&currentToken->getPosition().y == token3->getPosition().y) {
+        } else if (currentToken->getPosition().x == token3->getPosition().x && currentToken->getPosition().y == token3->getPosition().y) {
             if(token3 == redToken){
                 redToken->lock();
                 redToken->setStartPosition(0,0);
@@ -1060,7 +1021,7 @@ bool PlayerSelectionScreen::checkAndMoveBackToHome(Token* currentToken, Token* t
                 yellowToken->setStartPosition(710,450);
                 return true;
             }
-        } else if (currentToken->getPosition().x == token4->getPosition().x &&currentToken->getPosition().y == token4->getPosition().y) {
+        } else if (currentToken->getPosition().x == token4->getPosition().x && currentToken->getPosition().y == token4->getPosition().y) {
             if(token4 == redToken){
                 redToken->lock();
                 redToken->setStartPosition(0,0);
@@ -1083,7 +1044,6 @@ bool PlayerSelectionScreen::checkAndMoveBackToHome(Token* currentToken, Token* t
             }
         }
         return false;
-    // }
 }
 
 
@@ -1122,62 +1082,43 @@ void RulesScreen::show(SDL_Renderer* renderer, ScreenType& nextScreen) {
 
 // Implementation of ScreenManager
 ScreenManager::ScreenManager()
-    : currentScreen(ScreenType::WELCOME), music(nullptr) {
+    : window(nullptr), renderer(nullptr), currentScreen(ScreenType::WELCOME) {
     window = SDL_CreateWindow("Ludo Game", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 750, 750, SDL_WINDOW_SHOWN);
     renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
-    // Load music
-    music = Mix_LoadMUS("C:\\Users\\USER\\OneDrive\\Documents\\GitHub\\OOP_Project_Group9\\assets\\audio2.mp3");
-    // Play music only if it's not already playing
-    playMusic();
 }
 
 ScreenManager::~ScreenManager() {
-    // Free music
-    if (music) {
-        Mix_FreeMusic(music);
-    }
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
-    Mix_Quit();
+    // Mix_Quit();
     SDL_Quit();
 }
-
-void ScreenManager::playMusic() {
-    if (music) {
-        // Play music only if it's not already playing
-        if (Mix_PlayingMusic() == 0) {
-            Mix_PlayMusic(music, -1);
+ void ScreenManager::run() {
+        while (currentScreen != ScreenType::EXIT) {
+            // playMusicBasedOnScreen();
+            switch (currentScreen) {
+                case ScreenType::WELCOME: {
+                    WelcomeScreen welcomeScreen;
+                    welcomeScreen.show(renderer, currentScreen);
+                    break;
+                }
+                case ScreenType::PLAYER_SELECTION: {
+                    PlayerSelectionScreen playerSelectionScreen(renderer);
+                    playerSelectionScreen.show(renderer, currentScreen);
+                    break;
+                }
+                case ScreenType::RULES: {
+                    RulesScreen rulesScreen;
+                    rulesScreen.show(renderer, currentScreen);
+                    break;
+                }
+                // Add more cases for other screens as needed
+                default:
+                    // Handle unknown screen type
+                    break;
+            }
         }
     }
-}
-
-void ScreenManager::run() {
-    while (currentScreen != ScreenType::EXIT) {
-        switch (currentScreen) {
-            case ScreenType::WELCOME: {
-                WelcomeScreen welcomeScreen;
-                welcomeScreen.show(renderer, currentScreen);
-                break;
-            }
-            case ScreenType::PLAYER_SELECTION: {
-                PlayerSelectionScreen playerSelectionScreen(renderer);  // Pass renderer here
-                playerSelectionScreen.show(renderer, currentScreen);
-                break;
-            }
-            case ScreenType::RULES: {
-                RulesScreen rulesScreen;
-                rulesScreen.show(renderer, currentScreen);
-                break;
-            }
-            // Add more cases for other screens as needed
-            default:
-                // Handle unknown screen type
-                break;
-        }
-    }
-}
-
-
 
 WelcomeScreen::~WelcomeScreen() {
     // Add any cleanup code if needed

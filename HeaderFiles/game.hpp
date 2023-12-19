@@ -6,10 +6,6 @@
 #include <string>
 #include "dice.hpp"
 #include "tokens.hpp"
-// #pragma once
-
-
-
 
 // Enumeration to represent different screens
 enum ScreenType {
@@ -28,8 +24,6 @@ public:
     virtual void show(SDL_Renderer* renderer, ScreenType& nextScreen) = 0;
 };
 
-
-
 // Update the WelcomeScreen class
 class WelcomeScreen : public Screen {
     private:
@@ -43,7 +37,7 @@ class WelcomeScreen : public Screen {
 
 };
 
-
+// class MusicManager;
 
 // Update the PlayerSelectionScreen class
 class PlayerSelectionScreen : public Screen {
@@ -73,14 +67,11 @@ class PlayerSelectionScreen : public Screen {
         bool checkAndMoveBackToHome(Token* currentToken, Token* token2, Token* token3, Token* token4);
 
 
-
     public:
         PlayerSelectionScreen(SDL_Renderer* renderer);
         // virtual void show(SDL_Renderer* renderer, ScreenType& nextScreen) override;
         void show(SDL_Renderer* renderer, ScreenType& nextScreen);
         ~PlayerSelectionScreen();
-
-
 };
 
 
@@ -94,7 +85,6 @@ class RulesScreen : public Screen {
 };
 
 
-
 // Update the ScreenManager class
 class ScreenManager {
 
@@ -102,8 +92,8 @@ class ScreenManager {
         SDL_Window* window;
         SDL_Renderer* renderer;
         ScreenType currentScreen;
-        Mix_Music* music;
-        void playMusic();
+       
+
         
     public:
         ScreenManager();

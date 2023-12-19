@@ -67,6 +67,8 @@ public:
     void lock() {
         locked = true;
     }
+    // bool killed;
+    // void hasKill();
 
 private:
     SDL_Texture* texture;
@@ -75,6 +77,7 @@ private:
     int currentX;
     int currentY;
     bool locked;
+    
     // Declare boardMovement as a static member variable
     static std::vector<SDL_Point> boardMovementRed;
     static std::vector<SDL_Point> boardMovementGreen;

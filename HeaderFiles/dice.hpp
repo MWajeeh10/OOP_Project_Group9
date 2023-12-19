@@ -72,7 +72,7 @@ class Dice {
         // void roll(SDL_Renderer* renderer); 
 
         // Method to get the current dice value
-        int getValue() const;
+        int getValue() const; 
 
     public:
         // Constructor for the Dice class

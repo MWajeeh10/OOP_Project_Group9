@@ -25,7 +25,8 @@ std::vector<SDL_Point> Token::boardMovementRed = {
     {405, 655}, {405, 705}, {355, 705}, {305, 705},
     {305, 655}, {305, 605}, {305, 555}, {305, 505}, 
     {305, 455}, {255, 405}, {205, 405}, {155, 405}, 
-    {105, 405}, {55, 405 }, {5, 405  }, {5, 355  }, 
+    {105, 405}, {55, 405 }, {5, 405  }, {5, 355  }, {55,355}, 
+    {105,355}, {155,355}, {205,355}, {255,355}, {305,355}
 };
 
 
@@ -43,7 +44,7 @@ std::vector<SDL_Point> Token::boardMovementGreen= {
     {5, 405  }, {5, 355  }, {55, 305 }, {105, 305},  
     {155, 305},{205, 305}, {255, 305}, {305, 255}, 
     {305, 205}, {305, 155}, {305, 105}, {305, 55 }, 
-    {305, 5  },{355,5}
+    {305, 5  },{355,5}, {355,55}, {355,105},{355,155},{355,205},{355,255},{355,305}
 };
 
 
@@ -61,7 +62,7 @@ std::vector<SDL_Point> Token::boardMovementYellow= {
     {305, 5  },{355,5},{405, 55 }, {405, 105}, 
     {405, 155}, {405, 205}, {405, 255}, {455, 305}, 
     {505, 305}, {555, 305}, {605, 305}, {655, 305}, 
-    {705, 305}, {705, 355}
+    {705, 305}, {705, 355}, {655,355}, {605, 355}, {555, 355}, {505,355}, {455,355}
 };
 
 
@@ -78,15 +79,8 @@ std::vector<SDL_Point> Token::boardMovementBlue= {
     {505, 305}, {555, 305}, {605, 305}, {655, 305}, 
     {705, 305}, {705, 355}, {705, 405}, {655, 405}, 
     {605, 405}, {555, 405}, {505, 405}, {455, 405}, 
-    {405, 655}, {405, 705}, {355, 705}
+    {405, 655}, {405, 705}, {355, 705}, {355, 655}, {355,555}, {355,505}, {355,455}, {355,405}
 };
-
-
-
-
-
-
-
 
 Token::Token(SDL_Renderer* renderer, SDL_Texture* texture)
     : texture(texture), currentX(0), currentY(0) {
@@ -120,11 +114,11 @@ void Token::moveToNextPositionRed(int diceScore) {
     const int homeY = 0;
     const int mainTrackStartX = 55;
     const int mainTrackStartY = 305;
-    const int mainTrackLength = 50;
-    const int destinationX = 5;
-    const int destinationY = 355;
+    const int mainTrackLength = 57;
+    int destinationX = 5;
+    int destinationY = 355;
+    int destinationIndexR = 50;
 
-    // Check if the token is in the home area
     if (position.x == homeX && position.y == homeY && diceScore > 0) {
         // Move along the vertical path to the starting point of the main track
         position.y -= diceScore * mainTrackLength; // Adjust TOKEN_STEP_SIZE according to your needs
@@ -138,22 +132,16 @@ void Token::moveToNextPositionRed(int diceScore) {
                 int newPositionIndex = i + diceScore;
 
                 // If the new position index exceeds the boardMovement size, set it to the destination
-                if (newPositionIndex >= boardMovementRed.size()) {
-                    newPositionIndex = boardMovementRed.size() - 1;
-                    // newPositionIndex = (i + diceScore) % boardMovement.size();
-
+                if (newPositionIndex > destinationIndexR) {
+                    // newPositionIndex = boardMovementRed.size() - 1;
+                    return;
                 }
 
-                // Move the token along the predefined board positions
-                position.x = boardMovementRed[newPositionIndex].x;
-                position.y = boardMovementRed[newPositionIndex].y;
-
-                // Check if the token has reached the destination
-                if (position.x == destinationX && position.y == destinationY) {
-                    // You may want to add additional logic or handle reaching the destination here
-                    // For now, let's set the position to the destination to stop the token
-                    position.x = destinationX;
-                    position.y = destinationY;
+                // Check if the new position index is lesser than or equal to the destination index
+                if (newPositionIndex <= destinationIndexR) {
+                    // Move the token along the predefined board positions
+                    position.x = boardMovementRed[newPositionIndex].x;
+                    position.y = boardMovementRed[newPositionIndex].y;
                 }
 
                 break;  // Exit the loop once the new position is set
@@ -165,6 +153,7 @@ void Token::moveToNextPositionRed(int diceScore) {
 
 
 
+
 //movement for green
 void Token::moveToNextPositionGreen(int diceScore) {
     // Assuming a standard Ludo board
@@ -172,11 +161,11 @@ void Token::moveToNextPositionGreen(int diceScore) {
     const int homeY = 0;
     const int mainTrackStartX = 605;
     const int mainTrackStartY = 405;
-    const int mainTrackLength = 50;
+    const int mainTrackLength = 56;
     const int destinationX = 355;
     const int destinationY = 5;
+    int destinationIndexG = 49;
 
-    // Check if the token is in the home area
     if (position.x == homeX && position.y == homeY && diceScore > 0) {
         // Move along the vertical path to the starting point of the main track
         position.y -= diceScore * mainTrackLength; // Adjust TOKEN_STEP_SIZE according to your needs
@@ -190,22 +179,16 @@ void Token::moveToNextPositionGreen(int diceScore) {
                 int newPositionIndex = i + diceScore;
 
                 // If the new position index exceeds the boardMovement size, set it to the destination
-                if (newPositionIndex >= boardMovementGreen.size()) {
-                    newPositionIndex = boardMovementGreen.size() - 1;
-                    // newPositionIndex = (i + diceScore) % boardMovement.size();
-
+                if (newPositionIndex > destinationIndexG) {
+                    // newPositionIndex = boardMovementRed.size() - 1;
+                    return;
                 }
 
-                // Move the token along the predefined board positions
-                position.x = boardMovementGreen[newPositionIndex].x;
-                position.y = boardMovementGreen[newPositionIndex].y;
-
-                // Check if the token has reached the destination
-                if (position.x == destinationX && position.y == destinationY) {
-                    // You may want to add additional logic or handle reaching the destination here
-                    // For now, let's set the position to the destination to stop the token
-                    position.x = destinationX;
-                    position.y = destinationY;
+                // Check if the new position index is lesser than or equal to the destination index
+                if (newPositionIndex <= destinationIndexG) {
+                    // Move the token along the predefined board positions
+                    position.x = boardMovementGreen[newPositionIndex].x;
+                    position.y = boardMovementGreen[newPositionIndex].y;
                 }
 
                 break;  // Exit the loop once the new position is set
@@ -216,8 +199,6 @@ void Token::moveToNextPositionGreen(int diceScore) {
 
 
 
-
-
 //movement for Yellow
 void Token::moveToNextPositionYellow(int diceScore) {
     // Assuming a standard Ludo board
@@ -225,9 +206,10 @@ void Token::moveToNextPositionYellow(int diceScore) {
     const int homeY = 450;
     const int mainTrackStartX = 655;
     const int mainTrackStartY = 405;
-    const int mainTrackLength = 50;
+    const int mainTrackLength = 54;
     const int destinationX = 705;
     const int destinationY = 355;
+    int destinationIndexY = 48;
 
     // Check if the token is in the home area
     if (position.x == homeX && position.y == homeY && diceScore > 0) {
@@ -243,22 +225,16 @@ void Token::moveToNextPositionYellow(int diceScore) {
                 int newPositionIndex = i + diceScore;
 
                 // If the new position index exceeds the boardMovement size, set it to the destination
-                if (newPositionIndex >= boardMovementYellow.size()) {
-                    newPositionIndex = boardMovementYellow.size() - 1;
-                    // newPositionIndex = (i + diceScore) % boardMovement.size();
-
+                if (newPositionIndex > destinationIndexY) {
+                    // newPositionIndex = boardMovementRed.size() - 1;
+                    return;
                 }
 
-                // Move the token along the predefined board positions
-                position.x = boardMovementYellow[newPositionIndex].x;
-                position.y = boardMovementYellow[newPositionIndex].y;
-
-                // Check if the token has reached the destination
-                if (position.x == destinationX && position.y == destinationY) {
-                    // You may want to add additional logic or handle reaching the destination here
-                    // For now, let's set the position to the destination to stop the token
-                    position.x = destinationX;
-                    position.y = destinationY;
+                // Check if the new position index is lesser than or equal to the destination index
+                if (newPositionIndex <= destinationIndexY) {
+                    // Move the token along the predefined board positions
+                    position.x = boardMovementYellow[newPositionIndex].x;
+                    position.y = boardMovementYellow[newPositionIndex].y;
                 }
 
                 break;  // Exit the loop once the new position is set
@@ -271,7 +247,6 @@ SDL_Rect Token::getPosition() const {
     return position;
 }
 
-
 //movement for Blue
 void Token::moveToNextPositionBlue(int diceScore) {
     // Assuming a standard Ludo board
@@ -279,10 +254,9 @@ void Token::moveToNextPositionBlue(int diceScore) {
     const int homeY = 710;
     const int mainTrackStartX = 305;
     const int mainTrackStartY = 655;
-    const int mainTrackLength = 50;
+    const int mainTrackLength = 54;
     const int destinationX = 355;
     const int destinationY = 705;
-
     // Check if the token is in the home area
     if (position.x == homeX && position.y == homeY && diceScore > 0) {
         // Move along the vertical path to the starting point of the main track
@@ -297,22 +271,16 @@ void Token::moveToNextPositionBlue(int diceScore) {
                 int newPositionIndex = i + diceScore;
 
                 // If the new position index exceeds the boardMovement size, set it to the destination
-                if (newPositionIndex >= boardMovementBlue.size()) {
-                    newPositionIndex = boardMovementBlue.size() - 1;
-                    // newPositionIndex = (i + diceScore) % boardMovement.size();
-
+                if (newPositionIndex > boardMovementBlue.size() - 1) {
+                    // newPositionIndex = boardMovementRed.size() - 1;
+                    return;
                 }
 
-                // Move the token along the predefined board positions
-                position.x = boardMovementBlue[newPositionIndex].x;
-                position.y = boardMovementBlue[newPositionIndex].y;
-
-                // Check if the token has reached the destination
-                if (position.x == destinationX && position.y == destinationY) {
-                    // You may want to add additional logic or handle reaching the destination here
-                    // For now, let's set the position to the destination to stop the token
-                    position.x = destinationX;
-                    position.y = destinationY;
+                // Check if the new position index is lesser than or equal to the destination index
+                if (newPositionIndex <= boardMovementBlue.size() - 1) {
+                    // Move the token along the predefined board positions
+                    position.x = boardMovementBlue[newPositionIndex].x;
+                    position.y = boardMovementBlue[newPositionIndex].y;
                 }
 
                 break;  // Exit the loop once the new position is set
