@@ -3,6 +3,7 @@
 #include <random>
 #include <ctime>
 #include <algorithm>  // Include the algorithm header
+#include <SDL_mixer.h>
 
 // Constructor for the Dice class
 Dice::Dice(SDL_Renderer* renderer, const std::vector<std::string>& facePaths, int x, int y)
@@ -13,7 +14,18 @@ Dice::Dice(SDL_Renderer* renderer, const std::vector<std::string>& facePaths, in
         loadTexture(path, renderer, texture);
         faceTextures.push_back(texture);
     }
+        // Initialize SDL_mixer
+    if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0) {
+        std::cerr << "SDL_mixer could not initialize! SDL_mixer Error: " << Mix_GetError() << std::endl;
+        // Handle error as needed
+    }
+    rollSound = Mix_LoadWAV("C:\\Users\\786 COMPUTERS\\OneDrive\\Desktop\\dice-142528.mp3");
+    if (!rollSound) {
+        std::cerr << "Unable to load roll sound effect! SDL_mixer Error: " << Mix_GetError() << std::endl;
+        // Handle error as needed
+    }
 }
+
 
 // Destructor for the Dice class
 Dice::~Dice() {
@@ -47,11 +59,13 @@ void Dice::roll(SDL_Renderer* renderer) {
 
     Uint32 startTime = SDL_GetTicks();
     Uint32 currentTime;
+    Mix_PlayChannel(-1, rollSound, 0);
 
     // Roll for 2 seconds
     while ((currentTime = SDL_GetTicks()) - startTime < 2000) {
         // Update every 50 milliseconds
         if ((currentTime - startTime) % 50 == 0) {
+            // Mix_PlayChannel(-1, rollSound, 0);
             SDL_Delay(50);
 
             // Randomly select a face for rolling effect
@@ -71,6 +85,10 @@ void Dice::roll(SDL_Renderer* renderer) {
                 return;
             }
         }
+            Mix_FreeChunk(rollSound);
+            rollSound = nullptr;
+
+            // rolling = false;
     }
 
     rolling = false;

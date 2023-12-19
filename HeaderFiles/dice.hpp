@@ -55,6 +55,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <SDL_mixer.h>
 
 
 class Dice {
@@ -73,6 +74,7 @@ class Dice {
 
         // Method to get the current dice value
         int getValue() const;
+        Mix_Chunk * rollSound;
 
     public:
         // Constructor for the Dice class
