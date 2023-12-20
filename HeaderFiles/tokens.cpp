@@ -128,9 +128,25 @@ void Token::moveToNextPositionRed(int diceScore) {
     } else {
         // Calculate the current position within the main track based on the board movement array
         for (size_t i = 0; i < boardMovementRed.size(); ++i) {
+            // ! calculate the next index of token acc to array
             if (position.x == boardMovementRed[i].x && position.y == boardMovementRed[i].y) {
                 int newPositionIndex = i + diceScore;
 
+                if(killer.hasKilled == true){
+                    destinationX = 355;
+                    destinationY = 305;
+                    if (newPositionIndex > boardMovementRed.size() - 1) {
+                        // newPositionIndex = boardMovementRed.size() - 1;
+                        return;
+                    }
+
+                    // Check if the new position index is lesser than or equal to the destination index
+                    if (newPositionIndex <= boardMovementRed.size() - 1) {
+                        // Move the token along the predefined board positions
+                        position.x = boardMovementRed[newPositionIndex].x;
+                        position.y = boardMovementRed[newPositionIndex].y;
+                    }
+                }
                 // If the new position index exceeds the boardMovement size, set it to the destination
                 if (newPositionIndex > destinationIndexR) {
                     // newPositionIndex = boardMovementRed.size() - 1;
@@ -162,8 +178,8 @@ void Token::moveToNextPositionGreen(int diceScore) {
     const int mainTrackStartX = 605;
     const int mainTrackStartY = 405;
     const int mainTrackLength = 56;
-    const int destinationX = 355;
-    const int destinationY = 5;
+    int destinationX = 355;
+    int destinationY = 5;
     int destinationIndexG = 49;
 
     if (position.x == homeX && position.y == homeY && diceScore > 0) {
@@ -177,7 +193,23 @@ void Token::moveToNextPositionGreen(int diceScore) {
         for (size_t i = 0; i < boardMovementGreen.size(); ++i) {
             if (position.x == boardMovementGreen[i].x && position.y == boardMovementGreen[i].y) {
                 int newPositionIndex = i + diceScore;
+                
+                if(killer.hasKilled == true){
+                    destinationX = 355;
+                    destinationY = 305;
+                    if (newPositionIndex > boardMovementGreen.size() - 1) {
+                        // newPositionIndex = boardMovementRed.size() - 1;
+                        return;
+                    }
 
+                    // Check if the new position index is lesser than or equal to the destination index
+                    if (newPositionIndex <= boardMovementGreen.size() - 1) {
+                        // Move the token along the predefined board positions
+                        position.x = boardMovementGreen[newPositionIndex].x;
+                        position.y = boardMovementGreen[newPositionIndex].y;
+                    }
+                }
+                else{
                 // If the new position index exceeds the boardMovement size, set it to the destination
                 if (newPositionIndex > destinationIndexG) {
                     // newPositionIndex = boardMovementRed.size() - 1;
@@ -190,7 +222,7 @@ void Token::moveToNextPositionGreen(int diceScore) {
                     position.x = boardMovementGreen[newPositionIndex].x;
                     position.y = boardMovementGreen[newPositionIndex].y;
                 }
-
+                }
                 break;  // Exit the loop once the new position is set
             }
         }
@@ -207,8 +239,8 @@ void Token::moveToNextPositionYellow(int diceScore) {
     const int mainTrackStartX = 655;
     const int mainTrackStartY = 405;
     const int mainTrackLength = 54;
-    const int destinationX = 705;
-    const int destinationY = 355;
+    int destinationX = 705;
+    int destinationY = 355;
     int destinationIndexY = 48;
 
     // Check if the token is in the home area
@@ -223,7 +255,21 @@ void Token::moveToNextPositionYellow(int diceScore) {
         for (size_t i = 0; i < boardMovementYellow.size(); ++i) {
             if (position.x == boardMovementYellow[i].x && position.y == boardMovementYellow[i].y) {
                 int newPositionIndex = i + diceScore;
+                if(killer.hasKilled == true){
+                    destinationX = 455;
+                    destinationY = 355;
+                    if (newPositionIndex > boardMovementYellow.size() - 1) {
+                    // newPositionIndex = boardMovementRed.size() - 1;
+                    return;
+                }
 
+                // Check if the new position index is lesser than or equal to the destination index
+                if (newPositionIndex <= boardMovementYellow.size() - 1) {
+                    // Move the token along the predefined board positions
+                    position.x = boardMovementYellow[newPositionIndex].x;
+                    position.y = boardMovementYellow[newPositionIndex].y;
+                }
+            }else{
                 // If the new position index exceeds the boardMovement size, set it to the destination
                 if (newPositionIndex > destinationIndexY) {
                     // newPositionIndex = boardMovementRed.size() - 1;
@@ -236,7 +282,7 @@ void Token::moveToNextPositionYellow(int diceScore) {
                     position.x = boardMovementYellow[newPositionIndex].x;
                     position.y = boardMovementYellow[newPositionIndex].y;
                 }
-
+            }
                 break;  // Exit the loop once the new position is set
             }
         }

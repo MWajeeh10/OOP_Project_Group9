@@ -40,8 +40,9 @@
 #include <SDL_image.h>
 #include <iostream>
 #include <vector>
+#include "kill.hpp"
 
-class Token {
+class Token : public Kill { 
 public:
     Token(SDL_Renderer* renderer, SDL_Texture* texture);
     ~Token();
@@ -73,6 +74,7 @@ public:
 private:
     SDL_Texture* texture;
     SDL_Rect position;
+    Kill killer;
 
     int currentX;
     int currentY;

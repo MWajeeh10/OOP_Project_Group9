@@ -6,8 +6,10 @@
 #include <string>
 #include "dice.hpp"
 #include "tokens.hpp"
+#include "kill.hpp"
+#include "score.hpp"
 
-// Enumeration to represent different screens
+// Enumeration to  represent different screens in the game,
 enum ScreenType {
     WELCOME,
     PLAYER_SELECTION,
@@ -18,11 +20,11 @@ enum ScreenType {
 
 // Base class for screens
 class Screen {
-
 public:
-    virtual ~Screen() {}
-    virtual void show(SDL_Renderer* renderer, ScreenType& nextScreen) = 0;
+    virtual ~Screen() {}  //! allows proper destruction of objects through base class pointers
+    virtual void show(SDL_Renderer* renderer, ScreenType& nextScreen) = 0;  
 };
+
 
 // Update the WelcomeScreen class
 class WelcomeScreen : public Screen {
@@ -64,7 +66,7 @@ class PlayerSelectionScreen : public Screen {
         Token* greenToken; // green token
         Token* yellowToken;
         Token* blueToken;
-        bool checkAndMoveBackToHome(Token* currentToken, Token* token2, Token* token3, Token* token4);
+        bool checkAndMoveBackToHome(Token* currentToken, Token* token2, Token* token3, Token* token4, ScoreCalculator& scoreCalculator);
 
 
     public:
@@ -72,6 +74,7 @@ class PlayerSelectionScreen : public Screen {
         // virtual void show(SDL_Renderer* renderer, ScreenType& nextScreen) override;
         void show(SDL_Renderer* renderer, ScreenType& nextScreen);
         ~PlayerSelectionScreen();
+        ScoreCalculator scoreCalculator;
 };
 
 
@@ -87,12 +90,10 @@ class RulesScreen : public Screen {
 
 // Update the ScreenManager class
 class ScreenManager {
-
     private:
         SDL_Window* window;
         SDL_Renderer* renderer;
         ScreenType currentScreen;
-       
 
         
     public:

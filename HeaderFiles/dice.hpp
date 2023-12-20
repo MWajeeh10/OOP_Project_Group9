@@ -55,6 +55,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <map>
 
 
 class Dice {
@@ -73,11 +74,13 @@ class Dice {
 
         // Method to get the current dice value
         int getValue() const; 
+        std::vector<int> faceScores;
 
     public:
         // Constructor for the Dice class
-        Dice(SDL_Renderer* renderer, const std::vector<std::string>& facePaths, int x, int y);
-
+        // Dice(SDL_Renderer* renderer, const std::vector<std::string>& facePaths, int x, int y);
+        Dice(SDL_Renderer* renderer, const std::map < std::string, int> &facePathsAndScores, int x, int y);
+        // Dice(SDL_Renderer* renderer, const std::map<std::string, int>& facePathsAndScores, int x, int y);
         // Destructor for the Dice class
         ~Dice();
 
