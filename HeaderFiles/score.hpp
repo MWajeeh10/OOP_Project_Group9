@@ -16,7 +16,7 @@ public:
     int operator[](Token* token) const;
 
     // Print scores for all tokens
-    void printScores() const;
+    // void printScores() const;
 
 private:
     std::unordered_map<Token*, int> scores;

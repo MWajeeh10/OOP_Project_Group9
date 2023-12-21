@@ -8,6 +8,8 @@
 
 class Kill{
     public:
+
+        
         bool hasKilled = false;
 
         void killToken();

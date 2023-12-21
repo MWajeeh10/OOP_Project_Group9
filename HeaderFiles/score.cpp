@@ -13,12 +13,12 @@ int ScoreCalculator::operator[](Token* token) const {
     return (it != scores.end()) ? it->second : 0;
 }
 
-void ScoreCalculator::printScores() const {
-    // Print scores for all tokens
-    for (const auto& entry : scores) {
-        Token* token = entry.first;
-        int score = entry.second;
-        // You can print or use the scores as needed
-        std::cout << "Player score for token: " << score << std::endl;
-    }
-}
+// void ScoreCalculator::printScores() const {
+//     // Print scores for all tokens
+//     for (const auto& entry : scores) {
+//         Token* token = entry.first;
+//         int score = entry.second;
+//         // You can print or use the scores as needed
+//         std::cout << "Player score for token: " << score << std::endl;
+//     }
+// }

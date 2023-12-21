@@ -16,7 +16,10 @@
 //     return 0;
 // }
 #include <iostream>
-#include "game.hpp"
+// #include "game.hpp"
+#include "screenManager.hpp"
+#include "screen.hpp"
+
 // #include "musicManager.hpp"
 // #include <SDL.h>
 

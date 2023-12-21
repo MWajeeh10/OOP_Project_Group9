@@ -1,22 +1,28 @@
 #include "music.hpp"
+#include <SDL.h>
+#include <SDL_image.h>
+#include <iostream>
+#include <string>
+#include "screen.hpp"
 
-MusicPlayer::MusicPlayer(const char* filePath) {
-    music = Mix_LoadMUS("C:\\Users\\hp\\Downloads\\oop project assets\\audio1.mp3");
-}
+MusicPlayer::MusicPlayer() : music(nullptr) {}
 
-MusicPlayer::~MusicPlayer() {
-    Mix_FreeMusic(music);
+void MusicPlayer::loadMusic(const std::string& filePath) {
+    music = Mix_LoadMUS(filePath.c_str());
 }
 
 void MusicPlayer::play() {
-    if (music) {
-        // Play music only if it's not already playing
-        if (Mix_PlayingMusic() == 0) {
-            Mix_PlayMusic(music, -1);
-        }
+    if (music && Mix_PlayingMusic() == 0) {
+        Mix_PlayMusic(music, -1);
     }
 }
 
 void MusicPlayer::stop() {
     Mix_HaltMusic();
+}
+
+MusicPlayer::~MusicPlayer() {
+    if (music) {
+        Mix_FreeMusic(music);
+    }
 }

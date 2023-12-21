@@ -1,26 +1,20 @@
 #pragma once
 
+
 #include <SDL_mixer.h>
+#include <string>
+#include "screen.hpp"
+#include "iostream"
 
 class MusicPlayer {
 private:
-    Mix_Music* music; //pointer that represented music loaded by Mix_Music(SDL Library)
+    Mix_Music* music;
 
 public:
-    MusicPlayer(const char* filePath);//constructor
-    ~MusicPlayer();//destructor
+    MusicPlayer();
+    ~MusicPlayer();
 
+    void loadMusic(const std::string& filePath);
     void play();
     void stop();
-};
-
-class SoundEffect {
-private:
-    Mix_Chunk* soundEffect;
-
-public:
-    SoundEffect(const char* filePath);//constructor
-    ~SoundEffect();//destructor
-
-    void play();
 };
