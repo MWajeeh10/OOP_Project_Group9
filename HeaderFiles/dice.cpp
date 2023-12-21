@@ -3,22 +3,17 @@
 #include <random>
 #include <ctime>
 #include <algorithm>  // Include the algorithm header
-#include <map>
 
-// // Constructor for the Dice class
-// Dice::Dice(SDL_Renderer* renderer, const std::vector<std::string>& facePaths, int x, int y)
-//     : xPosition(x), yPosition(y), rolling(false) {
-//     // Assign scores directly based on your preference
-//     faceScores = {1, 2, 3, 4, 5, 6};
-
-//     // Load textures for each face of the dice
-//     //! auto deduce the type of the variable without typing the return type
-//     for (const auto& path : facePaths) {
-//         SDL_Texture* texture;
-//         loadTexture(path, renderer, texture);
-//         faceTextures.push_back(texture);
-//     }
-// }
+// Constructor for the Dice class
+Dice::Dice(SDL_Renderer* renderer, const std::vector<std::string>& facePaths, int x, int y)
+    : xPosition(x), yPosition(y), rolling(false) {
+    // Load textures for each face of the dice
+    for (const auto& path : facePaths) {
+        SDL_Texture* texture;
+        loadTexture(path, renderer, texture);
+        faceTextures.push_back(texture);
+    }
+}
 
 // Destructor for the Dice class
 Dice::~Dice() {
@@ -64,8 +59,11 @@ void Dice::roll(SDL_Renderer* renderer) {
 
     Uint32 startTime = SDL_GetTicks();
     Uint32 currentTime;
+
+    // Roll for 2 seconds
     while ((currentTime = SDL_GetTicks()) - startTime < 2000) {
         if ((currentTime - startTime) % 50 == 0) {
+            // Mix_PlayChannel(-1, rollSound, 0);
             SDL_Delay(50);
             int randomIndex = rand() % faceTextures.size();
             std::rotate(faceTextures.begin(), faceTextures.begin() + randomIndex, faceTextures.end());
@@ -81,6 +79,10 @@ void Dice::roll(SDL_Renderer* renderer) {
                 return;
             }
         }
+            Mix_FreeChunk(rollSound);
+            rollSound = nullptr;
+
+            // rolling = false;
     }
 
     rolling = false;

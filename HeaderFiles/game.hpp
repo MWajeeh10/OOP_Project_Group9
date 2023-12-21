@@ -26,6 +26,7 @@ public:
 };
 
 
+
 // Update the WelcomeScreen class
 class WelcomeScreen : public Screen {
     private:
@@ -53,6 +54,7 @@ class PlayerSelectionScreen : public Screen {
             DICE3,
             DICE4
         };
+
 
         Turn currentTurn;
 
@@ -94,7 +96,8 @@ class ScreenManager {
         SDL_Window* window;
         SDL_Renderer* renderer;
         ScreenType currentScreen;
-
+        Mix_Music* music;
+        void playMusic();
         
     public:
         ScreenManager();
