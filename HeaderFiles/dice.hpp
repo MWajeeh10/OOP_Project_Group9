@@ -73,8 +73,7 @@ class Dice {
         // void roll(SDL_Renderer* renderer); 
 
         // Method to get the current dice value
-        // int getValue() const; 
-        std::vector<int> faceScores;
+        int getValue() const;
 
     public:
         // Constructor for the Dice class
@@ -94,7 +93,9 @@ class Dice {
         int diceScore() const {
             return score;
         }
-    private:
+
         std::vector<SDL_Texture*> faces;  // Vector to store the textures for each face
         int currentValue;  // Variable to store the current dice value
+
+
 };

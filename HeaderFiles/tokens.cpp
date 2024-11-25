@@ -6,10 +6,10 @@
 #include <vector>
 
 
-
-//?VECTORS FOR DEFINING PATH OF EACH TOKEN ON THE BOARD.
-//?THE PATHS INCLUDE/DO NOT INCLUDE THE FINAL GAME WINNING PATH
-
+/*
+VECTORS FOR DEFINING PATH OF EACH TOKEN ON THE BOARD.
+THE PATHS DO NOT INCLUDE THE FINAL GAME WINNING PATH
+*/
 
 //PATH FOR RED TOKEN
 std::vector<SDL_Point> Token::boardMovementRed = {
@@ -127,22 +127,21 @@ void Token::moveToNextPositionRed(int diceScore) {
         }
     } else {
         // Calculate the current position within the main track based on the board movement array
-        for (int i = 0; i < boardMovementRed.size(); ++i) {
+        for (size_t i = 0; i < boardMovementRed.size(); ++i) {
             // ! calculate the next index of token acc to array
             if (position.x == boardMovementRed[i].x && position.y == boardMovementRed[i].y) {
-                int newPositionIndex = i + diceScore; 
+                int newPositionIndex = i + diceScore;
 
                 if(killer.hasKilled == true){
                     destinationX = 355;
                     destinationY = 305;
-                    destinationIndexR = 56;
-                    if (newPositionIndex > destinationIndexR) {
+                    if (newPositionIndex > boardMovementRed.size() - 1) {
                         // newPositionIndex = boardMovementRed.size() - 1;
                         return;
                     }
 
                     // Check if the new position index is lesser than or equal to the destination index
-                    else if (newPositionIndex <= destinationIndexR) {
+                    if (newPositionIndex <= boardMovementRed.size() - 1) {
                         // Move the token along the predefined board positions
                         position.x = boardMovementRed[newPositionIndex].x;
                         position.y = boardMovementRed[newPositionIndex].y;
@@ -191,20 +190,20 @@ void Token::moveToNextPositionGreen(int diceScore) {
         }
     } else {
         // Calculate the current position within the main track based on the board movement array
-        for (int i = 0; i < boardMovementGreen.size(); ++i) {
+        for (size_t i = 0; i < boardMovementGreen.size(); ++i) {
             if (position.x == boardMovementGreen[i].x && position.y == boardMovementGreen[i].y) {
                 int newPositionIndex = i + diceScore;
                 
                 if(killer.hasKilled == true){
                     destinationX = 355;
                     destinationY = 305;
-                    destinationIndexG = 55;
-                    if (newPositionIndex > destinationIndexG) {
+                    if (newPositionIndex > boardMovementGreen.size() - 1) {
                         // newPositionIndex = boardMovementRed.size() - 1;
                         return;
                     }
+
                     // Check if the new position index is lesser than or equal to the destination index
-                    else if (newPositionIndex <= destinationIndexG) {
+                    if (newPositionIndex <= boardMovementGreen.size() - 1) {
                         // Move the token along the predefined board positions
                         position.x = boardMovementGreen[newPositionIndex].x;
                         position.y = boardMovementGreen[newPositionIndex].y;
@@ -253,21 +252,15 @@ void Token::moveToNextPositionYellow(int diceScore) {
         }
     } else {
         // Calculate the current position within the main track based on the board movement array
-        for (int i = 0; i < boardMovementYellow.size(); ++i) {
+        for (size_t i = 0; i < boardMovementYellow.size(); ++i) {
             if (position.x == boardMovementYellow[i].x && position.y == boardMovementYellow[i].y) {
                 int newPositionIndex = i + diceScore;
-                if(killer.hasKilled==true){
+                if(killer.hasKilled == true){
                     destinationX = 455;
                     destinationY = 355;
-                    destinationIndexY = 53;
-                    if (newPositionIndex > destinationIndexY) {
+                    if (newPositionIndex > boardMovementYellow.size() - 1) {
                     // newPositionIndex = boardMovementRed.size() - 1;
                     return;
-                    }
-                    else{
-                        position.x = boardMovementYellow[newPositionIndex].x;
-                        position.y = boardMovementYellow[newPositionIndex].y;
-                    }
                 }
 
                 // Check if the new position index is lesser than or equal to the destination index
@@ -276,7 +269,7 @@ void Token::moveToNextPositionYellow(int diceScore) {
                     position.x = boardMovementYellow[newPositionIndex].x;
                     position.y = boardMovementYellow[newPositionIndex].y;
                 }
-            else{
+            }else{
                 // If the new position index exceeds the boardMovement size, set it to the destination
                 if (newPositionIndex > destinationIndexY) {
                     // newPositionIndex = boardMovementRed.size() - 1;
@@ -319,7 +312,7 @@ void Token::moveToNextPositionBlue(int diceScore) {
         }
     } else {
         // Calculate the current position within the main track based on the board movement array
-        for (int i = 0; i < boardMovementBlue.size(); ++i) {
+        for (size_t i = 0; i < boardMovementBlue.size(); ++i) {
             if (position.x == boardMovementBlue[i].x && position.y == boardMovementBlue[i].y) {
                 int newPositionIndex = i + diceScore;
 
